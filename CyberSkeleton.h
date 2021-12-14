@@ -4,6 +4,8 @@
 #include "CyberBone.h"
 #include "AbstractSkeleton.h"
 
+namespace man{
+
 class CyberSkeleton : public AbstractSkeleton
 {
 public:
@@ -11,5 +13,7 @@ public:
 
     CyberBone bones[CYBER_NUM_BONES];
 };
+
+}
 
 #endif // CYBERSKELETON_H

@@ -1,6 +1,6 @@
 #include "AbstractHuman.h"
 
-AbstractHuman::AbstractHuman()
+man::AbstractHuman::AbstractHuman()
 {
 
 }

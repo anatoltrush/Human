@@ -7,9 +7,10 @@ using namespace std;
 
 int main()
 {
-    Human human;
+    man::Human human;
     cout << "S human: " + to_string(sizeof(human)) << endl;
-    Cyborg cyborg;
+    man::Cyborg cyborg;
     cout << "S cyborg: " + to_string(sizeof(cyborg)) << endl;
+    cyborg.skeleton.bones[5].serialize();
     return 0;
 }

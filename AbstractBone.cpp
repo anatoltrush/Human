@@ -1,6 +1,6 @@
 #include "AbstractBone.h"
 
-AbstractBone::AbstractBone()
+man::AbstractBone::AbstractBone()
 {
 
 }

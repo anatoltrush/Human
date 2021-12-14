@@ -1,6 +1,10 @@
 #include "HumanBone.h"
 
-HumanBone::HumanBone()
+man::HumanBone::HumanBone()
 {
+
+}
+
+void man::HumanBone::serialize(){
 
 }

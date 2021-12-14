@@ -1,6 +1,6 @@
 #include "CyberSkeleton.h"
 
-CyberSkeleton::CyberSkeleton()
+man::CyberSkeleton::CyberSkeleton()
 {
 
 }

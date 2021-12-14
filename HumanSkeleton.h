@@ -4,6 +4,8 @@
 #include "HumanBone.h"
 #include "AbstractSkeleton.h"
 
+namespace man{
+
 class HumanSkeleton : AbstractSkeleton
 {
 public:
@@ -11,5 +13,7 @@ public:
 
     HumanBone bones[HUMAN_NUM_BONES];
 };
+
+}
 
 #endif // HUMANSKELETON_H

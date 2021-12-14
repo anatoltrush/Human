@@ -1,6 +1,6 @@
 #include "Cyborg.h"
 
-Cyborg::Cyborg()
+man::Cyborg::Cyborg()
 {
 
 }

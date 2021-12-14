@@ -1,6 +1,6 @@
 #include "Human.h"
 
-Human::Human()
+man::Human::Human()
 {
 
 }

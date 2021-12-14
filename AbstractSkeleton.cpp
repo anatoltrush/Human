@@ -1,6 +1,6 @@
 #include "AbstractSkeleton.h"
 
-AbstractSkeleton::AbstractSkeleton()
+man::AbstractSkeleton::AbstractSkeleton()
 {
 
 }

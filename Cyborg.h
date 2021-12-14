@@ -4,6 +4,8 @@
 #include "CyberSkeleton.h"
 #include "AbstractHuman.h"
 
+namespace man{
+
 class Cyborg : public AbstractHuman
 {
 public:
@@ -11,5 +13,7 @@ public:
 
     CyberSkeleton skeleton;
 };
+
+}
 
 #endif // CYBORG_H

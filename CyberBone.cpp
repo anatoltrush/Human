@@ -1,6 +1,10 @@
 #include "CyberBone.h"
 
-CyberBone::CyberBone()
+man::CyberBone::CyberBone()
 {
 
+}
+
+void man::CyberBone::serialize(){
+    std::cout << "Serialize: " + name << std::endl; // NOTE: delete
 }

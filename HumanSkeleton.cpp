@@ -1,6 +1,6 @@
 #include "HumanSkeleton.h"
 
-HumanSkeleton::HumanSkeleton()
+man::HumanSkeleton::HumanSkeleton()
 {
 
 }
