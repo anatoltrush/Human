@@ -1,7 +1,6 @@
 TEMPLATE = app
-CONFIG += console c++14
-CONFIG -= app_bundle
-CONFIG -= qt
+CONFIG +=  c++17
+QT     +=  core gui
 
 SOURCES += \
         AbstractBone.cpp \

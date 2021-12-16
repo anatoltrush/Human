@@ -11,7 +11,9 @@ class HumanSkeleton : AbstractSkeleton
 public:
     HumanSkeleton();
 
-    HumanBone bones[HUMAN_NUM_BONES];
+    std::map<std::string_view, HumanBone>bones;
+
+    virtual void loadFromJson();
 };
 
 }

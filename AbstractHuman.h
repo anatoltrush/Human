@@ -1,7 +1,9 @@
 #ifndef ABSTRACTHUMAN_H
 #define ABSTRACTHUMAN_H
 
-#include <string>
+#include <string_view>
+
+#include <QDateTime>
 
 namespace man{
 
@@ -10,9 +12,9 @@ class AbstractHuman
 public:
     AbstractHuman();
 
-    std::string firstName; // name
-    std::string lastName; // family
-    uint16_t yearBirth = 0;
+    std::string_view firstName; // name
+    std::string_view lastName; // family
+    QDateTime birth;
 };
 
 }

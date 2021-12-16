@@ -11,6 +11,6 @@ int main()
     cout << "S human: " + to_string(sizeof(human)) << endl;
     man::Cyborg cyborg;
     cout << "S cyborg: " + to_string(sizeof(cyborg)) << endl;
-    cyborg.skeleton.bones[5].serialize();
+    cyborg.skeleton.bones[boneHead].serialize();
     return 0;
 }

@@ -9,6 +9,7 @@ class HumanBone : public AbstractBone
 {
 public:
     HumanBone();
+    HumanBone(const std::string_view & name);
 
     virtual void serialize();
 };

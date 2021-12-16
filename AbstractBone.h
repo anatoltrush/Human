@@ -1,8 +1,6 @@
 #ifndef ABSTRACTBONE_H
 #define ABSTRACTBONE_H
 
-#include <string>
-
 #include "Defines.h"
 
 namespace man{
@@ -10,9 +8,13 @@ namespace man{
 class AbstractBone
 {
 public:
-    AbstractBone();
+    AbstractBone();    
 
-    std::string name;
+    std::string_view name;
+    bool isHuman = true;
+
+    std::vector <AbstractBone*> children;
+    std::vector <AbstractBone*> parents;
 
     virtual void serialize() = 0;
 };
