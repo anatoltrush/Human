@@ -1,27 +1,36 @@
+TARGET = Human
 TEMPLATE = app
 CONFIG +=  c++17
-QT     +=  core gui
+QT     +=  core gui widgets
 
 SOURCES += \
         AbstractBone.cpp \
         AbstractHuman.cpp \
         AbstractSkeleton.cpp \
+        Config.cpp \
         CyberBone.cpp \
         CyberSkeleton.cpp \
         Cyborg.cpp \
         Human.cpp \
         HumanBone.cpp \
         HumanSkeleton.cpp \
-        main.cpp
+        main.cpp \
+        mainwindow.cpp
 
 HEADERS += \
     AbstractBone.h \
     AbstractHuman.h \
     AbstractSkeleton.h \
+    Config.h \
+    ConfigDefines.h \
     CyberBone.h \
     CyberSkeleton.h \
     Cyborg.h \
     Defines.h \
     Human.h \
     HumanBone.h \
-    HumanSkeleton.h
+    HumanSkeleton.h \
+    mainwindow.h
+
+FORMS += \
+    mainwindow.ui

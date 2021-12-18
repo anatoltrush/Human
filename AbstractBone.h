@@ -2,6 +2,7 @@
 #define ABSTRACTBONE_H
 
 #include "Defines.h"
+#include "ConfigDefines.h"
 
 namespace man{
 
