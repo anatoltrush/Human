@@ -1,0 +1,10 @@
+{
+	"skeletons":[
+		{
+			"path": "Skeletons\\CyborgSkeleton\\CyborgSkeleton.json"
+		},
+		{
+			"path": "Skeletons\\HumanSkeleton\\HumanSkeleton.json"
+		}
+	]
+}

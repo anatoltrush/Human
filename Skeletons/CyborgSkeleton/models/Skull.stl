@@ -1,0 +1,30 @@
+solid Skull
+  facet normal 0.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 0.000000e+00 0.000000e+00 0.000000e+00
+      vertex 15.000000e+00 -15.000000e+00 30.000000e+00
+      vertex -15.000000e+00 -15.000000e+00 30.000000e+00      
+    endloop
+  endfacet
+  facet normal 0.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 0.000000e+00 0.000000e+00 0.000000e+00
+      vertex -15.000000e+00 -15.000000e+00 30.000000e+00
+      vertex 0.000000e+00 15.000000e+00 30.000000e+00
+    endloop
+  endfacet
+  facet normal 0.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex 0.000000e+00 0.000000e+00 0.000000e+00
+      vertex 15.000000e+00 -15.000000e+00 30.000000e+00
+      vertex 0.000000e+00 15.000000e+00 30.000000e+00
+    endloop
+  endfacet
+  facet normal 0.000000e+00 0.000000e+00 0.000000e+00
+    outer loop
+      vertex -15.000000e+00 -15.000000e+00 30.000000e+00
+      vertex 15.000000e+00 -15.000000e+00 30.000000e+00
+      vertex 0.000000e+00 15.000000e+00 30.000000e+00
+    endloop
+  endfacet
+endsolid Skull
