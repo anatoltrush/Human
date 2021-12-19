@@ -3,18 +3,20 @@
 
 #include <vector>
 #include <iostream>
-#include <string_view>
 
-#define HUMAN_NUM_BONES     208
-#define CYBER_NUM_BONES     208
+#include <QString>
 
 // --- BONES ---
 
-inline const std::string_view boneHead = "boneHead";
-inline const std::string_view boneSpine = "boneSpine";
-inline const std::string_view boneHandR = "boneHandR";
-inline const std::string_view boneHandL = "boneHandL";
-inline const std::string_view boneLerR = "boneLerR";
-inline const std::string_view boneLegL = "boneLegL";
+inline const QString boneHead = "boneHead";
+inline const QString boneSpine = "boneSpine";
+inline const QString boneHandR = "boneHandR";
+inline const QString boneHandL = "boneHandL";
+inline const QString boneLerR = "boneLerR";
+inline const QString boneLegL = "boneLegL";
+
+// --- ERRORS ---
+
+//QString
 
 #endif // DEFINES_H

@@ -5,11 +5,11 @@ man::CyberBone::CyberBone()
     isHuman = false;
 }
 
-man::CyberBone::CyberBone(const std::string_view & name){
+man::CyberBone::CyberBone(const QString & name){
     this->name = name;
     isHuman = false;
 }
 
 void man::CyberBone::serialize(){
-    std::cout << "Serialize: " <<  name << std::endl; // NOTE: delete
+    std::cout << "Serialize: " <<  name.toStdString() << std::endl; // NOTE: delete
 }

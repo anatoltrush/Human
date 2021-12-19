@@ -1,0 +1,43 @@
+{
+	"boneName": "Spine",
+	"modelFile": "Spine.stl",
+	"anchorPoint":{
+		"x": 0.0,
+		"y": 0.0,
+		"z": 0.0
+	},
+	"children":[
+		{
+			"boneName": "LeftHand",
+			"anchorPoint": {
+				"x": -35.0, 
+				"y": 0.0,
+				"z": 0.0
+			}
+		},
+		{
+			"boneName": "RightHand",
+			"anchorPoint":{
+				"x": 35.0, 
+				"y": 0.0,
+				"z": 0.0
+			}
+		},
+		{
+			"boneName": "LeftLeg",
+			"anchorPoint":{
+				"x": -20.0, 
+				"y": 0.0,
+				"z": -80.0
+			}
+		},
+		{
+			"boneName": "RightLeg",
+			"anchorPoint":{
+				"x": 20.0, 
+				"y": 0.0,
+				"z": -80.0
+			}
+		}
+	]
+}

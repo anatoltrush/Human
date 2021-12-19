@@ -3,6 +3,14 @@
 
 #include "Defines.h"
 
-const std::string_view fileConfig = "Config.json";
+const QString fileConfig = "Config.json";
+
+const QString jsonFieldEntities = "skeletons";
+const QString jsonFieldName = "name";
+const QString jsonFieldPath = "path";
+
+// --- ENTITIES ---
+const QString cyberSkeleton = "CyberSkeleton";
+const QString humanSkeleton = "HumanSkeleton";
 
 #endif // CONFIGDEFINES_H

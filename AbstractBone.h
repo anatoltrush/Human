@@ -11,7 +11,7 @@ class AbstractBone
 public:
     AbstractBone();    
 
-    std::string_view name;
+    QString name;
     bool isHuman = true;
 
     std::vector <AbstractBone*> children;

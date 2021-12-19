@@ -5,7 +5,7 @@ man::HumanBone::HumanBone()
     isHuman = true;
 }
 
-man::HumanBone::HumanBone(const std::string_view & name){
+man::HumanBone::HumanBone(const QString & name){
     isHuman = true;
     this->name = name;
 }

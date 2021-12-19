@@ -11,7 +11,7 @@ class CyberSkeleton : public AbstractSkeleton
 public:
     CyberSkeleton();
 
-    std::map<std::string_view, CyberBone>bones;
+    std::map<QString, CyberBone>bones;
 
     virtual void loadFromJson();
 };
