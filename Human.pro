@@ -1,6 +1,6 @@
 TARGET = Human
 TEMPLATE = app
-CONFIG +=  c++17
+CONFIG +=  c++14
 QT     +=  core gui widgets
 
 SOURCES += \
