@@ -10,7 +10,8 @@ int man::Config::loadConfigData()
     QString pathConfigFile = pathApplication + "/" + fileConfig;
 
     QFile jsonConfigFile(pathConfigFile);
-    if (!jsonConfigFile.open(QIODevice::ReadOnly)) return -1;
+    if (!jsonConfigFile.open(QIODevice::ReadOnly))
+        return Status::statusFileNotFound;
 
     QByteArray jsonConfigData = jsonConfigFile.readAll();
     QJsonDocument jsonConfigDocument(QJsonDocument::fromJson(jsonConfigData));
@@ -20,7 +21,7 @@ int man::Config::loadConfigData()
     for(const auto &skelPths : skeletonArray){
         QString name = skelPths.toObject().value(jsonFieldName).toString();
         QString path = skelPths.toObject().value(jsonFieldPath).toString();
-        pathsSkeleton.insert(std::pair<QString, QString>(name, path));
+        pathsToEntities.insert(name, path);
     }
     return 0;
 }

@@ -21,7 +21,7 @@ public:
 
     QJsonObject configJsonObject;
 
-    std::map<QString, QString>pathsSkeleton;
+    QMap<QString, QString>pathsToEntities; // entity name / entity path
 
     int loadConfigData();
 };

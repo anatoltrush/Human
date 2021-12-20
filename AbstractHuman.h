@@ -1,6 +1,8 @@
 #ifndef ABSTRACTHUMAN_H
 #define ABSTRACTHUMAN_H
 
+#include <vector>
+
 #include <QString>
 #include <QDateTime>
 
@@ -17,7 +19,10 @@ public:
     QString lastName; // family
     QDateTime birth;
 
+    std::vector<QJsonObject>jsonEntities;
+
     int loadEntityData(const Config& config, const QString& name);
+
 };
 
 }
