@@ -3,14 +3,15 @@
 
 #include "Defines.h"
 
-const QString fileConfig = "Config.json";
+const QString fileConfig            = "Config.json";
 
-const QString jsonFieldEntities = "skeletons";
-const QString jsonFieldName = "name";
-const QString jsonFieldPath = "path";
+const QString jsonFieldSkeletons    = "skeletons";
+const QString jsonFieldName         = "name";
+const QString jsonFieldPath         = "path";
+const QString jsonFolderPathModels  = "modelsFolder";
 
 // --- ENTITIES ---
-const QString cyberSkeleton = "CyberSkeleton";
-const QString humanSkeleton = "HumanSkeleton";
+const QString cyberSkeleton         = "CyberSkeleton";
+const QString humanSkeleton         = "HumanSkeleton";
 
 #endif // CONFIGDEFINES_H

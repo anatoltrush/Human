@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
     int loadConf = config.loadConfigData();
 
     man::Human human;
-    int loadhSkel = human.loadEntityData(config, humanSkeleton);
+    int loadHumSkel = human.loadSkeleton(config);
     cout << "S human: " + to_string(sizeof(human)) << endl;
     man::Cyborg cyborg;
-    int loadcSkel = cyborg.loadEntityData(config, cyberSkeleton);
+    int loadCybSkel = cyborg.loadSkeleton(config);
     cout << "S cyborg: " + to_string(sizeof(cyborg)) << endl;
     //cyborg.skeleton.bones[boneHead].serialize();
 

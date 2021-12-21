@@ -2,5 +2,5 @@
 
 man::Cyborg::Cyborg()
 {
-
+    skeleton = new CyberSkeleton();
 }

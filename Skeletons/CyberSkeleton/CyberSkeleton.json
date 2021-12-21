@@ -1,4 +1,4 @@
 {
-	"skeletonName": "CyberSkeleton",
-	"modelsFolder": "models\\"
+	"name": "CyberSkeleton",
+	"modelsFolder": "Skeletons\\CyberSkeleton\\models\\"
 }

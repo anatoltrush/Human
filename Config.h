@@ -3,13 +3,6 @@
 
 #include "ConfigDefines.h"
 
-#include <QFile>
-#include <QString>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QCoreApplication>
-
 namespace man{
 
 class Config
@@ -21,7 +14,7 @@ public:
 
     QJsonObject configJsonObject;
 
-    QMap<QString, QString>pathsToEntities; // entity name / entity path
+    QMap<QString, QString>pathsToSkeletons; // entity name / entity path
 
     int loadConfigData();
 };

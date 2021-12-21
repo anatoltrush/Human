@@ -2,11 +2,21 @@
 	"skeletons":[
 		{
 			"name": "CyberSkeleton",
-			"path": "Skeletons\\CyborgSkeleton\\CyberSkeleton.json"
+			"path": "Skeletons\\CyberSkeleton\\CyberSkeleton.json"
 		},
 		{
 			"name": "HumanSkeleton",
 			"path": "Skeletons\\HumanSkeleton\\HumanSkeleton.json"
+		}
+	],
+	"nerves":[
+		{
+			"name": "CyberNerves",
+			"path": "Nerves\\CyberNerves\\CyberNerves.json"
+		},
+		{
+			"name": "HumanNerves",
+			"path": "Nerves\\HumanNerves\\HumanNerves.json"
 		}
 	]
 }

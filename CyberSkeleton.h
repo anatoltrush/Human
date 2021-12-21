@@ -13,7 +13,6 @@ public:
 
     std::map<QString, CyberBone>bones;
 
-    virtual void loadFromJson();
 };
 
 }

@@ -2,5 +2,5 @@
 
 man::Human::Human()
 {
-
+    skeleton = new HumanSkeleton();
 }

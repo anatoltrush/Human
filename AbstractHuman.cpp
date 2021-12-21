@@ -5,19 +5,15 @@ man::AbstractHuman::AbstractHuman()
 
 }
 
-int man::AbstractHuman::loadEntityData(const Config &config, const QString &name)
+man::AbstractHuman::~AbstractHuman()
 {
-    QString pathToEntityRel = config.pathsToEntities[name];
+    delete skeleton;
+}
+
+int man::AbstractHuman::loadSkeleton(const Config &config)
+{
+    QString pathToEntityRel = config.pathsToSkeletons[skeleton->name];
     QString pathToEntityAbs = config.pathApplication + "/" + pathToEntityRel;
-
-    QFile jsonEntityFile(pathToEntityAbs);
-    if (!jsonEntityFile.open(QIODevice::ReadOnly))
-        return Status::statusFileNotFound;
-
-    QByteArray jsonEntityData = jsonEntityFile.readAll();
-    QJsonDocument jsonEntityDocument(QJsonDocument::fromJson(jsonEntityData));
-    QJsonObject jsonEntityObject = jsonEntityDocument.object();
-    jsonEntities.push_back(jsonEntityObject);
-
-    return 0;
+    int loadSkeletonResult = skeleton->loadFromJson(pathToEntityAbs);
+    return loadSkeletonResult;
 }

@@ -2,6 +2,7 @@
 
 man::CyberSkeleton::CyberSkeleton()
 {
+    name = cyberSkeleton;
     /*bones.insert(std::pair<QString, CyberBone>(boneHead, CyberBone(boneHead)));
     bones.insert(std::pair<QString, CyberBone>(boneSpine, CyberBone(boneSpine)));
     bones.insert(std::pair<QString, CyberBone>(boneHandR, CyberBone(boneHandR)));
@@ -10,6 +11,3 @@ man::CyberSkeleton::CyberSkeleton()
     bones.insert(std::pair<QString, CyberBone>(boneLegL, CyberBone(boneLegL)));*/
 }
 
-void man::CyberSkeleton::loadFromJson(){
-
-}

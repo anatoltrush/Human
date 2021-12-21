@@ -11,7 +11,6 @@ class Cyborg : public AbstractHuman
 public:
     Cyborg();
 
-    CyberSkeleton skeleton;
 };
 
 }

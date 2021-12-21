@@ -1,12 +1,10 @@
 #ifndef ABSTRACTHUMAN_H
 #define ABSTRACTHUMAN_H
 
-#include <vector>
-
-#include <QString>
 #include <QDateTime>
 
 #include "Config.h"
+#include "AbstractSkeleton.h"
 
 namespace man{
 
@@ -14,14 +12,17 @@ class AbstractHuman
 {
 public:
     AbstractHuman();
+    virtual ~AbstractHuman();
+
+    AbstractSkeleton* skeleton = nullptr;
 
     QString firstName; // name
     QString lastName; // family
     QDateTime birth;
 
-    std::vector<QJsonObject>jsonEntities;
+    QMap<QString, QJsonObject>jsonEntities; // entity name / entity json
 
-    int loadEntityData(const Config& config, const QString& name);
+    int loadSkeleton(const Config& config);
 
 };
 

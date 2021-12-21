@@ -11,17 +11,17 @@ int man::Config::loadConfigData()
 
     QFile jsonConfigFile(pathConfigFile);
     if (!jsonConfigFile.open(QIODevice::ReadOnly))
-        return Status::statusFileNotFound;
+        return statusFileNotFound;
 
     QByteArray jsonConfigData = jsonConfigFile.readAll();
     QJsonDocument jsonConfigDocument(QJsonDocument::fromJson(jsonConfigData));
     configJsonObject = jsonConfigDocument.object();
 
-    QJsonArray skeletonArray = configJsonObject[jsonFieldEntities].toArray();
+    QJsonArray skeletonArray = configJsonObject[jsonFieldSkeletons].toArray();
     for(const auto &skelPths : skeletonArray){
         QString name = skelPths.toObject().value(jsonFieldName).toString();
         QString path = skelPths.toObject().value(jsonFieldPath).toString();
-        pathsToEntities.insert(name, path);
+        pathsToSkeletons.insert(name, path);
     }
-    return 0;
+    return statusOk;
 }

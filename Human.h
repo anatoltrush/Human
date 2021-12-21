@@ -11,7 +11,6 @@ class Human : public AbstractHuman
 public:
     Human();
 
-    HumanSkeleton skeleton;
 };
 
 }

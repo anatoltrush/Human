@@ -1,7 +1,9 @@
 #ifndef ABSTRACTSKELETON_H
 #define ABSTRACTSKELETON_H
 
-#include <map>
+#include <QString>
+
+#include "ConfigDefines.h"
 
 namespace man{
 
@@ -9,8 +11,12 @@ class AbstractSkeleton
 {
 public:
     AbstractSkeleton();
+    virtual ~AbstractSkeleton();
 
-    virtual void loadFromJson() = 0;
+    QString name;
+    QFileInfoList listJsonModels;
+
+    virtual int loadFromJson(QString &pathToJson);
 };
 
 }
