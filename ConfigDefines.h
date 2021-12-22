@@ -10,6 +10,7 @@ const QString jsonFieldName         = "name";
 const QString jsonFieldPath         = "path";
 const QString jsonFieldPath3D       = "model3D";
 const QString jsonFieldChildren     = "children";
+const QString jsonFieldAnchor       = "anchorPoint";
 const QString jsonFolderPathModels  = "modelsFolder";
 
 // --- ENTITIES ---

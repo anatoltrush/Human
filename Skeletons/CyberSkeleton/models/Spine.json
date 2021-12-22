@@ -7,37 +7,9 @@
 		"z": 0.0
 	},
 	"children":[
-		{
-			"name": "LeftHand",
-			"anchorPoint": {
-				"x": -35.0, 
-				"y": 0.0,
-				"z": 0.0
-			}
-		},
-		{
-			"name": "RightHand",
-			"anchorPoint":{
-				"x": 35.0, 
-				"y": 0.0,
-				"z": 0.0
-			}
-		},
-		{
-			"name": "LeftLeg",
-			"anchorPoint":{
-				"x": -20.0, 
-				"y": 0.0,
-				"z": -80.0
-			}
-		},
-		{
-			"name": "RightLeg",
-			"anchorPoint":{
-				"x": 20.0, 
-				"y": 0.0,
-				"z": -80.0
-			}
-		}
+		"LeftHand",
+		"RightHand",
+		"LeftLeg",
+		"RightLeg"
 	]
 }

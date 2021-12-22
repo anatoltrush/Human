@@ -60,16 +60,27 @@ int man::AbstractSkeleton::loadFromJson(const Config &config)
 
 int man::AbstractSkeleton::construct()
 {
-    int resultConstruct = statusNotFinished;
-
     QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
-        i.value()->defineChildren();
-        i.value()->defineParents();
         i.value()->calcNewBasePoint();
     }
 
-    isConstructDone = (resultConstruct == statusOk);
-    return resultConstruct;
+    // ChildrenPts
+    QMap<QString, AbstractBone*>::iterator b;
+    for (b = bones.begin(); b != bones.end(); b++){
+        for(size_t is = 0; is < b.value()->childrenStr.size(); is++){
+            QString childName = b.value()->childrenStr[is];
+            /*AbstractBone* childPtr = bones[childName]; // Version with null pointers
+            b.value()->childrenPtr.push_back(bones[childName]);
+            if(childPtr)
+                bones[childName]->parentsPtr.push_back(b.value());*/
+            QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
+            if(mapFind != bones.end()){
+                b.value()->childrenPtr.push_back(bones[childName]);
+                bones[childName]->parentsPtr.push_back(b.value());
+            }
+        }
+    }
+    return statusOk;
 }

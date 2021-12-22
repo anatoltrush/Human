@@ -30,6 +30,7 @@ HEADERS += \
     Human.h \
     HumanBone.h \
     HumanSkeleton.h \
+    Primitives.h \
     mainwindow.h
 
 FORMS += \

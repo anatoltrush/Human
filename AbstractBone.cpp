@@ -12,21 +12,18 @@ man::AbstractBone::~AbstractBone()
 
 void man::AbstractBone::fillProperties()
 {
+    // 3D
     pathTo3DModelAbs = pathTo3DModelRel + "/" + boneJsonObject[jsonFieldPath3D].toString();
-}
-
-void man::AbstractBone::defineChildren()
-{
+    // children
     QJsonArray childrenArray = boneJsonObject[jsonFieldChildren].toArray();
     for(const auto &child : childrenArray){
-        QString childStr = child.toObject().value(jsonFieldName).toString();
-        childrenStr.push_back(childStr);
+        childrenStr.push_back(child.toString());
     }
-}
-
-void man::AbstractBone::defineParents()
-{
-    std::cout << "defineParents " <<  name.toStdString() << std::endl; // NOTE: delete
+    // offsets
+    QJsonObject anchorPoint = boneJsonObject[jsonFieldAnchor].toObject();
+    ptOffset.x = anchorPoint["x"].toDouble();
+    ptOffset.y = anchorPoint["y"].toDouble();
+    ptOffset.z = anchorPoint["z"].toDouble();
 }
 
 void man::AbstractBone::calcNewBasePoint()

@@ -2,6 +2,7 @@
 #define ABSTRACTBONE_H
 
 #include "Defines.h"
+#include "Primitives.h"
 #include "ConfigDefines.h"
 
 namespace man{
@@ -24,9 +25,9 @@ public:
 
     QJsonObject boneJsonObject;
 
+    Point3F ptOffset;
+
     void fillProperties();
-    void defineChildren();
-    void defineParents();
     void calcNewBasePoint();
 
     virtual void serialize();
