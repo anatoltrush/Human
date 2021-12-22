@@ -9,7 +9,7 @@ class CyberBone : public AbstractBone
 {
 public:
     CyberBone();
-    CyberBone(const QString & name);
+    CyberBone(const QString &name, const QString &pathRel);
 
     virtual void serialize();
 };

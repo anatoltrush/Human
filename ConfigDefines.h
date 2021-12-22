@@ -8,6 +8,8 @@ const QString fileConfig            = "Config.json";
 const QString jsonFieldSkeletons    = "skeletons";
 const QString jsonFieldName         = "name";
 const QString jsonFieldPath         = "path";
+const QString jsonFieldPath3D       = "model3D";
+const QString jsonFieldChildren     = "children";
 const QString jsonFolderPathModels  = "modelsFolder";
 
 // --- ENTITIES ---

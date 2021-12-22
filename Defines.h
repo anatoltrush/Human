@@ -15,11 +15,17 @@
 // --- ERRORS ---
 enum Status{
     statusOk            = 0,
+
     statusFileNotFound  = -1,
     statusDirNotFound   = -2,
-    statusDirIsEmpty    = -3,
-    statusPathIsEmpty   = -4,
-    statusListIsEmpty   = -5
+
+    statusBoneNotFound  = -3,
+
+    statusDirIsEmpty    = -4,
+    statusPathIsEmpty   = -5,
+    statusListIsEmpty   = -6,
+
+    statusNotFinished   = -7
 };
 
 #endif // DEFINES_H

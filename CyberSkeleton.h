@@ -11,8 +11,6 @@ class CyberSkeleton : public AbstractSkeleton
 public:
     CyberSkeleton();
 
-    std::map<QString, CyberBone>bones;
-
 };
 
 }

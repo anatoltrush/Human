@@ -9,15 +9,27 @@ namespace man{
 class AbstractBone
 {
 public:
-    AbstractBone();    
+    AbstractBone();
+    virtual ~AbstractBone();
 
     QString name;
+    QString pathTo3DModelRel;
+    QString pathTo3DModelAbs;
+
     bool isHuman = true;
 
-    std::vector <AbstractBone*> children;
-    std::vector <AbstractBone*> parents;
+    std::vector<QString> childrenStr;
+    std::vector<AbstractBone*> childrenPtr;
+    std::vector<AbstractBone*> parentsPtr;
 
-    virtual void serialize() = 0;
+    QJsonObject boneJsonObject;
+
+    void fillProperties();
+    void defineChildren();
+    void defineParents();
+    void calcNewBasePoint();
+
+    virtual void serialize();
 };
 
 }

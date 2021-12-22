@@ -3,7 +3,9 @@
 
 #include <QString>
 
-#include "ConfigDefines.h"
+#include "Config.h"
+#include "AbstractBone.h"
+#include "CyberBone.h"
 
 namespace man{
 
@@ -13,10 +15,14 @@ public:
     AbstractSkeleton();
     virtual ~AbstractSkeleton();
 
-    QString name;
-    QFileInfoList listJsonModels;
+    QString name;    
 
-    virtual int loadFromJson(QString &pathToJson);
+    QMap<QString, AbstractBone*>bones;
+
+    bool isConstructDone = false;
+
+    virtual int loadFromJson(const Config& config);
+    virtual int construct();
 };
 
 }

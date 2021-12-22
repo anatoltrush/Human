@@ -1,6 +1,6 @@
 {
-	"boneName": "Spine",
-	"modelFile": "Spine.stl",
+	"name": "Spine",
+	"model3D": "Spine.stl",
 	"anchorPoint":{
 		"x": 0.0,
 		"y": 0.0,
@@ -8,7 +8,7 @@
 	},
 	"children":[
 		{
-			"boneName": "LeftHand",
+			"name": "LeftHand",
 			"anchorPoint": {
 				"x": -35.0, 
 				"y": 0.0,
@@ -16,7 +16,7 @@
 			}
 		},
 		{
-			"boneName": "RightHand",
+			"name": "RightHand",
 			"anchorPoint":{
 				"x": 35.0, 
 				"y": 0.0,
@@ -24,7 +24,7 @@
 			}
 		},
 		{
-			"boneName": "LeftLeg",
+			"name": "LeftLeg",
 			"anchorPoint":{
 				"x": -20.0, 
 				"y": 0.0,
@@ -32,7 +32,7 @@
 			}
 		},
 		{
-			"boneName": "RightLeg",
+			"name": "RightLeg",
 			"anchorPoint":{
 				"x": 20.0, 
 				"y": 0.0,

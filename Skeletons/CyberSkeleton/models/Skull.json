@@ -1,6 +1,6 @@
 {
-	"boneName": "Skull",
-	"modelFile": "Skull.stl",
+	"name": "Skull",
+	"model3D": "Skull.stl",
 	"anchorPoint":{
 		"x": 0.0,
 		"y": 0.0,
@@ -8,7 +8,7 @@
 	},
 	"children":[
 		{
-			"boneName": "Spine",
+			"name": "Spine",
 			"anchorPoint": {
 				"x": 0.0, 
 				"y": 0.0,

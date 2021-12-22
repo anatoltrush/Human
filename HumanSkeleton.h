@@ -11,8 +11,6 @@ class HumanSkeleton : public AbstractSkeleton
 public:
     HumanSkeleton();
 
-    std::map<QString, HumanBone>bones;
-
 };
 
 }

@@ -18,12 +18,15 @@ int main(int argc, char *argv[])
     int loadConf = config.loadConfigData();
 
     man::Human human;
-    int loadHumSkel = human.loadSkeleton(config);
+    int loadHumSkel = human.skeleton->loadFromJson(config);
+    int conHumSkel = human.skeleton->construct();
     cout << "S human: " + to_string(sizeof(human)) << endl;
+
     man::Cyborg cyborg;
-    int loadCybSkel = cyborg.loadSkeleton(config);
+    int loadCybSkel = cyborg.skeleton->loadFromJson(config);
+    int conCybSkel = cyborg.skeleton->construct();
     cout << "S cyborg: " + to_string(sizeof(cyborg)) << endl;
-    //cyborg.skeleton.bones[boneHead].serialize();
+    cyborg.skeleton->bones["Skull"]->serialize();
 
     w.show();
     return a.exec();

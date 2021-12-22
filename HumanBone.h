@@ -9,7 +9,7 @@ class HumanBone : public AbstractBone
 {
 public:
     HumanBone();
-    HumanBone(const QString & name);
+    HumanBone(const QString & name, const QString &pathRel);
 
     virtual void serialize();
 };

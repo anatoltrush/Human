@@ -20,10 +20,6 @@ public:
     QString lastName; // family
     QDateTime birth;
 
-    QMap<QString, QJsonObject>jsonEntities; // entity name / entity json
-
-    int loadSkeleton(const Config& config);
-
 };
 
 }
