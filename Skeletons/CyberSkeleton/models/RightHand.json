@@ -1,0 +1,12 @@
+{
+	"name": "RightHand",
+	"model3D": "RightHand.stl",
+	"anchorPoint":{
+		"x": 25.0,
+		"y": 3.0,
+		"z": -5.0
+	},
+	"children":[
+
+	]
+}
