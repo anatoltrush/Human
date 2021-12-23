@@ -38,7 +38,7 @@ int man::AbstractSkeleton::loadFromJson(const Config &config)
     filters << "*.json" ;
     dirModels.setNameFilters(filters);
     QFileInfoList listJsonModels = dirModels.entryInfoList();
-    if (listJsonModels.isEmpty()) return statusListIsEmpty;
+    if (listJsonModels.isEmpty()) return statusJsonListIsEmpty;
 
     // Fill JSON
     for(const auto &jsonModel : listJsonModels){
@@ -60,10 +60,13 @@ int man::AbstractSkeleton::loadFromJson(const Config &config)
 
 int man::AbstractSkeleton::construct()
 {
+    if(bones.isEmpty()) return statusBonesListIsEmpty;
+    // -----
     QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
-        i.value()->calcNewBasePoint();
+        i.value()->load3DModels();
+        i.value()->applyOffsets();
     }
 
     // ChildrenPts
@@ -82,5 +85,6 @@ int man::AbstractSkeleton::construct()
             }
         }
     }
+    isConstructDone = true;
     return statusOk;
 }

@@ -26,9 +26,14 @@ void man::AbstractBone::fillProperties()
     ptOffset.z = anchorPoint["z"].toDouble();
 }
 
-void man::AbstractBone::calcNewBasePoint()
+void man::AbstractBone::load3DModels()
 {
-    std::cout << "calcNewBasePoint " <<  name.toStdString() << std::endl; // NOTE: delete
+    std::cout << "load3DModels " <<  name.toStdString() << std::endl; // NOTE: delete
+}
+
+void man::AbstractBone::applyOffsets()
+{
+    std::cout << "applyOffsets " <<  name.toStdString() << std::endl; // NOTE: delete
 }
 
 void man::AbstractBone::serialize()

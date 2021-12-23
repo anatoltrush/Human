@@ -27,8 +27,11 @@ public:
 
     Point3F ptOffset;
 
+    float volume = 0.0f;
+
     void fillProperties();
-    void calcNewBasePoint();
+    void load3DModels();
+    void applyOffsets();
 
     virtual void serialize();
 };
