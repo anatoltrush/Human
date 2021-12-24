@@ -17,6 +17,7 @@ int man::AbstractSkeleton::loadFromJson(const Config &config)
 {
     QString pathToEntityRel = config.pathsToSkeletons[this->name];
     QString pathToEntityAbs = config.pathApplication + "/" + pathToEntityRel;
+    pathToEntityAbs.replace("\\", "/");
 
     QFile jsonSkeletonFile(pathToEntityAbs);
     if (!jsonSkeletonFile.open(QIODevice::ReadOnly)) return statusFileNotFound;
@@ -29,6 +30,7 @@ int man::AbstractSkeleton::loadFromJson(const Config &config)
     QString pathToModelsRel = jsonSkeletonObject[jsonFolderPathModels].toString();
     if(pathToModelsRel.isEmpty()) return statusPathIsEmpty;
     QString pathToModelsDirAbs = QCoreApplication::applicationDirPath() + "/" + pathToModelsRel;
+    pathToModelsDirAbs.replace("\\", "/");
 
     // DIR
     QDir dirModels(pathToModelsDirAbs);
