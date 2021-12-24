@@ -6,6 +6,7 @@
 #include "Config.h"
 #include "AbstractBone.h"
 #include "CyberBone.h"
+#include "StlReader.h"
 
 namespace man{
 
@@ -20,6 +21,8 @@ public:
     QMap<QString, AbstractBone*>bones;
 
     bool isConstructDone = false;
+
+    StlReader stlReader;
 
     virtual int loadFromJson(const Config& config);
     virtual int construct();

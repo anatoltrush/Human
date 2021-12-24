@@ -1,8 +1,6 @@
 #ifndef PRIMITIVES_H
 #define PRIMITIVES_H
 
-#endif // PRIMITIVES_H
-
 namespace man{
 
 struct Point3F
@@ -16,3 +14,5 @@ struct Point3F
 };
 
 }
+
+#endif // PRIMITIVES_H
