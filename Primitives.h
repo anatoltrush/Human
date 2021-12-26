@@ -32,14 +32,12 @@ struct StlObject
     StlObject() {}
 
     QString objectName;
-    uint32_t numTriangles = 0;
 
     std::vector<Triangle> triangles;
 
     void clear()
     {
         objectName = "";
-        numTriangles = 0;
         triangles.clear();
     }
 };

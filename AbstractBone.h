@@ -28,8 +28,8 @@ public:
 
     StlObject stlObject;
 
-    Point3F offset;
-    float rotated = 0.0f;
+    Point3F startOffset;
+    float startRotation = 0.0f;
 
     float volume = 0.0f;
 

@@ -21,9 +21,9 @@ void man::AbstractBone::fillProperties()
     }
     // offsets
     QJsonObject anchorPoint = boneJsonObject[jsonFieldAnchor].toObject();
-    offset.x = anchorPoint["x"].toDouble();
-    offset.y = anchorPoint["y"].toDouble();
-    offset.z = anchorPoint["z"].toDouble();
+    startOffset.x = anchorPoint["x"].toDouble();
+    startOffset.y = anchorPoint["y"].toDouble();
+    startOffset.z = anchorPoint["z"].toDouble();
 }
 
 void man::AbstractBone::applyRotation()

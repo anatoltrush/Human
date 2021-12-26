@@ -18,5 +18,6 @@
 			"name": "HumanNerves",
 			"path": "Nerves/HumanNerves/HumanNerves.json"
 		}
-	]
+	],
+	"loadFrom": "file"
 }
