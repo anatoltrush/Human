@@ -3,6 +3,7 @@
 man::CyberBone::CyberBone()
 {
     isHuman = false;
+    material = Material::Plastic;
 }
 
 man::CyberBone::CyberBone(const QString & name, const QString &pathRel){

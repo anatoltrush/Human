@@ -18,6 +18,7 @@ public:
     QString pathTo3DModelAbs;
 
     bool isHuman = true;
+    Material material = Material::Plastic;
 
     std::vector<QString> childrenStr;
     std::vector<AbstractBone*> childrenPtr;
@@ -25,12 +26,15 @@ public:
 
     QJsonObject boneJsonObject;
 
-    Point3F ptOffset;
+    StlObject stlObject;
+
+    Point3F offset;
+    float rotated = 0.0f;
 
     float volume = 0.0f;
 
     void fillProperties();
-    void load3DModels();
+    void applyRotation();
     void applyOffsets();
 
     virtual void serialize();

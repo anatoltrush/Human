@@ -1,6 +1,10 @@
 #ifndef PRIMITIVES_H
 #define PRIMITIVES_H
 
+#include <vector>
+
+#include <QString>
+
 namespace man{
 
 struct Point3F
@@ -11,6 +15,33 @@ struct Point3F
     float x = 0.0f;
     float y = 0.0f;
     float z = 0.0f;
+};
+
+typedef Point3F Vertex;
+
+struct Triangle
+{
+    Triangle() {}
+
+    Vertex vertex[3];
+    Vertex normal;
+};
+
+struct StlObject
+{
+    StlObject() {}
+
+    QString objectName;
+    uint32_t numTriangles = 0;
+
+    std::vector<Triangle> triangles;
+
+    void clear()
+    {
+        objectName = "";
+        numTriangles = 0;
+        triangles.clear();
+    }
 };
 
 }

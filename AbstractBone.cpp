@@ -21,22 +21,22 @@ void man::AbstractBone::fillProperties()
     }
     // offsets
     QJsonObject anchorPoint = boneJsonObject[jsonFieldAnchor].toObject();
-    ptOffset.x = anchorPoint["x"].toDouble();
-    ptOffset.y = anchorPoint["y"].toDouble();
-    ptOffset.z = anchorPoint["z"].toDouble();
+    offset.x = anchorPoint["x"].toDouble();
+    offset.y = anchorPoint["y"].toDouble();
+    offset.z = anchorPoint["z"].toDouble();
 }
 
-void man::AbstractBone::load3DModels()
+void man::AbstractBone::applyRotation()
 {
-    std::cout << "load3DModels " <<  name.toStdString() << std::endl; // NOTE: delete
+    //std::cout << "applyRotation " <<  name.toStdString() << std::endl; // NOTE: delete
 }
 
 void man::AbstractBone::applyOffsets()
 {
-    std::cout << "applyOffsets " <<  name.toStdString() << std::endl; // NOTE: delete
+    //std::cout << "applyOffsets " <<  name.toStdString() << std::endl; // NOTE: delete
 }
 
 void man::AbstractBone::serialize()
 {
-    std::cout << "Serialize AbsBone: " <<  name.toStdString() << std::endl; // NOTE: delete
+    //std::cout << "Serialize AbsBone: " <<  name.toStdString() << std::endl; // NOTE: delete
 }

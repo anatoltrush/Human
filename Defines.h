@@ -12,6 +12,8 @@
 #include <QJsonDocument>
 #include <QCoreApplication>
 
+namespace man{
+
 // --- ERRORS ---
 enum Status{
     statusOk                = 0,
@@ -22,11 +24,21 @@ enum Status{
     statusBoneNotFound      = -3,
 
     statusDirIsEmpty        = -4,
-    statusPathIsEmpty       = -5,
-    statusJsonListIsEmpty   = -6,
-    statusBonesListIsEmpty  = -7,
+    statusFileIsEmpty       = -5,
+    statusPathIsEmpty       = -6,
+    statusJsonListIsEmpty   = -7,
+    statusBonesListIsEmpty  = -8,
 
-    statusNotFinished       = -8
+    statusNotFinished       = -9,
+    statusBadFileFormat     = 10
 };
+
+enum Material{
+    HumanTissue,
+    Plastic,
+    Metal
+};
+
+}
 
 #endif // DEFINES_H

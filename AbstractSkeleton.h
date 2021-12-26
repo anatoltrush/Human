@@ -6,7 +6,8 @@
 #include "Config.h"
 #include "AbstractBone.h"
 #include "CyberBone.h"
-#include "StlReader.h"
+#include "HumanBone.h"
+#include "StlHandler.h"
 
 namespace man{
 
@@ -22,9 +23,9 @@ public:
 
     bool isConstructDone = false;
 
-    StlReader stlReader;
+    StlHandler stlReader;
 
-    virtual int loadFromJson(const Config& config);
+    virtual int loadFromJson(const Config& config, bool isHuman);
     virtual int construct();
 };
 

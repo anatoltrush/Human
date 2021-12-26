@@ -3,6 +3,7 @@
 man::HumanBone::HumanBone()
 {
     isHuman = true;
+    material = Material::HumanTissue;
 }
 
 man::HumanBone::HumanBone(const QString & name, const QString &pathRel){

@@ -14,7 +14,7 @@ SOURCES += \
         Human.cpp \
         HumanBone.cpp \
         HumanSkeleton.cpp \
-        StlReader.cpp \
+        StlHandler.cpp \
         main.cpp \
         mainwindow.cpp
 
@@ -32,7 +32,7 @@ HEADERS += \
     HumanBone.h \
     HumanSkeleton.h \
     Primitives.h \
-    StlReader.h \
+    StlHandler.h \
     mainwindow.h
 
 FORMS += \

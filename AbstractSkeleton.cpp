@@ -13,7 +13,7 @@ man::AbstractSkeleton::~AbstractSkeleton()
     std::cout << "-*-*-*-Delete AbsSkel-*-*-*-" <<  name.toStdString() << std::endl; // NOTE: delete
 }
 
-int man::AbstractSkeleton::loadFromJson(const Config &config)
+int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
 {
     QString pathToEntityRel = config.pathsToSkeletons[this->name];
     QString pathToEntityAbs = config.pathApplication + "/" + pathToEntityRel;
@@ -52,9 +52,13 @@ int man::AbstractSkeleton::loadFromJson(const Config &config)
         QJsonObject jsonBoneObject = jsonBoneDocument.object();
         QString boneName = jsonBoneObject.value(jsonFieldName).toString();
 
-        CyberBone* cyberBone = new CyberBone(boneName, dirModels.path());
-        cyberBone->boneJsonObject = jsonBoneObject;
-        bones.insert(boneName, cyberBone);
+        AbstractBone* abstractBone;
+        if(isHuman)
+            abstractBone = new HumanBone(boneName, dirModels.path());
+        else
+            abstractBone = new CyberBone(boneName, dirModels.path());
+        abstractBone->boneJsonObject = jsonBoneObject;
+        bones.insert(boneName, abstractBone);
     }
 
     return statusOk;
@@ -66,9 +70,10 @@ int man::AbstractSkeleton::construct()
     // -----
     QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
-        i.value()->fillProperties();
-        i.value()->load3DModels();
-        i.value()->applyOffsets();
+        i.value()->fillProperties(); // 1
+        int res3DLoad = stlReader.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject); // 2
+        i.value()->applyRotation(); // 3
+        i.value()->applyOffsets(); //4
     }
 
     // ChildrenPts
