@@ -4,35 +4,35 @@ CONFIG +=  c++14
 QT     +=  core gui widgets
 
 SOURCES += \
-        AbstractBone.cpp \
-        AbstractHuman.cpp \
-        AbstractSkeleton.cpp \
-        Config.cpp \
-        CyberBone.cpp \
-        CyberSkeleton.cpp \
-        Cyborg.cpp \
-        Human.cpp \
-        HumanBone.cpp \
-        HumanSkeleton.cpp \
-        StlHandler.cpp \
+        Algorithms/StlHandler.cpp \
+        Config/Config.cpp \
+        Entities/AbstractBone.cpp \
+        Entities/AbstractHuman.cpp \
+        Entities/AbstractSkeleton.cpp \
+        Entities/CyberBone.cpp \
+        Entities/CyberSkeleton.cpp \
+        Entities/Cyborg.cpp \
+        Entities/Human.cpp \
+        Entities/HumanBone.cpp \
+        Entities/HumanSkeleton.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
-    AbstractBone.h \
-    AbstractHuman.h \
-    AbstractSkeleton.h \
-    Config.h \
-    ConfigDefines.h \
-    CyberBone.h \
-    CyberSkeleton.h \
-    Cyborg.h \
-    Defines.h \
-    Human.h \
-    HumanBone.h \
-    HumanSkeleton.h \
-    Primitives.h \
-    StlHandler.h \
+    Algorithms/StlHandler.h \
+    Config/Config.h \
+    Config/ConfigDefines.h \
+    Config/Defines.h \
+    Entities/AbstractBone.h \
+    Entities/AbstractHuman.h \
+    Entities/AbstractSkeleton.h \
+    Entities/CyberBone.h \
+    Entities/CyberSkeleton.h \
+    Entities/Cyborg.h \
+    Entities/Human.h \
+    Entities/HumanBone.h \
+    Entities/HumanSkeleton.h \
+    Entities/Primitives.h \
     mainwindow.h
 
 FORMS += \

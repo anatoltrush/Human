@@ -4,7 +4,7 @@
 #include <QTimer>
 #include <QMainWindow>
 
-#include "Cyborg.h"
+#include "Entities/Cyborg.h"
 
 namespace Ui {
 class MainWindow;

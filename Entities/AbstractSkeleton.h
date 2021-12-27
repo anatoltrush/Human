@@ -3,11 +3,11 @@
 
 #include <QString>
 
-#include "Config.h"
+#include "Config/Config.h"
 #include "AbstractBone.h"
 #include "CyberBone.h"
 #include "HumanBone.h"
-#include "StlHandler.h"
+#include "Algorithms/StlHandler.h"
 
 namespace man{
 

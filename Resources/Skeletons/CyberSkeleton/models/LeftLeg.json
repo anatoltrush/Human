@@ -1,0 +1,12 @@
+{
+	"name": "LeftLeg",
+	"model3D": "LeftLeg.stl",
+	"anchorPoint":{
+		"x": -15.0,
+		"y": 0.0,
+		"z": -80.0
+	},
+	"children":[
+
+	]
+}

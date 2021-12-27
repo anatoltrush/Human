@@ -2,21 +2,21 @@
 	"skeletons":[
 		{
 			"name": "CyberSkeleton",
-			"path": "Skeletons/CyberSkeleton/CyberSkeleton.json"
+			"path": "Resources/Skeletons/CyberSkeleton/CyberSkeleton.json"
 		},
 		{
 			"name": "HumanSkeleton",
-			"path": "Skeletons/HumanSkeleton/HumanSkeleton.json"
+			"path": "Resources/Skeletons/HumanSkeleton/HumanSkeleton.json"
 		}
 	],
 	"nerves":[
 		{
 			"name": "CyberNerves",
-			"path": "Nerves/CyberNerves/CyberNerves.json"
+			"path": "Resources/Nerves/CyberNerves/CyberNerves.json"
 		},
 		{
 			"name": "HumanNerves",
-			"path": "Nerves/HumanNerves/HumanNerves.json"
+			"path": "Resources/Nerves/HumanNerves/HumanNerves.json"
 		}
 	],
 	"loadFrom": "file"

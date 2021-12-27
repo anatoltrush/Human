@@ -4,8 +4,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "Defines.h"
-#include "Primitives.h"
+#include "Config/Defines.h"
+#include "Entities/Primitives.h"
 
 namespace man{
 

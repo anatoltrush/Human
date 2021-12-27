@@ -1,9 +1,9 @@
 #ifndef ABSTRACTBONE_H
 #define ABSTRACTBONE_H
 
-#include "Defines.h"
-#include "Primitives.h"
-#include "ConfigDefines.h"
+#include "Config/Defines.h"
+#include "Config/ConfigDefines.h"
+#include "Entities/Primitives.h"
 
 namespace man{
 

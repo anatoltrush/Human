@@ -37,7 +37,7 @@ int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
     if (!dirModels.exists()) return statusDirNotFound;
     if (dirModels.isEmpty()) return statusDirIsEmpty;
     QStringList filters;
-    filters << "*.json" ;
+    filters << "*.json" << "*.JSON";
     dirModels.setNameFilters(filters);
     QFileInfoList listJsonModels = dirModels.entryInfoList();
     if (listJsonModels.isEmpty()) return statusJsonListIsEmpty;

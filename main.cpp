@@ -5,9 +5,9 @@
 
 using namespace std;
 
-#include "Human.h"
-#include "Cyborg.h"
-#include "Config.h"
+#include "Entities/Human.h"
+#include "Entities/Cyborg.h"
+#include "Config/Config.h"
 
 int main(int argc, char *argv[])
 {

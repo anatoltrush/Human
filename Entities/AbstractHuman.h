@@ -4,7 +4,7 @@
 #include <QUuid>
 #include <QDateTime>
 
-#include "Config.h"
+#include "Config/Config.h"
 #include "AbstractSkeleton.h"
 
 namespace man{
