@@ -21,15 +21,28 @@ int man::StlHandler::parseFromFile(const QString &pathToFile, StlObject &object)
 
     if(fileStrings.size() == 0) return statusFileIsEmpty;
 
-    if(fileStrings[0].find(keyWSolid + " ") < fileStrings[0].size())
-        object.objectName = QString::fromStdString(fileStrings[0].erase(0, keyWSolid.size() + 1));
+    if(fileStrings[0].find(keyWSolid + " ") < fileStrings[0].size()){
+        std::string stlName = fileStrings[0];
+        object.objectName = QString::fromStdString(stlName.erase(0, keyWSolid.size() + 1));
+    }
     else
         return statusBadFileFormat;
     // -----
     int stringsInBlock = 7; // NOTE: config stringsInBlock
-    fileStrings.erase(fileStrings.begin());
-    fileStrings.erase(fileStrings.end());
-    if(fileStrings.size() % stringsInBlock != 0) return statusBadFileFormat;
+    for(size_t i = 0; i < fileStrings.size(); i++){
+        if(fileStrings[i].find(keyWSolid + " ") < fileStrings[0].size()){
+            fileStrings.erase(fileStrings.begin() + i);
+            i--;
+            continue;
+        }
+        if(fileStrings[i].size() == 0){
+            fileStrings.erase(fileStrings.begin() + i);
+            i--;
+            continue;
+        }
+    }
+    if(fileStrings.size() % stringsInBlock != 0)
+        return statusBadFileFormat;
     // -----
     std::vector<std::vector<std::string>> blocks;
     int numBlocks = fileStrings.size() / stringsInBlock;
