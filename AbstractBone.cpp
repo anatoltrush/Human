@@ -21,19 +21,25 @@ void man::AbstractBone::fillProperties()
     }
     // offsets
     QJsonObject anchorPoint = boneJsonObject[jsonFieldAnchor].toObject();
-    startOffset.x = anchorPoint["x"].toDouble();
-    startOffset.y = anchorPoint["y"].toDouble();
-    startOffset.z = anchorPoint["z"].toDouble();
+    offsetBase.x = anchorPoint["x"].toDouble();
+    offsetBase.y = anchorPoint["y"].toDouble();
+    offsetBase.z = anchorPoint["z"].toDouble();
 }
 
 void man::AbstractBone::applyRotation()
 {
-    //std::cout << "applyRotation " <<  name.toStdString() << std::endl; // NOTE: delete
+
 }
 
 void man::AbstractBone::applyOffsets()
 {
-    //std::cout << "applyOffsets " <<  name.toStdString() << std::endl; // NOTE: delete
+    for(auto &tr : stlObject.triangles){
+        for(int i = 0; i < 3; i++){
+            tr.vertex[i].x += offsetBase.x;
+            tr.vertex[i].y += offsetBase.y;
+            tr.vertex[i].z += offsetBase.z;
+        }
+    }
 }
 
 void man::AbstractBone::serialize()
