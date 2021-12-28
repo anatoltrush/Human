@@ -18,7 +18,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::setHuman(man::AbstractHuman *absHhuman)
+{
+    ui->widgetGL->humanAbs = absHhuman;
+}
+
 void MainWindow::updUi()
 {
-    ui->l_triangles->setText("Tri: " + QString::number(cyborg->skeleton->bones["Skull"]->stlObject.triangles.size()));
+    //ui->l_triangles->setText("Tri: " + QString::number(humanAbs->skeleton->bones["Skull"]->stlObject.triangles.size()));
 }

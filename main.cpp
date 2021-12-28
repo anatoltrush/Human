@@ -28,7 +28,9 @@ int main(int argc, char *argv[])
     //cout << "Size cyberbone: " + to_string(sizeof(cyborg.skeleton->bones["Skull"])) << endl;
     cout << "AbsBone: " + to_string(sizeof(man::AbstractBone)) << endl;
 
-    w.cyborg = &cyborg;
+    if(loadCybSkel == 0){
+       w.setHuman(&cyborg);
+    }
 
     w.show();
     return a.exec();

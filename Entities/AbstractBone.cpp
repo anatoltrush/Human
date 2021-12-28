@@ -58,7 +58,7 @@ void man::AbstractBone::setColor(int B, int G, int R)
     color.z = B / 255.0;
 }
 
-void man::AbstractBone::drawGLtriangle()
+void man::AbstractBone::drawObjectGL() const
 {
     for(size_t i = 0; i < stlObject.triangles.size(); i++){
         glBegin(GL_TRIANGLES);

@@ -4,7 +4,7 @@
 #include <QTimer>
 #include <QMainWindow>
 
-#include "Entities/Cyborg.h"
+#include "Entities/AbstractHuman.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +18,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    man::Cyborg* cyborg = nullptr;
+    void setHuman(man::AbstractHuman* absHhuman);
 
 private:
     Ui::MainWindow *ui;

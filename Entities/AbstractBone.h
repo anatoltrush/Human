@@ -5,11 +5,12 @@
 
 #include "Config/Defines.h"
 #include "Config/ConfigDefines.h"
+#include "IOpenGL.h"
 #include "Entities/Primitives.h"
 
 namespace man{
 
-class AbstractBone
+class AbstractBone : public IOpenGL
 {
 public:
     AbstractBone();
@@ -41,7 +42,7 @@ public:
     void applyOffsets();
 
     void setColor(int B, int G, int R);
-    void drawGLtriangle();
+    virtual void drawObjectGL() const override;
     virtual void serialize();
 };
 

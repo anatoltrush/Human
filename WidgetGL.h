@@ -1,9 +1,10 @@
 #ifndef WIDGETGL_H
 #define WIDGETGL_H
 
+#include <QtGui>
 #include <QOpenGLWidget>
 
-#include "Entities/Primitives.h"
+#include "Entities/AbstractHuman.h"
 
 class WidgetGL : public QOpenGLWidget
 {
@@ -12,6 +13,10 @@ public:
 
     man::Point3F rotation;
     man::Color colorAxis;
+    float scale = 1.0f;
+    QPoint mousePos; // переменная для запоминания позиции нажатия мышки
+
+    man::AbstractHuman* humanAbs = nullptr;
 
     void drawAxis();
 

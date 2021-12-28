@@ -1,10 +1,11 @@
-TARGET = Human
+TARGET  = Human
 TEMPLATE = app
-CONFIG +=  c++14
-QT     +=  core gui widgets
+CONFIG  +=  c++14
+QT      +=  core gui widgets
 
 win32: {
-
+QT      += openglwidgets
+LIBS    += -lglu32 -lopengl32
 }
 
 unix:{
@@ -41,6 +42,7 @@ HEADERS += \
     Entities/Human.h \
     Entities/HumanBone.h \
     Entities/HumanSkeleton.h \
+    Entities/IOpenGL.h \
     Entities/Primitives.h \
     WidgetGL.h \
     mainwindow.h
