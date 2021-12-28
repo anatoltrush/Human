@@ -19,6 +19,8 @@ struct Point3F
 
 typedef Point3F Vertex;
 
+typedef Point3F Color;
+
 struct Triangle
 {
     Triangle() {}

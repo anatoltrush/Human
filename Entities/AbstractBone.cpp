@@ -2,7 +2,9 @@
 
 man::AbstractBone::AbstractBone()
 {
-
+    color.x = 0.0f;
+    color.y = 0.75f;
+    color.z = 1.0f;
 }
 
 man::AbstractBone::~AbstractBone()
@@ -39,6 +41,32 @@ void man::AbstractBone::applyOffsets()
             tr.vertex[i].y += offsetBase.y;
             tr.vertex[i].z += offsetBase.z;
         }
+    }
+}
+
+void man::AbstractBone::setColor(int B, int G, int R)
+{
+    if(B > 255) B = 255;
+    if(B < 0) B = 0;
+    if(G > 255) G = 255;
+    if(G < 0) G = 0;
+    if(R > 255) R = 255;
+    if(R < 0) R = 0;
+
+    color.x = R / 255.0;
+    color.y = G / 255.0;
+    color.z = B / 255.0;
+}
+
+void man::AbstractBone::drawGLtriangle()
+{
+    for(size_t i = 0; i < stlObject.triangles.size(); i++){
+        glBegin(GL_TRIANGLES);
+        glColor3f(color.x, color.y, color.z);
+        glVertex3f(stlObject.triangles[i].vertex[0].x, stlObject.triangles[i].vertex[0].y, stlObject.triangles[i].vertex[0].z);
+        glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
+        glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);
+        glEnd();
     }
 }
 

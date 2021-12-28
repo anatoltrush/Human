@@ -1,6 +1,8 @@
 #ifndef ABSTRACTBONE_H
 #define ABSTRACTBONE_H
 
+#include <GL/gl.h>
+
 #include "Config/Defines.h"
 #include "Config/ConfigDefines.h"
 #include "Entities/Primitives.h"
@@ -28,6 +30,7 @@ public:
 
     StlObject stlObject;
 
+    Color color;
     Point3F offsetBase;
     float rotationBase = 0.0f;
 
@@ -37,6 +40,8 @@ public:
     void applyRotation();
     void applyOffsets();
 
+    void setColor(int B, int G, int R);
+    void drawGLtriangle();
     virtual void serialize();
 };
 

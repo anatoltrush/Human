@@ -3,6 +3,14 @@ TEMPLATE = app
 CONFIG +=  c++14
 QT     +=  core gui widgets
 
+win32: {
+
+}
+
+unix:{
+
+}
+
 SOURCES += \
         Algorithms/StlHandler.cpp \
         Config/Config.cpp \
@@ -15,6 +23,7 @@ SOURCES += \
         Entities/Human.cpp \
         Entities/HumanBone.cpp \
         Entities/HumanSkeleton.cpp \
+        WidgetGL.cpp \
         main.cpp \
         mainwindow.cpp
 
@@ -33,6 +42,7 @@ HEADERS += \
     Entities/HumanBone.h \
     Entities/HumanSkeleton.h \
     Entities/Primitives.h \
+    WidgetGL.h \
     mainwindow.h
 
 FORMS += \
