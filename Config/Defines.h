@@ -16,27 +16,32 @@ namespace man{
 
 // --- ERRORS ---
 enum Status{
-    statusOk                = 0,
+    StatusOk                = 0,
 
-    statusFileNotFound      = -1,
-    statusDirNotFound       = -2,
+    StatusFileNotFound      = -1,
+    StatusDirNotFound       = -2,
 
-    statusBoneNotFound      = -3,
+    StatusBoneNotFound      = -3,
 
-    statusDirIsEmpty        = -4,
-    statusFileIsEmpty       = -5,
-    statusPathIsEmpty       = -6,
-    statusJsonListIsEmpty   = -7,
-    statusBonesListIsEmpty  = -8,
+    StatusDirIsEmpty        = -4,
+    StatusFileIsEmpty       = -5,
+    StatusPathIsEmpty       = -6,
+    StatusJsonListIsEmpty   = -7,
+    StatusBonesListIsEmpty  = -8,
 
-    statusNotFinished       = -9,
-    statusBadFileFormat     = 10
+    StatusNotFinished       = -9,
+    StatusBadFileFormat     = 10
 };
 
 enum Material{
     HumanTissue,
     Plastic,
     Metal
+};
+
+enum StlFormat{
+    StlASCII        = 1,
+    StlBinary       = 2
 };
 
 }

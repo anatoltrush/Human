@@ -31,9 +31,9 @@ void WidgetGL::initializeGL()
 {
     glClearColor(0.5f, 0.55f, 0.6f, 0.3f); // заполняем экран цветом
     glEnable(GL_DEPTH_TEST); // задаем глубину проверки пикселей
-    glEnable(GL_CULL_FACE); // говорим, что будем строить только внешние поверхности
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // фигуры будут закрашены с обеих сторон
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // видны только ребра
+    //glEnable(GL_CULL_FACE); // говорим, что будем строить только внешние поверхности
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // фигуры будут закрашены с обеих сторон
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // видны только ребра
 }
 
 void WidgetGL::resizeGL(int w, int h)
@@ -72,8 +72,8 @@ void WidgetGL::mousePressEvent(QMouseEvent *pe)
 
 void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
 {
-    rotation.x -= (180/scale*(GLfloat)(pe->pos/*ition*/().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
-    rotation.z -= (180/scale*(GLfloat)(pe->pos/*ition*/().x() - mousePos.x())/width()) * scale;
+    rotation.x -= (180/scale*(GLfloat)(pe->position().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
+    rotation.z -= (180/scale*(GLfloat)(pe->position().x() - mousePos.x())/width()) * scale;
     mousePos = pe->pos();
 
     update();

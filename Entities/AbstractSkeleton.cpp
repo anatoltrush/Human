@@ -20,7 +20,7 @@ int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
     pathToEntityAbs.replace("\\", "/");
 
     QFile jsonSkeletonFile(pathToEntityAbs);
-    if (!jsonSkeletonFile.open(QIODevice::ReadOnly)) return statusFileNotFound;
+    if (!jsonSkeletonFile.open(QIODevice::ReadOnly)) return StatusFileNotFound;
 
     QByteArray jsonSkeletonData = jsonSkeletonFile.readAll();
     QJsonDocument jsonSkeletonDocument(QJsonDocument::fromJson(jsonSkeletonData));
@@ -28,24 +28,24 @@ int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
 
     // LOAD JSONS BONES
     QString pathToModelsRel = jsonSkeletonObject[jsonFolderPathModels].toString();
-    if(pathToModelsRel.isEmpty()) return statusPathIsEmpty;
+    if(pathToModelsRel.isEmpty()) return StatusPathIsEmpty;
     QString pathToModelsDirAbs = QCoreApplication::applicationDirPath() + "/" + pathToModelsRel;
     pathToModelsDirAbs.replace("\\", "/");
 
     // DIR
     QDir dirModels(pathToModelsDirAbs);
-    if (!dirModels.exists()) return statusDirNotFound;
-    if (dirModels.isEmpty()) return statusDirIsEmpty;
+    if (!dirModels.exists()) return StatusDirNotFound;
+    if (dirModels.isEmpty()) return StatusDirIsEmpty;
     QStringList filters;
     filters << "*.json" << "*.JSON";
     dirModels.setNameFilters(filters);
     QFileInfoList listJsonModels = dirModels.entryInfoList();
-    if (listJsonModels.isEmpty()) return statusJsonListIsEmpty;
+    if (listJsonModels.isEmpty()) return StatusJsonListIsEmpty;
 
     // Fill JSON
     for(const auto &jsonModel : listJsonModels){
         QFile jsonBoneFile(jsonModel.absoluteFilePath());
-        if (!jsonBoneFile.open(QIODevice::ReadOnly)) return statusBoneNotFound;
+        if (!jsonBoneFile.open(QIODevice::ReadOnly)) return StatusBoneNotFound;
 
         QByteArray jsonBoneData = jsonBoneFile.readAll();
         QJsonDocument jsonBoneDocument(QJsonDocument::fromJson(jsonBoneData));
@@ -61,12 +61,12 @@ int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
         bones.insert(boneName, abstractBone);
     }
 
-    return statusOk;
+    return StatusOk;
 }
 
 int man::AbstractSkeleton::construct()
 {
-    if(bones.isEmpty()) return statusBonesListIsEmpty;
+    if(bones.isEmpty()) return StatusBonesListIsEmpty;
     // -----
     QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
@@ -93,5 +93,5 @@ int man::AbstractSkeleton::construct()
         }
     }
     isConstructDone = true;
-    return statusOk;
+    return StatusOk;
 }

@@ -27,6 +27,7 @@ struct Triangle
 
     Vertex vertex[3];
     Vertex normal;
+    uint16_t attrByteCount = 0;
 };
 
 struct StlObject

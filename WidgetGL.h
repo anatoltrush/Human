@@ -13,7 +13,7 @@ public:
 
     man::Point3F rotation;
     man::Color colorAxis;
-    float scale = 1.0f;
+    float scale = 0.005f;
     QPoint mousePos; // переменная для запоминания позиции нажатия мышки
 
     man::AbstractHuman* humanAbs = nullptr;

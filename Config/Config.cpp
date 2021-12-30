@@ -11,7 +11,7 @@ int man::Config::loadConfigData()
 
     QFile jsonConfigFile(pathConfigFile);
     if (!jsonConfigFile.open(QIODevice::ReadOnly))
-        return statusFileNotFound;
+        return StatusFileNotFound;
 
     QByteArray jsonConfigData = jsonConfigFile.readAll();
     QJsonDocument jsonConfigDocument(QJsonDocument::fromJson(jsonConfigData));
@@ -23,5 +23,5 @@ int man::Config::loadConfigData()
         QString path = skelPths.toObject().value(jsonFieldPath).toString();
         pathsToSkeletons.insert(name, path);
     }
-    return statusOk;
+    return StatusOk;
 }
