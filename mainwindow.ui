@@ -14,33 +14,42 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="l_triangles">
+   <widget class="QSplitter" name="splitter_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>670</y>
-      <width>261</width>
-      <height>51</height>
+      <x>20</x>
+      <y>20</y>
+      <width>981</width>
+      <height>721</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-     </font>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
     </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="WidgetGL" name="widgetGL" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>1000</width>
-      <height>660</height>
-     </rect>
-    </property>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="WidgetGL" name="widgetGL" native="true"/>
+     <widget class="QListView" name="listView">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="l_triangles">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
