@@ -21,6 +21,12 @@ int man::StlHandler::parseFromFile(const QString &pathToFile, StlObject &object)
     }
 }
 
+void man::StlHandler::calcAddProps(StlObject &object)
+{
+    calcSquare(object);
+    calcVolume(object);
+}
+
 int man::StlHandler::isStlASCII(const QString &pathToFile)
 {
     std::ifstream inputFileData(pathToFile.toStdString().data());
@@ -165,4 +171,31 @@ int man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlObject &o
     }
 
     return StatusOk;
+}
+
+void man::StlHandler::calcSquare(StlObject &object)
+{
+    object.square = 0.0f;
+    for(const auto &tri : object.triangles){
+        float ab = distance(tri.vertex[0], tri.vertex[1]);
+        float bc = distance(tri.vertex[1], tri.vertex[2]);
+        float ca = distance(tri.vertex[2], tri.vertex[0]);
+
+        float per = (ab + bc + ca) / 2;
+
+        float sqrTri = sqrt(per * (per - ab) * (per - bc) * (per - ca));
+        object.square += sqrTri;
+    }
+}
+
+void man::StlHandler::calcVolume(StlObject &object)
+{
+
+}
+
+float man::StlHandler::distance(const Point3F &ptA, const Point3F &ptB)
+{
+    return sqrt((ptB.x - ptA.x) * (ptB.x - ptA.x)
+                + (ptB.y - ptA.y) * (ptB.y - ptA.y)
+                + (ptB.z - ptA.z) * (ptB.z - ptA.z));
 }

@@ -15,6 +15,7 @@ public:
     StlHandler();
 
     int parseFromFile(const QString &pathToFile, StlObject &object);
+    void calcAddProps(StlObject &object);
 
 private:
     const std::string keyWSolid          = "solid";
@@ -27,6 +28,11 @@ private:
     void obtainFromBlocks(std::string &rawString, const std::string &keyWord, Point3F &data);
 
     int parseFromFileBinary(const QString &pathToFile, StlObject &object);
+
+    void calcSquare(StlObject &object);
+    void calcVolume(StlObject &object);
+
+    float distance(const Point3F &ptA, const Point3F &ptB);
 };
 
 }

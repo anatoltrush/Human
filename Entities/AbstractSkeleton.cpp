@@ -72,6 +72,7 @@ int man::AbstractSkeleton::construct()
     for (i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties(); // 1
         int res3DLoad = stlReader.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject); // 2
+        stlReader.calcAddProps(i.value()->stlObject);
         i.value()->applyRotation(); // 3
         i.value()->applyOffsets(); //4
     }

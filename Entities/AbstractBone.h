@@ -35,9 +35,6 @@ public:
     Point3F offsetBase;
     float rotationBase = 0.0f;
 
-    float square = 0.0f;
-    float volume = 0.0f;
-
     void fillProperties();
     void applyRotation();
     void applyOffsets();

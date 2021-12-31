@@ -38,6 +38,9 @@ struct StlObject
 
     std::vector<Triangle> triangles;
 
+    float square = 0.0f;
+    float volume = 0.0f;
+
     void clear()
     {
         objectName = "";
