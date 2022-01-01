@@ -59,8 +59,12 @@ void WidgetGL::paintGL()
     drawAxis();
 
     // DRAW
-    if(humanAbs){
-        for(const auto &bone : humanAbs->skeleton->bones)
+    if(human){
+        for(const auto &bone : human->skeleton->bones)
+            bone->drawObjectGL();
+    }
+    if(cyborg){
+        for(const auto &bone : cyborg->skeleton->bones)
             bone->drawObjectGL();
     }
 }

@@ -18,7 +18,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void setHuman(man::AbstractHuman* absHhuman);
+    void setHuman(man::AbstractHuman* human);
+    void setCyborg(man::AbstractHuman* cyborg);
 
 private:
     Ui::MainWindow *ui;

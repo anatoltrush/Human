@@ -7,8 +7,9 @@ man::CyberBone::CyberBone()
 }
 
 man::CyberBone::CyberBone(const QString & name, const QString &pathRel){
-    this->name = name;
     isHuman = false;
+    material = Material::Plastic;
+    this->name = name;    
     pathTo3DModelRel = pathRel;
 }
 

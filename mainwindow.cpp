@@ -18,9 +18,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setHuman(man::AbstractHuman *absHhuman)
+void MainWindow::setHuman(man::AbstractHuman *human)
 {
-    ui->widgetGL->humanAbs = absHhuman;
+    ui->widgetGL->human = human;
+}
+
+void MainWindow::setCyborg(man::AbstractHuman *cyborg)
+{
+    ui->widgetGL->cyborg = cyborg;
 }
 
 void MainWindow::updUi()

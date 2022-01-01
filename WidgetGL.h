@@ -16,7 +16,8 @@ public:
     float scale = 0.005f;
     QPoint mousePos; // переменная для запоминания позиции нажатия мышки
 
-    man::AbstractHuman* humanAbs = nullptr;
+    man::AbstractHuman* human = nullptr;
+    man::AbstractHuman* cyborg = nullptr;
 
     void drawAxis();
 
