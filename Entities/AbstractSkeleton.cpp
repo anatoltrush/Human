@@ -68,7 +68,7 @@ int man::AbstractSkeleton::construct()
 {
     if(bones.isEmpty()) return StatusBonesListIsEmpty;
     // -----
-    QMap<QString, AbstractBone*>::iterator i;
+    /*QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties(); // 1
         int res3DLoad = stlReader.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject); // 2
@@ -81,18 +81,18 @@ int man::AbstractSkeleton::construct()
     QMap<QString, AbstractBone*>::iterator b;
     for (b = bones.begin(); b != bones.end(); b++){
         for(size_t is = 0; is < b.value()->childrenStr.size(); is++){
-            QString childName = b.value()->childrenStr[is];
+            QString childName = b.value()->childrenStr[is];*/
             /*AbstractBone* childPtr = bones[childName]; // Version with null pointers
             b.value()->childrenPtr.push_back(bones[childName]);
             if(childPtr)
                 bones[childName]->parentsPtr.push_back(b.value());*/
-            QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
+            /*QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
             if(mapFind != bones.end()){
                 b.value()->childrenPtr.push_back(bones[childName]);
                 bones[childName]->parentsPtr.push_back(b.value());
             }
         }
     }
-    isConstructDone = true;
+    isConstructDone = true;*/
     return StatusOk;
 }

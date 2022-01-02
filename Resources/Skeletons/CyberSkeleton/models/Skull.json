@@ -1,12 +1,26 @@
 {
 	"name": "Skull",
 	"model3D": "Skull.stl",
-	"anchorPoint":{
-		"x": 0.0,
-		"y": 0.0,
-		"z": 0.0
+	"rotation": {
+			"x": 0.0,
+			"y": 3.0,
+			"z": 10.0
 	},
-	"children":[
-		"Spine"
+	"parts":[
+		
+	],
+	"parent":{
+			"name": "na",
+			"x": 0.0,
+			"y": 0.0,
+			"z": 10.0
+	},
+	"children":[		
+		{
+			"name": "Spine",
+			"x": 0.0,
+			"y": 0.0,
+			"z": 0.0
+		}
 	]
 }

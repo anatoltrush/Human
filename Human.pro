@@ -18,6 +18,7 @@ SOURCES += \
         Entities/AbstractBone.cpp \
         Entities/AbstractHuman.cpp \
         Entities/AbstractSkeleton.cpp \
+        Entities/CutSurface.cpp \
         Entities/CyberBone.cpp \
         Entities/CyberSkeleton.cpp \
         Entities/Cyborg.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     Entities/AbstractBone.h \
     Entities/AbstractHuman.h \
     Entities/AbstractSkeleton.h \
+    Entities/CutSurface.h \
     Entities/CyberBone.h \
     Entities/CyberSkeleton.h \
     Entities/Cyborg.h \

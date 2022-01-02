@@ -44,18 +44,11 @@ void man::AbstractBone::applyOffsets()
     }
 }
 
-void man::AbstractBone::setColor(int B, int G, int R)
+void man::AbstractBone::setColor(uint8_t B, uint8_t G, uint8_t R)
 {
-    if(B > 255) B = 255;
-    if(B < 0) B = 0;
-    if(G > 255) G = 255;
-    if(G < 0) G = 0;
-    if(R > 255) R = 255;
-    if(R < 0) R = 0;
-
-    color.x = R / 255.0;
-    color.y = G / 255.0;
-    color.z = B / 255.0;
+    color.x = R / 255.0f;
+    color.y = G / 255.0f;
+    color.z = B / 255.0f;
 }
 
 void man::AbstractBone::drawObjectGL() const

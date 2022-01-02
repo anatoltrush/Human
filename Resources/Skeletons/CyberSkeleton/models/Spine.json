@@ -1,15 +1,44 @@
 {
 	"name": "Spine",
 	"model3D": "Spine.stl",
-	"anchorPoint":{
-		"x": 0.0,
-		"y": 0.0,
-		"z": 0.0
+	"rotation": {
+			"x": 0.0,
+			"y": 3.0,
+			"z": 10.0
+		},
+	"parts":[
+		
+	],
+	"parent":{
+			"name": "Skull",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -10.0
 	},
 	"children":[
-		"LeftHand",
-		"RightHand",
-		"LeftLeg",
-		"RightLeg"
+		{
+			"name": "LeftHand",
+			"x": -25.0,
+			"y": 3.0,
+			"z": -5.0
+		},
+		{
+			"name": "RightHand",
+			"x": 25.0,
+			"y": 3.0,
+			"z": -5.0
+		},
+		{
+			"name": "LeftLeg",
+			"x": -15.0,
+			"y": 0.0,
+			"z": -80.0
+		},
+		{
+			"name": "RightLeg",
+			"x": 15.0,
+			"y": 0.0,
+			"z": -80.0
+		}
 	]
 }

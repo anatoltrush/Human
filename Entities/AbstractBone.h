@@ -31,7 +31,6 @@ public:
 
     StlObject stlObject;
 
-    Color color;
     Point3F offsetBase;
     float rotationBase = 0.0f;
 
@@ -39,7 +38,7 @@ public:
     void applyRotation();
     void applyOffsets();
 
-    void setColor(int B, int G, int R);
+    virtual void setColor(uint8_t B, uint8_t G, uint8_t R) override;
     virtual void drawObjectGL() const override;
     virtual void serialize();
 };

@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
     int loadConf = config.loadConfigData();
 
     man::Human human;
-    int loadHumSkel = human.skeleton->loadFromJson(config, true);
-    int conHumSkel = human.skeleton->construct();
+    //int loadHumSkel = human.skeleton->loadFromJson(config, true);
+    //int conHumSkel = human.skeleton->construct();
     //cout << "Size human bone: " + to_string(sizeof(human)) << endl;
 
     man::Cyborg cyborg;
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     cout << "AbsBone: " + to_string(sizeof(man::AbstractBone)) << endl;
 
     if(loadCybSkel == 0){w.setCyborg(&cyborg);}
-    if(loadHumSkel == 0){w.setHuman(&human);}
+    //if(loadHumSkel == 0){w.setHuman(&human);}
 
     w.show();
     return a.exec();
