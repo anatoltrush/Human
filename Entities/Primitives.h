@@ -15,6 +15,14 @@ struct Point3F
     float x = 0.0f;
     float y = 0.0f;
     float z = 0.0f;
+
+    Point3F operator + (const Point3F &other){
+        Point3F retPoint;
+        retPoint.x = this->x + other.x;
+        retPoint.y = this->y + other.y;
+        retPoint.z = this->z + other.z;
+        return retPoint;
+    }
 };
 
 typedef Point3F Vertex;

@@ -22,15 +22,16 @@ enum Status{
     StatusDirNotFound       = -2,
 
     StatusBoneNotFound      = -3,
+    StatusBoneNotLoaded     = -4,
 
-    StatusDirIsEmpty        = -4,
-    StatusFileIsEmpty       = -5,
-    StatusPathIsEmpty       = -6,
-    StatusJsonListIsEmpty   = -7,
-    StatusBonesListIsEmpty  = -8,
+    StatusDirIsEmpty        = -5,
+    StatusFileIsEmpty       = -6,
+    StatusPathIsEmpty       = -7,
+    StatusJsonListIsEmpty   = -8,
+    StatusBonesListIsEmpty  = -9,
 
-    StatusNotFinished       = -9,
-    StatusBadFileFormat     = 10
+    StatusNotFinished       = -10,
+    StatusBadFileFormat     = -11
 };
 
 enum Material{

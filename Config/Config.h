@@ -16,7 +16,7 @@ public:
 
     QMap<QString, QString>pathsToSkeletons; // entity name / entity path
 
-    int loadConfigData();
+    Status loadConfigData();
 };
 
 }

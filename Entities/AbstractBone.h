@@ -23,23 +23,26 @@ public:
     bool isHuman = true;
     Material material = Material::Plastic;
 
-    std::vector<QString> childrenStr;
-    std::vector<AbstractBone*> childrenPtr;
-    std::vector<AbstractBone*> parentsPtr;
+    Point3F rotation;
+    Point3F parentOffsetPoint;
+    Point3F* basePoint = nullptr;
+    QString parentName = "na";
+    QMap<QString, Point3F> childrenPoints;
+
+    std::vector<AbstractBone*> parentsPointers;
+    std::vector<AbstractBone*> childrenPointers;
 
     QJsonObject boneJsonObject;
 
     StlObject stlObject;
 
-    Point3F offsetBase;
-    float rotationBase = 0.0f;
-
     void fillProperties();
     void applyRotation();
-    void applyOffsets();
+    void applyOffsets(const Point3F &offset);
 
     virtual void setColor(uint8_t B, uint8_t G, uint8_t R) override;
     virtual void drawObjectGL() const override;
+    void drawBasePoint() const;
     virtual void serialize();
 };
 

@@ -13,7 +13,7 @@ man::AbstractSkeleton::~AbstractSkeleton()
     std::cout << "-*-*-*-Delete AbsSkel-*-*-*-" <<  name.toStdString() << std::endl; // NOTE: delete
 }
 
-int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
+man::Status man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
 {
     QString pathToEntityRel = config.pathsToSkeletons[this->name];
     QString pathToEntityAbs = config.pathApplication + "/" + pathToEntityRel;
@@ -45,7 +45,8 @@ int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
     // Fill JSON
     for(const auto &jsonModel : listJsonModels){
         QFile jsonBoneFile(jsonModel.absoluteFilePath());
-        if (!jsonBoneFile.open(QIODevice::ReadOnly)) return StatusBoneNotFound;
+        if (!jsonBoneFile.open(QIODevice::ReadOnly))
+            return StatusBoneNotLoaded;
 
         QByteArray jsonBoneData = jsonBoneFile.readAll();
         QJsonDocument jsonBoneDocument(QJsonDocument::fromJson(jsonBoneData));
@@ -64,35 +65,62 @@ int man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
     return StatusOk;
 }
 
-int man::AbstractSkeleton::construct()
+man::Status man::AbstractSkeleton::construct()
 {
     if(bones.isEmpty()) return StatusBonesListIsEmpty;
     // -----
-    /*QMap<QString, AbstractBone*>::iterator i;
+    QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
-        i.value()->fillProperties(); // 1
-        int res3DLoad = stlReader.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject); // 2
+        i.value()->fillProperties();
+        int res3DLoad = stlReader.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
         stlReader.calcAddProps(i.value()->stlObject);
-        i.value()->applyRotation(); // 3
-        i.value()->applyOffsets(); //4
     }
 
-    // ChildrenPts
-    QMap<QString, AbstractBone*>::iterator b;
-    for (b = bones.begin(); b != bones.end(); b++){
-        for(size_t is = 0; is < b.value()->childrenStr.size(); is++){
-            QString childName = b.value()->childrenStr[is];*/
-            /*AbstractBone* childPtr = bones[childName]; // Version with null pointers
-            b.value()->childrenPtr.push_back(bones[childName]);
-            if(childPtr)
-                bones[childName]->parentsPtr.push_back(b.value());*/
-            /*QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
+    // --- ChildrenPointers ---
+    QMap<QString, AbstractBone*>::iterator bnIter;
+    for (bnIter = bones.begin(); bnIter != bones.end(); bnIter++){
+        QMap<QString, Point3F>::iterator chldIter;
+        for(chldIter = bnIter.value()->childrenPoints.begin(); chldIter != bnIter.value()->childrenPoints.end(); chldIter++){
+            QString childName = chldIter.key();
+            QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
             if(mapFind != bones.end()){
-                b.value()->childrenPtr.push_back(bones[childName]);
-                bones[childName]->parentsPtr.push_back(b.value());
+                bnIter.value()->childrenPointers.push_back(bones[childName]);
+                bones[childName]->parentsPointers.push_back(bnIter.value());
             }
         }
     }
-    isConstructDone = true;*/
+
+    // --- BasePoints ---
+    AbstractBone* startBone = nullptr;
+    QMap<QString, AbstractBone*>::iterator startIter;
+    for (startIter = bones.begin(); startIter != bones.end(); startIter++)
+        if(startIter.value()->parentName == notAvlbl)
+            startBone = startIter.value();
+    if(!startBone){
+        return StatusBoneNotFound;
+    }
+    else{
+        startBone->applyOffsets(startBone->parentOffsetPoint);
+    }
+
+    std::vector<AbstractBone*> vecParents = {startBone};
+    while (true) {
+        std::vector<AbstractBone*> vecChildren;
+        for(size_t i = 0; i < vecParents.size(); i++)
+            for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
+                AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
+                thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
+                Point3F fullOffSet = *thisChild->basePoint + thisChild->parentOffsetPoint;
+                thisChild->applyOffsets(fullOffSet);
+                // ---
+                vecChildren.push_back(thisChild);
+            }
+        // -----
+        if(vecChildren.empty()) break;
+        vecParents = vecChildren;
+    }
+    // i.value()->applyRotation(); // 1
+
+    isConstructDone = true;
     return StatusOk;
 }

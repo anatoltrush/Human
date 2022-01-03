@@ -7,6 +7,7 @@ using namespace std;
 
 #include "Entities/Human.h"
 #include "Entities/Cyborg.h"
+#include "Config/Defines.h"
 #include "Config/Config.h"
 
 int main(int argc, char *argv[])
@@ -15,21 +16,19 @@ int main(int argc, char *argv[])
     MainWindow w;    
 
     man::Config config;
-    int loadConf = config.loadConfigData();
+    man::Status loadConf = config.loadConfigData();
 
     man::Human human;
-    //int loadHumSkel = human.skeleton->loadFromJson(config, true);
-    //int conHumSkel = human.skeleton->construct();
-    //cout << "Size human bone: " + to_string(sizeof(human)) << endl;
+    man::Status loadHumSkel = human.skeleton->loadFromJson(config, true);
+    man::Status conHumSkel = human.skeleton->construct();
 
     man::Cyborg cyborg;
-    int loadCybSkel = cyborg.skeleton->loadFromJson(config, false);
-    int conCybSkel = cyborg.skeleton->construct();
-    //cout << "Size cyberbone: " + to_string(sizeof(cyborg.skeleton->bones["Skull"])) << endl;
+    man::Status loadCybSkel = cyborg.skeleton->loadFromJson(config, false);
+    man::Status conCybSkel = cyborg.skeleton->construct();
     cout << "AbsBone: " + to_string(sizeof(man::AbstractBone)) << endl;
 
-    if(loadCybSkel == 0){w.setCyborg(&cyborg);}
-    //if(loadHumSkel == 0){w.setHuman(&human);}
+    //if(conCybSkel == man::StatusOk){w.setCyborg(&cyborg);}
+    if(conHumSkel == man::StatusOk){w.setHuman(&human);}
 
     w.show();
     return a.exec();

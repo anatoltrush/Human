@@ -25,8 +25,8 @@ public:
 
     StlHandler stlReader;
 
-    virtual int loadFromJson(const Config& config, bool isHuman);
-    virtual int construct();
+    virtual man::Status loadFromJson(const Config& config, bool isHuman);
+    virtual man::Status construct();
 };
 
 }

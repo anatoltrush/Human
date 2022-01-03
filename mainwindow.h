@@ -5,6 +5,7 @@
 #include <QMainWindow>
 
 #include "Entities/AbstractHuman.h"
+#include "Entities/CutSurface.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,8 @@ public:
 
     void setHuman(man::AbstractHuman* human);
     void setCyborg(man::AbstractHuman* cyborg);
+
+    man::CutSurface cutSurface;
 
 private:
     Ui::MainWindow *ui;

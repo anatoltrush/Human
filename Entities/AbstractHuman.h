@@ -2,7 +2,6 @@
 #define ABSTRACTHUMAN_H
 
 #include <QUuid>
-#include <QDateTime>
 
 #include "Config/Config.h"
 #include "AbstractSkeleton.h"
@@ -18,9 +17,6 @@ public:
     AbstractSkeleton* skeleton = nullptr;
 
     QString uuid = QUuid::createUuid().toString();
-    QString firstName; // name
-    QString lastName; // family
-    QDateTime birth;
 
 };
 

@@ -5,7 +5,7 @@ man::Config::Config()
     pathApplication = QCoreApplication::applicationDirPath();    
 }
 
-int man::Config::loadConfigData()
+man::Status man::Config::loadConfigData()
 {
     QString pathConfigFile = pathApplication + "/" + fileConfig;
 

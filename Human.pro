@@ -25,6 +25,7 @@ SOURCES += \
         Entities/Human.cpp \
         Entities/HumanBone.cpp \
         Entities/HumanSkeleton.cpp \
+        Entities/PersonalInfo.cpp \
         WidgetGL.cpp \
         main.cpp \
         mainwindow.cpp
@@ -45,6 +46,7 @@ HEADERS += \
     Entities/HumanBone.h \
     Entities/HumanSkeleton.h \
     Entities/IOpenGL.h \
+    Entities/PersonalInfo.h \
     Entities/Primitives.h \
     WidgetGL.h \
     mainwindow.h

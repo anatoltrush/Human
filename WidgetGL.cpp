@@ -10,7 +10,7 @@ WidgetGL::WidgetGL(QWidget *parent):QOpenGLWidget(parent)
 void WidgetGL::drawAxis()
 {
     float axisLegth = 1000.0f;
-    glLineWidth(2.0f); // устанавливаем ширину линии
+    glLineWidth(1.0f); // устанавливаем ширину линии
 
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
@@ -60,12 +60,16 @@ void WidgetGL::paintGL()
 
     // DRAW
     if(human){
-        for(const auto &bone : human->skeleton->bones)
+        for(const auto &bone : human->skeleton->bones){
             bone->drawObjectGL();
+            bone->drawBasePoint();
+        }
     }
     if(cyborg){
-        for(const auto &bone : cyborg->skeleton->bones)
+        for(const auto &bone : cyborg->skeleton->bones){
             bone->drawObjectGL();
+            bone->drawBasePoint();
+        }
     }
 }
 
@@ -76,8 +80,13 @@ void WidgetGL::mousePressEvent(QMouseEvent *pe)
 
 void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
 {
+#if QT_VERSION_MAJOR > 5
     rotation.x -= (180/scale*(GLfloat)(pe->position().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
     rotation.z -= (180/scale*(GLfloat)(pe->position().x() - mousePos.x())/width()) * scale;
+#else
+    rotation.x -= (180/scale*(GLfloat)(pe->pos().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
+    rotation.z -= (180/scale*(GLfloat)(pe->pos().x() - mousePos.x())/width()) * scale;
+#endif
     mousePos = pe->pos();
 
     update();
