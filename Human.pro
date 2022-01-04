@@ -13,6 +13,7 @@ unix:{
 }
 
 SOURCES += \
+        Algorithms/ExtraMath.cpp \
         Algorithms/StlHandler.cpp \
         Config/Config.cpp \
         Entities/AbstractBone.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
         mainwindow.cpp
 
 HEADERS += \
+    Algorithms/ExtraMath.h \
     Algorithms/StlHandler.h \
     Config/Config.h \
     Config/ConfigDefines.h \

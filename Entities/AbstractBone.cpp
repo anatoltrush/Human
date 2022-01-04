@@ -36,8 +36,32 @@ void man::AbstractBone::fillProperties()
     rotation.z = rotate["z"].toDouble();
 }
 
-void man::AbstractBone::applyRotation()
+void man::AbstractBone::rotateBone()
 {
+    // children points
+
+
+    // stl
+    for(auto &tr : stlObject.triangles){
+        for(auto &vr : tr.vertex){
+            Point3F newVr = rotatePoint3F(vr, rotation.degToRad(), *basePoint);
+            vr = newVr;
+        }
+    }
+}
+
+void man::AbstractBone::rotateBone(const Point3F &basePoint, const Point3F &angles)
+{
+    // children points
+
+
+    // stl
+    for(auto &tr : stlObject.triangles){
+        for(auto &vr : tr.vertex){
+            Point3F newVr = rotatePoint3F(vr, rotation.degToRad(), basePoint);
+            vr = newVr;
+        }
+    }
 
 }
 
@@ -56,6 +80,24 @@ void man::AbstractBone::applyOffsets(const Point3F &offset)
             tr.vertex[i].z += offset.z;
         }
     }
+}
+
+man::Point3F man::AbstractBone::getHighestPoint()
+{
+    Point3F highPt;
+    for(const auto &tr : stlObject.triangles)
+        for(const auto &vr : tr.vertex)
+            if(vr.z > highPt.z) highPt = vr;
+    return highPt;
+}
+
+man::Point3F man::AbstractBone::getLowestPoint()
+{
+    Point3F lowPt;
+    for(const auto &tr : stlObject.triangles)
+        for(const auto &vr : tr.vertex)
+            if(vr.z < lowPt.z) lowPt = vr;
+    return lowPt;
 }
 
 void man::AbstractBone::setColor(uint8_t B, uint8_t G, uint8_t R)

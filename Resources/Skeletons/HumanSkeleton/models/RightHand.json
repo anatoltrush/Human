@@ -2,7 +2,7 @@
 	"name": "RightHand",
 	"model3D": "RightHand.stl",
 	"rotation": {
-			"x": 0.0,
+			"x": 30.0,
 			"y": 0.0,
 			"z": 0.0
 	},

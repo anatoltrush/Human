@@ -6,7 +6,7 @@
 #include "Config/Defines.h"
 #include "Config/ConfigDefines.h"
 #include "IOpenGL.h"
-#include "Entities/Primitives.h"
+#include "Algorithms/ExtraMath.h"
 
 namespace man{
 
@@ -37,8 +37,12 @@ public:
     StlObject stlObject;
 
     void fillProperties();
-    void applyRotation();
+    void rotateBone();
+    void rotateBone(const Point3F &basePoint, const Point3F &angles);
     void applyOffsets(const Point3F &offset);
+
+    Point3F getHighestPoint();
+    Point3F getLowestPoint();
 
     virtual void setColor(uint8_t B, uint8_t G, uint8_t R) override;
     virtual void drawObjectGL() const override;

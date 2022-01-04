@@ -7,6 +7,8 @@
 
 namespace man{
 
+#define DEG_TO_RAD(deg) ((deg) * M_PI / 180.0f)
+
 struct Point3F
 {
     Point3F() {}
@@ -21,6 +23,36 @@ struct Point3F
         retPoint.x = this->x + other.x;
         retPoint.y = this->y + other.y;
         retPoint.z = this->z + other.z;
+        return retPoint;
+    }
+
+    Point3F operator - (const Point3F &other){
+        Point3F retPoint;
+        retPoint.x = this->x - other.x;
+        retPoint.y = this->y - other.y;
+        retPoint.z = this->z - other.z;
+        return retPoint;
+    }
+
+    Point3F operator -= (const Point3F &other){
+        this->x -= other.x;
+        this->y -= other.y;
+        this->z -= other.z;
+        return *this;
+    }
+
+    Point3F operator += (const Point3F &other){
+        this->x += other.x;
+        this->y += other.y;
+        this->z += other.z;
+        return *this;
+    }
+
+    Point3F degToRad(){
+        Point3F retPoint;
+        retPoint.x = DEG_TO_RAD(this->x);
+        retPoint.y = DEG_TO_RAD(this->y);
+        retPoint.z = DEG_TO_RAD(this->z);
         return retPoint;
     }
 };

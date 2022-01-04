@@ -10,6 +10,8 @@ using namespace std;
 #include "Config/Defines.h"
 #include "Config/Config.h"
 
+#include "Algorithms/ExtraMath.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -20,15 +22,15 @@ int main(int argc, char *argv[])
 
     man::Human human;
     man::Status loadHumSkel = human.skeleton->loadFromJson(config, true);
-    man::Status conHumSkel = human.skeleton->construct();
+    //man::Status conHumSkel = human.skeleton->construct();
 
     man::Cyborg cyborg;
     man::Status loadCybSkel = cyborg.skeleton->loadFromJson(config, false);
     man::Status conCybSkel = cyborg.skeleton->construct();
     cout << "AbsBone: " + to_string(sizeof(man::AbstractBone)) << endl;
 
-    //if(conCybSkel == man::StatusOk){w.setCyborg(&cyborg);}
-    if(conHumSkel == man::StatusOk){w.setHuman(&human);}
+    if(conCybSkel == man::StatusOk){w.setCyborg(&cyborg);}
+    //if(conHumSkel == man::StatusOk){w.setHuman(&human);}
 
     w.show();
     return a.exec();

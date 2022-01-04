@@ -103,6 +103,7 @@ man::Status man::AbstractSkeleton::construct()
         startBone->applyOffsets(startBone->parentOffsetPoint);
     }
 
+    // --- Apply offsets ---
     std::vector<AbstractBone*> vecParents = {startBone};
     while (true) {
         std::vector<AbstractBone*> vecChildren;
@@ -119,8 +120,70 @@ man::Status man::AbstractSkeleton::construct()
         if(vecChildren.empty()) break;
         vecParents = vecChildren;
     }
-    // i.value()->applyRotation(); // 1
+    // --- Height ---
+    calcHeight();
+
+    // --- Apply rotation ---
+    //rotateBonesFull(startBone, startBone->rotation);
+    //rotateBonesSingle(startBone, startBone->rotation);
+    //rotateBonesSingle(bones["RightHand"], bones["RightHand"]->rotation);
+    bones["RightHand"]->rotateBone();
 
     isConstructDone = true;
     return StatusOk;
+}
+
+void man::AbstractSkeleton::rotateBonesFull(AbstractBone *startBone, const Point3F &angles)
+{
+    startBone->rotation = angles;
+    // ---
+    std::vector<AbstractBone*> vecParents = {startBone};
+    while (true) {
+        std::vector<AbstractBone*> vecChildren;
+        for(size_t i = 0; i < vecParents.size(); i++)
+            for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
+                AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
+            }
+        // -----
+        if(vecChildren.empty()) break;
+        vecParents = vecChildren;
+    }
+}
+
+void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Point3F &angles)
+{
+    startBone->rotation = angles;
+    // ---
+    std::vector<AbstractBone*> allChildBones = {startBone};
+    std::vector<AbstractBone*> vecParents = {startBone};
+    while (true) {
+        std::vector<AbstractBone*> vecChildren;
+        for(size_t i = 0; i < vecParents.size(); i++)
+            for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
+                AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
+                allChildBones.push_back(thisChild);
+                // ---
+                vecChildren.push_back(thisChild);
+            }
+        // -----
+        if(vecChildren.empty()) break;
+        vecParents = vecChildren;
+    }
+    // ---
+    for(const auto &bn : allChildBones)
+        bn->rotateBone(*startBone->basePoint, angles);
+}
+
+void man::AbstractSkeleton::calcHeight()
+{
+    Point3F highestPt;
+    Point3F lowestPt;
+    for(const auto &bn : bones){
+        Point3F hPt = bn->getHighestPoint();
+        if(hPt.z > highestPt.z) highestPt = hPt;
+        // ---
+        Point3F lPt = bn->getLowestPoint();
+        if(lPt.z < lowestPt.z) lowestPt = lPt;
+    }
+    this->height = highestPt.z - lowestPt.z;
 }
