@@ -3,14 +3,14 @@
 
 #include <GL/gl.h>
 
-#include "Config/Defines.h"
 #include "Config/ConfigDefines.h"
-#include "IOpenGL.h"
+#include "Interfaces/IOpenGL.h"
+#include "Interfaces/IProperty.h"
 #include "Algorithms/ExtraMath.h"
 
 namespace man{
 
-class AbstractBone : public IOpenGL
+class AbstractBone : public IOpenGL, public IProperty
 {
 public:
     AbstractBone();

@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 
-#include "IOpenGL.h"
+#include "Interfaces/IOpenGL.h"
 
 namespace man{
 

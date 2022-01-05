@@ -4,14 +4,13 @@
 #include <QString>
 
 #include "Config/Config.h"
-#include "AbstractBone.h"
 #include "CyberBone.h"
 #include "HumanBone.h"
 #include "Algorithms/StlHandler.h"
 
 namespace man{
 
-class AbstractSkeleton
+class AbstractSkeleton: public IProperty
 {
 public:
     AbstractSkeleton();

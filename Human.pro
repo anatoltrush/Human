@@ -47,9 +47,10 @@ HEADERS += \
     Entities/Human.h \
     Entities/HumanBone.h \
     Entities/HumanSkeleton.h \
-    Entities/IOpenGL.h \
     Entities/PersonalInfo.h \
     Entities/Primitives.h \
+    Interfaces/IOpenGL.h \
+    Interfaces/IProperty.h \
     WidgetGL.h \
     mainwindow.h
 

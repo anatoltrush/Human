@@ -3,12 +3,11 @@
 
 #include <QUuid>
 
-#include "Config/Config.h"
 #include "AbstractSkeleton.h"
 
 namespace man{
 
-class AbstractHuman
+class AbstractHuman: public IProperty
 {
 public:
     AbstractHuman();
