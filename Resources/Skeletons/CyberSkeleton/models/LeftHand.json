@@ -3,7 +3,7 @@
 	"model3D": "LeftHand.stl",
 	"rotation": {
 			"x": 0.0,
-			"y": 0.0,
+			"y": 30.0,
 			"z": 0.0
 	},
 	"parts":[
@@ -16,6 +16,11 @@
 			"z": -3.0
 	},
 	"children":[
-
+		{
+			"name": "LeftForearm",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -68.0
+		}
 	]
 }

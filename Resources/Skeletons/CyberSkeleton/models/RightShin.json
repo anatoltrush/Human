@@ -1,0 +1,21 @@
+{
+	"name": "RightShin",
+	"model3D": "RightShin.stl",
+	"rotation": {
+			"x": 0.0,
+			"y": 0.0,
+			"z": 0.0
+	},
+	"parts":[
+		
+	],
+	"parent":{
+			"name": "RightLeg",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -3.0
+	},
+	"children":[
+
+	]
+}

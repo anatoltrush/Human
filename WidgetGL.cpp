@@ -2,9 +2,7 @@
 
 WidgetGL::WidgetGL(QWidget *parent):QOpenGLWidget(parent)
 {
-    colorAxis.x = 1.0f;
-    colorAxis.y = 0.0f;
-    colorAxis.z = 1.0f;
+
 }
 
 void WidgetGL::drawAxis()

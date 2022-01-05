@@ -36,33 +36,16 @@ void man::AbstractBone::fillProperties()
     rotation.z = rotate["z"].toDouble();
 }
 
-void man::AbstractBone::rotateBone()
-{
-    // children points
-
-
-    // stl
-    for(auto &tr : stlObject.triangles){
-        for(auto &vr : tr.vertex){
-            Point3F newVr = rotatePoint3F(vr, rotation.degToRad(), *basePoint);
-            vr = newVr;
-        }
-    }
-}
-
 void man::AbstractBone::rotateBone(const Point3F &basePoint, const Point3F &angles)
 {
     // children points
-
+    for(auto &chlPt : childrenPoints)
+        chlPt = rotatePoint3F(chlPt, angles.degToRad(), basePoint);
 
     // stl
-    for(auto &tr : stlObject.triangles){
-        for(auto &vr : tr.vertex){
-            Point3F newVr = rotatePoint3F(vr, rotation.degToRad(), basePoint);
-            vr = newVr;
-        }
-    }
-
+    for(auto &tr : stlObject.triangles)
+        for(auto &vr : tr.vertex)
+            vr = rotatePoint3F(vr, angles.degToRad(), basePoint);
 }
 
 void man::AbstractBone::applyOffsets(const Point3F &offset)
@@ -98,13 +81,6 @@ man::Point3F man::AbstractBone::getLowestPoint()
         for(const auto &vr : tr.vertex)
             if(vr.z < lowPt.z) lowPt = vr;
     return lowPt;
-}
-
-void man::AbstractBone::setColor(uint8_t B, uint8_t G, uint8_t R)
-{
-    color.x = R / 255.0f;
-    color.y = G / 255.0f;
-    color.z = B / 255.0f;
 }
 
 void man::AbstractBone::drawObjectGL() const

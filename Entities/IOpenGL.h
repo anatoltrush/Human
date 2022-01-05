@@ -15,7 +15,12 @@ public:
 
     virtual void drawObjectGL() const = 0;
 
-    virtual void setColor(uint8_t B, uint8_t G, uint8_t R) = 0;
+    void setColor(uint8_t B, uint8_t G, uint8_t R)
+    {
+        color.x = R / 255.0f;
+        color.y = G / 255.0f;
+        color.z = B / 255.0f;
+    }
 };
 
 }

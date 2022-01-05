@@ -2,7 +2,7 @@
 	"name": "LeftLeg",
 	"model3D": "LeftLeg.stl",
 	"rotation": {
-			"x": 0.0,
+			"x": -40.0,
 			"y": 0.0,
 			"z": 0.0
 	},
@@ -13,9 +13,14 @@
 			"name": "Spine",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -10.0
+			"z": -5.0
 	},
 	"children":[
-
+		{
+			"name": "LeftShin",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -68.0
+		}
 	]
 }

@@ -22,7 +22,7 @@ public:
     void setHuman(man::AbstractHuman* human);
     void setCyborg(man::AbstractHuman* cyborg);
 
-    man::CutSurface cutSurface;
+    std::vector<man::CutSurface> cutSufaces;
 
 private:
     Ui::MainWindow *ui;

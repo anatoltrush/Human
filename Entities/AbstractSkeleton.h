@@ -30,12 +30,12 @@ public:
     virtual man::Status loadFromJson(const Config& config, bool isHuman);
     virtual man::Status construct();
 
-    void rotateBonesFull(AbstractBone* startBone, const Point3F &angles);
     void rotateBonesSingle(AbstractBone* startBone, const Point3F &angles);
 
 private:
     void calcHeight();
 
+    void rotateBonesFull(AbstractBone* startBone);
 };
 
 }

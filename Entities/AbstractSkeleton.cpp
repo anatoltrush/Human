@@ -123,26 +123,24 @@ man::Status man::AbstractSkeleton::construct()
     // --- Height ---
     calcHeight();
 
-    // --- Apply rotation ---
-    //rotateBonesFull(startBone, startBone->rotation);
-    //rotateBonesSingle(startBone, startBone->rotation);
-    //rotateBonesSingle(bones["RightHand"], bones["RightHand"]->rotation);
-    bones["RightHand"]->rotateBone();
+    // --- Apply rotation ---    
+    rotateBonesFull(startBone);
 
     isConstructDone = true;
     return StatusOk;
 }
 
-void man::AbstractSkeleton::rotateBonesFull(AbstractBone *startBone, const Point3F &angles)
+void man::AbstractSkeleton::rotateBonesFull(AbstractBone *startBone)
 {
-    startBone->rotation = angles;
-    // ---
+    startBone->rotateBone(startBone->childrenPoints.begin().value(), startBone->rotation);
     std::vector<AbstractBone*> vecParents = {startBone};
     while (true) {
         std::vector<AbstractBone*> vecChildren;
         for(size_t i = 0; i < vecParents.size(); i++)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
+                rotateBonesSingle(thisChild, thisChild->rotation);
+                vecChildren.push_back(thisChild);
             }
         // -----
         if(vecChildren.empty()) break;

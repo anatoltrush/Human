@@ -48,7 +48,7 @@ struct Point3F
         return *this;
     }
 
-    Point3F degToRad(){
+    Point3F degToRad() const {
         Point3F retPoint;
         retPoint.x = DEG_TO_RAD(this->x);
         retPoint.y = DEG_TO_RAD(this->y);
