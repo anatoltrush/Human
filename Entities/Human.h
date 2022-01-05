@@ -7,12 +7,14 @@
 
 namespace man{
 
-class Human : public AbstractHuman
+class Human : public AbstractHuman, public IProperty
 {
 public:
     Human();
 
     PersonalInfo personalInfo;
+
+    virtual QMap<QString, QVariant> getPropertyList() const override;
 };
 
 }

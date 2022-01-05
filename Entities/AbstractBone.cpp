@@ -25,10 +25,10 @@ void man::AbstractBone::fillProperties()
     }
     // parent
     QJsonObject parPoint = boneJsonObject[jsonFieldParent].toObject();
-    parentOffsetPoint.x = parPoint["x"].toDouble();
-    parentOffsetPoint.y = parPoint["y"].toDouble();
-    parentOffsetPoint.z = parPoint["z"].toDouble();
-    parentName = parPoint[jsonFieldName].toString();
+    parentPoint.x = parPoint["x"].toDouble();
+    parentPoint.y = parPoint["y"].toDouble();
+    parentPoint.z = parPoint["z"].toDouble();
+    parentPoint.str = parPoint[jsonFieldName].toString();
     // rotation
     QJsonObject rotate = boneJsonObject[jsonFieldRotate].toObject();
     rotation.x = rotate["x"].toDouble();
@@ -36,7 +36,7 @@ void man::AbstractBone::fillProperties()
     rotation.z = rotate["z"].toDouble();
 }
 
-void man::AbstractBone::rotateBone(const Point3F &basePoint, const Point3F &angles)
+void man::AbstractBone::rotateBone(const Point3F &basePoint, const Angle &angles)
 {
     // children points
     for(auto &chlPt : childrenPoints)

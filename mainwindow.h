@@ -5,7 +5,6 @@
 #include <QMainWindow>
 
 #include "Entities/AbstractHuman.h"
-#include "Entities/CutSurface.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,9 +19,7 @@ public:
     ~MainWindow();
 
     void setHuman(man::AbstractHuman* human);
-    void setCyborg(man::AbstractHuman* cyborg);
-
-    std::vector<man::CutSurface> cutSufaces;
+    void setCyborg(man::AbstractHuman* cyborg);    
 
 private:
     Ui::MainWindow *ui;

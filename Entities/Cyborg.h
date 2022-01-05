@@ -6,10 +6,12 @@
 
 namespace man{
 
-class Cyborg : public AbstractHuman
+class Cyborg : public AbstractHuman, public IProperty
 {
 public:
     Cyborg();
+
+    virtual QMap<QString, QVariant> getPropertyList() const override;
 
 };
 

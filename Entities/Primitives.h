@@ -47,9 +47,24 @@ struct Point3F
         this->z += other.z;
         return *this;
     }
+};
 
-    Point3F degToRad() const {
-        Point3F retPoint;
+struct Point3FStr : Point3F
+{
+    Point3FStr() {}
+    QString str;
+
+    Point3F toPoint3F(){
+        return Point3F(this->x, this->y, this->z);
+    }
+};
+
+struct Angle : Point3F
+{
+    Angle() {}
+
+    Angle degToRad() const {
+        Angle retPoint;
         retPoint.x = DEG_TO_RAD(this->x);
         retPoint.y = DEG_TO_RAD(this->y);
         retPoint.z = DEG_TO_RAD(this->z);

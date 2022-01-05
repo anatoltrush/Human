@@ -13,6 +13,11 @@ man::HumanBone::HumanBone(const QString & name, const QString &pathRel){
     pathTo3DModelRel = pathRel;
 }
 
+QMap<QString, QVariant> man::HumanBone::getPropertyList() const
+{
+
+}
+
 void man::HumanBone::serialize(){
 
 }

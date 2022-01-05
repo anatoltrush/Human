@@ -7,7 +7,7 @@
 
 namespace man{
 
-class AbstractHuman: public IProperty
+class AbstractHuman
 {
 public:
     AbstractHuman();

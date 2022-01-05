@@ -10,6 +10,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonParseError>
 #include <QCoreApplication>
 
 namespace man{
@@ -18,18 +19,22 @@ namespace man{
 enum Status{
     StatusOk                = 0,
 
+    // not found
     StatusFileNotFound      = -1,
     StatusDirNotFound       = -2,
 
+    //bones
     StatusBoneNotFound      = -3,
     StatusBoneNotLoaded     = -4,
 
+    // empty
     StatusDirIsEmpty        = -5,
     StatusFileIsEmpty       = -6,
     StatusPathIsEmpty       = -7,
     StatusJsonListIsEmpty   = -8,
     StatusBonesListIsEmpty  = -9,
 
+    // other
     StatusNotFinished       = -10,
     StatusBadFileFormat     = -11
 };

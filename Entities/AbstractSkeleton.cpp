@@ -23,7 +23,10 @@ man::Status man::AbstractSkeleton::loadFromJson(const Config &config, bool isHum
     if (!jsonSkeletonFile.open(QIODevice::ReadOnly)) return StatusFileNotFound;
 
     QByteArray jsonSkeletonData = jsonSkeletonFile.readAll();
-    QJsonDocument jsonSkeletonDocument(QJsonDocument::fromJson(jsonSkeletonData));
+    QJsonParseError jsonParserSkel;
+    QJsonDocument jsonSkeletonDocument(QJsonDocument::fromJson(jsonSkeletonData, &jsonParserSkel));
+    if(jsonParserSkel.error != QJsonParseError::NoError)
+        return StatusBadFileFormat;
     QJsonObject jsonSkeletonObject = jsonSkeletonDocument.object();
 
     // LOAD JSONS BONES
@@ -49,7 +52,10 @@ man::Status man::AbstractSkeleton::loadFromJson(const Config &config, bool isHum
             return StatusBoneNotLoaded;
 
         QByteArray jsonBoneData = jsonBoneFile.readAll();
-        QJsonDocument jsonBoneDocument(QJsonDocument::fromJson(jsonBoneData));
+        QJsonParseError jsonParserBone;
+        QJsonDocument jsonBoneDocument(QJsonDocument::fromJson(jsonBoneData, &jsonParserBone));
+        if(jsonParserBone.error != QJsonParseError::NoError)
+            return StatusBadFileFormat;
         QJsonObject jsonBoneObject = jsonBoneDocument.object();
         QString boneName = jsonBoneObject.value(jsonFieldName).toString();
 
@@ -94,13 +100,13 @@ man::Status man::AbstractSkeleton::construct()
     AbstractBone* startBone = nullptr;
     QMap<QString, AbstractBone*>::iterator startIter;
     for (startIter = bones.begin(); startIter != bones.end(); startIter++)
-        if(startIter.value()->parentName == notAvlbl)
+        if(startIter.value()->parentPoint.str == notAvlbl)
             startBone = startIter.value();
     if(!startBone){
         return StatusBoneNotFound;
     }
     else{
-        startBone->applyOffsets(startBone->parentOffsetPoint);
+        startBone->applyOffsets(startBone->parentPoint.toPoint3F());
     }
 
     // --- Apply offsets ---
@@ -111,7 +117,7 @@ man::Status man::AbstractSkeleton::construct()
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
-                Point3F fullOffSet = *thisChild->basePoint + thisChild->parentOffsetPoint;
+                Point3F fullOffSet = *thisChild->basePoint + thisChild->parentPoint.toPoint3F();
                 thisChild->applyOffsets(fullOffSet);
                 // ---
                 vecChildren.push_back(thisChild);
@@ -148,7 +154,7 @@ void man::AbstractSkeleton::rotateBonesFull(AbstractBone *startBone)
     }
 }
 
-void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Point3F &angles)
+void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Angle &angles)
 {
     startBone->rotation = angles;
     // ---

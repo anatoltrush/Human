@@ -5,6 +5,7 @@
 #include <QOpenGLWidget>
 
 #include "Entities/AbstractHuman.h"
+#include "Entities/CutSurface.h"
 
 class WidgetGL : public QOpenGLWidget
 {
@@ -17,6 +18,7 @@ public:
 
     man::AbstractHuman* human = nullptr;
     man::AbstractHuman* cyborg = nullptr;
+    std::vector<man::CutSurface> cutSufaces = {man::CutSurface()};
 
     void drawAxis();
 

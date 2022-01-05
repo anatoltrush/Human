@@ -14,7 +14,10 @@ man::Status man::Config::loadConfigData()
         return StatusFileNotFound;
 
     QByteArray jsonConfigData = jsonConfigFile.readAll();
-    QJsonDocument jsonConfigDocument(QJsonDocument::fromJson(jsonConfigData));
+    QJsonParseError jsonParser;
+    QJsonDocument jsonConfigDocument(QJsonDocument::fromJson(jsonConfigData, &jsonParser));
+    if(jsonParser.error != QJsonParseError::NoError)
+        return StatusBadFileFormat;
     configJsonObject = jsonConfigDocument.object();
 
     QJsonArray skeletonArray = configJsonObject[jsonFieldSkeletons].toArray();

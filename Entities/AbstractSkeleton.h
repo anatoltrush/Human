@@ -10,7 +10,7 @@
 
 namespace man{
 
-class AbstractSkeleton: public IProperty
+class AbstractSkeleton
 {
 public:
     AbstractSkeleton();
@@ -29,7 +29,7 @@ public:
     virtual man::Status loadFromJson(const Config& config, bool isHuman);
     virtual man::Status construct();
 
-    void rotateBonesSingle(AbstractBone* startBone, const Point3F &angles);
+    void rotateBonesSingle(AbstractBone* startBone, const Angle &angles);
 
 private:
     void calcHeight();

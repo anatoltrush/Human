@@ -21,8 +21,8 @@ int main(int argc, char *argv[])
     man::Status loadConf = config.loadConfigData();
 
     man::Human human;
-    //man::Status loadHumSkel = human.skeleton->loadFromJson(config, true);
-    //man::Status conHumSkel = human.skeleton->construct();
+    man::Status loadHumSkel = human.skeleton->loadFromJson(config, true);
+    man::Status conHumSkel = human.skeleton->construct();
 
     man::Cyborg cyborg;
     man::Status loadCybSkel = cyborg.skeleton->loadFromJson(config, false);

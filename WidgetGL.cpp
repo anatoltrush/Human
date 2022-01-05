@@ -56,6 +56,8 @@ void WidgetGL::paintGL()
 
     drawAxis();
 
+    cutSufaces.begin()->drawObjectGL();
+
     // DRAW
     if(human){
         for(const auto &bone : human->skeleton->bones){

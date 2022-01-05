@@ -6,11 +6,12 @@
 
 namespace man{
 
-class CyberSkeleton : public AbstractSkeleton
+class CyberSkeleton : public AbstractSkeleton, public IProperty
 {
 public:
     CyberSkeleton();
 
+    virtual QMap<QString, QVariant> getPropertyList() const override;
 };
 
 }

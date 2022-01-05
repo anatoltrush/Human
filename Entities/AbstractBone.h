@@ -5,12 +5,11 @@
 
 #include "Config/ConfigDefines.h"
 #include "Interfaces/IOpenGL.h"
-#include "Interfaces/IProperty.h"
 #include "Algorithms/ExtraMath.h"
 
 namespace man{
 
-class AbstractBone : public IOpenGL, public IProperty
+class AbstractBone : public IOpenGL
 {
 public:
     AbstractBone();
@@ -23,10 +22,10 @@ public:
     bool isHuman = true;
     Material material = Material::Plastic;
 
-    Point3F rotation;
-    Point3F parentOffsetPoint;
+    Angle rotation;
     Point3F* basePoint = nullptr;
-    QString parentName = "na";
+
+    Point3FStr parentPoint;
     QMap<QString, Point3F> childrenPoints;
 
     std::vector<AbstractBone*> parentsPointers;
@@ -37,7 +36,7 @@ public:
     StlObject stlObject;
 
     void fillProperties();
-    void rotateBone(const Point3F &basePoint, const Point3F &angles);
+    void rotateBone(const Point3F &basePoint, const Angle &angles);
     void applyOffsets(const Point3F &offset);
 
     Point3F getHighestPoint();
@@ -45,6 +44,7 @@ public:
 
     virtual void drawObjectGL() const override;
     void drawBasePoint() const;
+
     virtual void serialize();
 };
 

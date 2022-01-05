@@ -2,16 +2,19 @@
 #define HUMANBONE_H
 
 #include "AbstractBone.h"
+#include "Interfaces/IProperty.h"
 
 namespace man{
 
-class HumanBone : public AbstractBone
+class HumanBone : public AbstractBone, public IProperty
 {
 public:
     HumanBone();
     HumanBone(const QString & name, const QString &pathRel);
 
-    virtual void serialize();
+    QMap<QString, QVariant> getPropertyList() const override;
+
+    virtual void serialize() override;
 };
 
 }
