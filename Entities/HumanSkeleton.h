@@ -6,7 +6,7 @@
 
 namespace man{
 
-class HumanSkeleton : public AbstractSkeleton, public IProperty
+class HumanSkeleton : public AbstractSkeleton
 {
 public:
     HumanSkeleton();

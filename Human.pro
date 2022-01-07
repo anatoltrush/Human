@@ -34,6 +34,7 @@ SOURCES += \
 HEADERS += \
     Algorithms/ExtraMath.h \
     Algorithms/StlHandler.h \
+    Config/Colors.h \
     Config/Config.h \
     Config/ConfigDefines.h \
     Config/Defines.h \

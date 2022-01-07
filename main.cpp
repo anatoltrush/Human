@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
     if(conCybSkel == man::StatusOk){w.setCyborg(&cyborg);}
     //if(conHumSkel == man::StatusOk){w.setHuman(&human);}
 
+    QMap<QString, QVariant> props = cyborg.getPropertyList();
+
     w.show();
     return a.exec();
 }

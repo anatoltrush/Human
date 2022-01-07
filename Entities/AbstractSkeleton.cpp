@@ -178,6 +178,11 @@ void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Ang
         bn->rotateBone(*startBone->basePoint, angles);
 }
 
+QMap<QString, QVariant> man::AbstractSkeleton::getPropertyList() const
+{
+
+}
+
 void man::AbstractSkeleton::calcHeight()
 {
     Point3F highestPt;

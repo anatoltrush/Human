@@ -3,6 +3,8 @@
 
 #include "Defines.h"
 
+namespace man{
+
 const QString fileConfig            = "Config.json";
 
 const QString jsonFieldSkeletons    = "skeletons";
@@ -19,5 +21,7 @@ const QString cyberSkeleton         = "CyberSkeleton";
 const QString humanSkeleton         = "HumanSkeleton";
 
 const QString notAvlbl = "na";
+
+}
 
 #endif // CONFIGDEFINES_H

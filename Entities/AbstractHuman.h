@@ -7,7 +7,7 @@
 
 namespace man{
 
-class AbstractHuman
+class AbstractHuman : public IProperty
 {
 public:
     AbstractHuman();
@@ -16,6 +16,8 @@ public:
     AbstractSkeleton* skeleton = nullptr;
 
     QString uuid = QUuid::createUuid().toString();
+
+    virtual QMap<QString, QVariant> getPropertyList() const override;
 
 };
 

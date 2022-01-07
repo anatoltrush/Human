@@ -6,7 +6,7 @@
 
 namespace man{
 
-class Cyborg : public AbstractHuman, public IProperty
+class Cyborg : public AbstractHuman
 {
 public:
     Cyborg();

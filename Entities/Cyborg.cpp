@@ -7,5 +7,8 @@ man::Cyborg::Cyborg()
 
 QMap<QString, QVariant> man::Cyborg::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props = AbstractHuman::getPropertyList();
+    props["sep"] = "-";
+    props["name"] = skeleton->name;
+    return props;
 }

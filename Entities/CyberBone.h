@@ -6,7 +6,7 @@
 
 namespace man{
 
-class CyberBone : public AbstractBone, public IProperty
+class CyberBone : public AbstractBone
 {
 public:
     CyberBone();

@@ -5,11 +5,12 @@
 
 #include "Config/ConfigDefines.h"
 #include "Interfaces/IOpenGL.h"
+#include "Interfaces/IProperty.h"
 #include "Algorithms/ExtraMath.h"
 
 namespace man{
 
-class AbstractBone : public IOpenGL
+class AbstractBone : public IOpenGL, public IProperty
 {
 public:
     AbstractBone();
@@ -44,6 +45,8 @@ public:
 
     virtual void drawObjectGL() const override;
     void drawBasePoint() const;
+
+    QMap<QString, QVariant> getPropertyList() const override;
 
     virtual void serialize();
 };

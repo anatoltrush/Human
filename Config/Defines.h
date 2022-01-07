@@ -15,7 +15,6 @@
 
 namespace man{
 
-// --- ERRORS ---
 enum Status{
     StatusOk                = 0,
 

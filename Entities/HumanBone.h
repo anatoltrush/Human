@@ -2,7 +2,6 @@
 #define HUMANBONE_H
 
 #include "AbstractBone.h"
-#include "Interfaces/IProperty.h"
 
 namespace man{
 

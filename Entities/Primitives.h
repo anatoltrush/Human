@@ -12,8 +12,8 @@ namespace man{
 struct Point3F
 {
     Point3F() {}
-    Point3F(float _x, float _y, float _z):
-    x(_x), y(_y), z(_z){}
+    Point3F(float X, float Y, float Z):
+    x(X), y(Y), z(Z){}
     float x = 0.0f;
     float y = 0.0f;
     float z = 0.0f;
@@ -74,7 +74,17 @@ struct Angle : Point3F
 
 typedef Point3F Vertex;
 
-typedef Point3F Color;
+struct Color4ub
+{
+    Color4ub() {}
+    Color4ub(uint8_t R, uint8_t G, uint8_t B, uint8_t A = 255):
+    r(R), g(G), b(B), a(A){}
+
+    uint8_t r = 0;
+    uint8_t g = 0;
+    uint8_t b = 0;
+    uint8_t a = 255;
+};
 
 struct Triangle
 {

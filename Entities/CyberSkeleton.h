@@ -6,7 +6,7 @@
 
 namespace man{
 
-class CyberSkeleton : public AbstractSkeleton, public IProperty
+class CyberSkeleton : public AbstractSkeleton
 {
 public:
     CyberSkeleton();

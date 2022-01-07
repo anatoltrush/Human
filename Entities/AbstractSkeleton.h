@@ -10,7 +10,7 @@
 
 namespace man{
 
-class AbstractSkeleton
+class AbstractSkeleton: public IProperty
 {
 public:
     AbstractSkeleton();
@@ -30,6 +30,8 @@ public:
     virtual man::Status construct();
 
     void rotateBonesSingle(AbstractBone* startBone, const Angle &angles);
+
+    virtual QMap<QString, QVariant> getPropertyList() const override;
 
 private:
     void calcHeight();

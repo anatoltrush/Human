@@ -7,5 +7,8 @@ man::Human::Human()
 
 QMap<QString, QVariant> man::Human::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props = AbstractHuman::getPropertyList();
+    props["sep"] = "-";
+    props["name"] = skeleton->name;
+    return props;
 }
