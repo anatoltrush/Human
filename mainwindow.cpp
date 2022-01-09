@@ -32,3 +32,29 @@ void MainWindow::updUi()
 {
     //ui->l_triangles->setText("Tri: " + QString::number(humanAbs->skeleton->bones["Skull"]->stlObject.triangles.size()));
 }
+
+void MainWindow::on_pB_Cut_clicked()
+{
+    if(ui->widgetGL->cyborg)
+        ui->widgetGL->cutSufaces.begin()->apply(ui->widgetGL->cyborg->skeleton);
+    if(ui->widgetGL->human)
+        ui->widgetGL->cutSufaces.begin()->apply(ui->widgetGL->human->skeleton);
+    ui->widgetGL->update();
+}
+
+
+void MainWindow::on_pB_CutUp_clicked()
+{
+    for(auto &pt : ui->widgetGL->cutSufaces.begin()->surface.vertex)
+        pt.z += 5;
+    ui->widgetGL->update();
+}
+
+
+void MainWindow::on_pB_CutDown_clicked()
+{
+    for(auto &pt : ui->widgetGL->cutSufaces.begin()->surface.vertex)
+        pt.z -= 4;
+    ui->widgetGL->update();
+}
+

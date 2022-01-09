@@ -60,7 +60,7 @@ man::Status man::AbstractSkeleton::loadFromJson(const Config &config, bool isHum
         QString boneName = jsonBoneObject.value(jsonFieldName).toString();
 
         AbstractBone* abstractBone;
-        if(isHuman)
+        if(this->isHuman)
             abstractBone = new HumanBone(boneName, dirModels.path());
         else
             abstractBone = new CyberBone(boneName, dirModels.path());
@@ -100,13 +100,13 @@ man::Status man::AbstractSkeleton::construct()
     AbstractBone* startBone = nullptr;
     QMap<QString, AbstractBone*>::iterator startIter;
     for (startIter = bones.begin(); startIter != bones.end(); startIter++)
-        if(startIter.value()->parentPoint.str == notAvlbl)
+        if(startIter.value()->parentOffset.str == notAvlbl)
             startBone = startIter.value();
     if(!startBone){
         return StatusBoneNotFound;
     }
     else{
-        startBone->applyOffsets(startBone->parentPoint.toPoint3F());
+        startBone->applyOffsets(startBone->parentOffset.toPoint3F());
     }
 
     // --- Apply offsets ---
@@ -117,7 +117,7 @@ man::Status man::AbstractSkeleton::construct()
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
-                Point3F fullOffSet = *thisChild->basePoint + thisChild->parentPoint.toPoint3F();
+                Point3F fullOffSet = *thisChild->basePoint + thisChild->parentOffset.toPoint3F();
                 thisChild->applyOffsets(fullOffSet);
                 // ---
                 vecChildren.push_back(thisChild);
@@ -131,6 +131,9 @@ man::Status man::AbstractSkeleton::construct()
 
     // --- Apply rotation ---    
     rotateBonesFull(startBone);
+
+    // --- Reset bones ---
+    resetBonesExistence();
 
     isConstructDone = true;
     return StatusOk;
@@ -181,6 +184,13 @@ void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Ang
 QMap<QString, QVariant> man::AbstractSkeleton::getPropertyList() const
 {
 
+}
+
+void man::AbstractSkeleton::resetBonesExistence()
+{
+    for(const auto &bn : bones)
+        for(auto &tr : bn->stlObject.triangles)
+            tr.isExist = this->isHuman;
 }
 
 void man::AbstractSkeleton::calcHeight()

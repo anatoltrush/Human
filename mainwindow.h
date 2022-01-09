@@ -27,6 +27,9 @@ private:
 
 private slots:
     void updUi();
+    void on_pB_Cut_clicked();
+    void on_pB_CutUp_clicked();
+    void on_pB_CutDown_clicked();
 };
 
 #endif // MAINWINDOW_H

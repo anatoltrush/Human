@@ -1,16 +1,18 @@
 #include "CyberBone.h"
 
 man::CyberBone::CyberBone()
-{
-    isHuman = false;
-    material = Material::Plastic;
+{    
+    material    = Material::Plastic;
+    color       = colDarkBlue;
+    colorCut    = colGrey;
+    colorCut.a  = 10;
 }
 
-man::CyberBone::CyberBone(const QString & name, const QString &pathRel){
-    isHuman = false;
-    material = Material::Plastic;
-    this->name = name;    
-    pathTo3DModelRel = pathRel;
+man::CyberBone::CyberBone(const QString & name, const QString &pathRel):
+    CyberBone()
+{
+    this->name  = name;
+    pathTo3DModelAbs = pathRel;
 }
 
 QMap<QString, QVariant> man::CyberBone::getPropertyList() const

@@ -2,7 +2,8 @@
 
 man::AbstractBone::AbstractBone()
 {
-    color = colDeepSkyBlue;
+    color       = colDeepSkyBlue;
+    colorCut    = colGrey;
 }
 
 man::AbstractBone::~AbstractBone()
@@ -13,7 +14,7 @@ man::AbstractBone::~AbstractBone()
 void man::AbstractBone::fillProperties()
 {
     // 3D
-    pathTo3DModelAbs = pathTo3DModelRel + "/" + boneJsonObject[jsonFieldPath3D].toString();
+    pathTo3DModelAbs += "/" + boneJsonObject[jsonFieldPath3D].toString();
     // children
     QJsonArray childrenArray = boneJsonObject[jsonFieldChildren].toArray();
     for(const auto &child : childrenArray){
@@ -23,10 +24,10 @@ void man::AbstractBone::fillProperties()
     }
     // parent
     QJsonObject parPoint = boneJsonObject[jsonFieldParent].toObject();
-    parentPoint.x = parPoint["x"].toDouble();
-    parentPoint.y = parPoint["y"].toDouble();
-    parentPoint.z = parPoint["z"].toDouble();
-    parentPoint.str = parPoint[jsonFieldName].toString();
+    parentOffset.x = parPoint["x"].toDouble();
+    parentOffset.y = parPoint["y"].toDouble();
+    parentOffset.z = parPoint["z"].toDouble();
+    parentOffset.str = parPoint[jsonFieldName].toString();
     // rotation
     QJsonObject rotate = boneJsonObject[jsonFieldRotate].toObject();
     rotation.x = rotate["x"].toDouble();
@@ -86,7 +87,10 @@ void man::AbstractBone::drawObjectGL() const
     glLineWidth(1.0f);
     for(size_t i = 0; i < stlObject.triangles.size(); i++){
         glBegin(GL_TRIANGLES);
-        glColor3ub(color.r, color.g, color.b);
+        if(stlObject.triangles[i].isExist)
+            glColor3ub(color.r, color.g, color.b);
+        else
+            glColor3ub(colorCut.r, colorCut.g, colorCut.b);
         glVertex3f(stlObject.triangles[i].vertex[0].x, stlObject.triangles[i].vertex[0].y, stlObject.triangles[i].vertex[0].z);
         glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
         glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);

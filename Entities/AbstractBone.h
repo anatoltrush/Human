@@ -17,16 +17,14 @@ public:
     virtual ~AbstractBone();
 
     QString name;
-    QString pathTo3DModelRel;
     QString pathTo3DModelAbs;
 
-    bool isHuman = true;
     Material material = Material::Plastic;
 
     Angle rotation;
     Point3F* basePoint = nullptr;
 
-    Point3FStr parentPoint;
+    Point3FStr parentOffset;
     QMap<QString, Point3F> childrenPoints;
 
     std::vector<AbstractBone*> parentsPointers;

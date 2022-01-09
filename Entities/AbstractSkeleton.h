@@ -20,6 +20,7 @@ public:
 
     QMap<QString, AbstractBone*>bones;
 
+    bool isHuman = true;
     bool isConstructDone = false;
 
     float height = 0.0f;
@@ -32,6 +33,8 @@ public:
     void rotateBonesSingle(AbstractBone* startBone, const Angle &angles);
 
     virtual QMap<QString, QVariant> getPropertyList() const override;
+
+    void resetBonesExistence();
 
 private:
     void calcHeight();

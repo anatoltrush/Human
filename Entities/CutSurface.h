@@ -3,9 +3,7 @@
 
 #include <GL/gl.h>
 
-#include "Interfaces/IOpenGL.h"
-#include "Interfaces/IProperty.h"
-#include "Entities/Primitives.h"
+#include "Entities/AbstractSkeleton.h"
 
 namespace man{
 
@@ -15,12 +13,24 @@ public:
     CutSurface();
 
     Angle angle;
+    mutable Point3F center;
+    Triangle surface;
 
-    Triangle triangle;
+    void apply(AbstractSkeleton* skeleton);
 
     virtual void drawObjectGL() const override;
 
     virtual QMap<QString, QVariant> getPropertyList() const override;
+
+private:
+    bool isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3F &ptEnd);
+
+    void cutAllLower(AbstractBone* startBone, bool isHuman);
+
+    Point3F vectorProduct(const Point3F &A, const Point3F &B);
+    float dotProduct(const Point3F &A, const Point3F &B);
+
+    void calcCenter() const;
 };
 
 }
