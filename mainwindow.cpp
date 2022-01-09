@@ -36,9 +36,9 @@ void MainWindow::updUi()
 void MainWindow::on_pB_Cut_clicked()
 {
     if(ui->widgetGL->cyborg)
-        ui->widgetGL->cutSufaces.begin()->apply(ui->widgetGL->cyborg->skeleton);
+        ui->widgetGL->cutSufaces.begin()->execute(ui->widgetGL->cyborg->skeleton);
     if(ui->widgetGL->human)
-        ui->widgetGL->cutSufaces.begin()->apply(ui->widgetGL->human->skeleton);
+        ui->widgetGL->cutSufaces.begin()->execute(ui->widgetGL->human->skeleton);
     ui->widgetGL->update();
 }
 

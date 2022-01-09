@@ -19,10 +19,13 @@ public:
     QString name;
     QString pathTo3DModelAbs;
 
+    bool isExist = true;
+
     Material material = Material::Plastic;
 
     Angle rotation;
     Point3F* basePoint = nullptr;
+    std::vector<Point3F> interSects;
 
     Point3FStr parentOffset;
     QMap<QString, Point3F> childrenPoints;

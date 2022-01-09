@@ -6,6 +6,7 @@ man::CyberBone::CyberBone()
     color       = colDarkBlue;
     colorCut    = colGrey;
     colorCut.a  = 10;
+    isExist     = false;
 }
 
 man::CyberBone::CyberBone(const QString & name, const QString &pathRel):

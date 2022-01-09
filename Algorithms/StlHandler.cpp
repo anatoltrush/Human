@@ -137,6 +137,8 @@ void man::StlHandler::obtainFromBlocks(std::string &rawString, const std::string
 
 int man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlObject &object)
 {
+    object.clear();
+    //-----
     std::ifstream inputFileData(pathToFile.toStdString().data(), std::ios::binary);
     if(!inputFileData) return StatusFileNotFound;
 

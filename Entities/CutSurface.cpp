@@ -4,15 +4,20 @@ man::CutSurface::CutSurface()
 {
     color = colDeepPink;
 
-    surface.vertex[0] = Point3F(-120.0f, 100.0f, -100.0f); // NOTE: delete
-    surface.vertex[1] = Point3F(120.0f, 100.0f, -100.0f);
-    surface.vertex[2] = Point3F(0.0f, -120.0f, -100.0f);
+    /*surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete
+    surface.vertex[1] = Point3F(-1.0f, 3.0f, 2.0f);
+    surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);*/
+
+    surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete
+    surface.vertex[1] = Point3F(120.0f, 100.0f, -60.0f);
+    surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);
 }
 
-void man::CutSurface::apply(AbstractSkeleton *skeleton)
+void man::CutSurface::execute(AbstractSkeleton *skeleton)
 {
     if(!skeleton) return;
-    skeleton->resetBonesExistence();
+    skeleton->resetBones();
+    calcPlaneEquation();
 
     // find start bone
     AbstractBone* startBone = nullptr;
@@ -37,20 +42,15 @@ void man::CutSurface::apply(AbstractSkeleton *skeleton)
                     Point3F ptInter;
                     Point3F ptEnd = chIter.value();
                     bool isInter = isIntersect(ptBeg, ptInter, ptEnd);
-                    if(isInter){
+                    if(isInter){ // IF INTERSECT
+                        thisChild->interSects.push_back(ptInter);
                         if(!skeleton->isHuman){
+                            thisChild->isExist = true;
                             for(auto &tr : thisChild->stlObject.triangles)
-                                tr.isExist = true;
+                                tr.isGood = true;
                         }
                         cutAllLower(skeleton->bones[chIter.key()], skeleton->isHuman);
-                        for(auto &tr : thisChild->stlObject.triangles){
-                            bool ab = false; // ...
-                            bool bc = false; // ...
-                            bool ca = false; // ...
-                            if((ab && bc) || (bc && ca) || (ca && ab)){
-                                // ...---...
-                            }
-                        }
+                        cutSingleLower(thisChild, skeleton->isHuman);
                     }
                 }
                 // ---
@@ -64,7 +64,7 @@ void man::CutSurface::apply(AbstractSkeleton *skeleton)
 
 void man::CutSurface::drawObjectGL() const
 {
-    glLineWidth(5.0f);
+    glLineWidth(2.0f);
     glBegin(GL_TRIANGLES);
     glColor3ub(color.r, color.g, color.b);
     glVertex3f(surface.vertex[0].x, surface.vertex[0].y, surface.vertex[0].z);
@@ -143,9 +143,26 @@ void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
         vecParents = vecChildren;
     }
     // ---
-    for(const auto &bn : allChildBones)
+    for(const auto &bn : allChildBones){
+        bn->isExist = !isHuman;
         for(auto &tr : bn->stlObject.triangles)
-            tr.isExist = !isHuman;
+            tr.isGood = !isHuman;
+    }
+}
+
+void man::CutSurface::cutSingleLower(AbstractBone *startBone, bool isHuman)
+{
+    for(auto &tr : startBone->stlObject.triangles){
+        float pt0 = applyEqual(tr.vertex[0]);
+        float pt1 = applyEqual(tr.vertex[1]);
+        float pt2 = applyEqual(tr.vertex[2]);
+        if((pt0 > 0.0f) && (pt1 > 0.0f) && (pt2 > 0.0f)){
+            tr.isGood = !isHuman;
+        }
+        else{
+
+        }
+    }
 }
 
 man::Point3F man::CutSurface::vectorProduct(const Point3F &A, const Point3F &B)
@@ -168,4 +185,21 @@ void man::CutSurface::calcCenter() const
     center.x = (surface.vertex[0].x + surface.vertex[1].x + surface.vertex[2].x) / 3.0f;
     center.y = (surface.vertex[0].y + surface.vertex[1].y + surface.vertex[2].y) / 3.0f;
     center.z = (surface.vertex[0].z + surface.vertex[1].z + surface.vertex[2].z) / 3.0f;
+}
+
+void man::CutSurface::calcPlaneEquation()
+{
+    Point3F BA = surface.vertex[1] - surface.vertex[0];
+    Point3F CA = surface.vertex[2] - surface.vertex[0];
+
+    Point4F N = vectorProduct(BA, CA);
+    N.d = -N.x * surface.vertex[0].x - N.y * surface.vertex[0].y - N.z * surface.vertex[0].z;
+
+    equal = N;
+}
+
+float man::CutSurface::applyEqual(const Point3F &pt)
+{
+    float res = equal.x * pt.x + equal.y * pt.y + equal.z * pt.z + equal.d;
+    return res;
 }

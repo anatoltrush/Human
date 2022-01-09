@@ -87,7 +87,7 @@ void man::AbstractBone::drawObjectGL() const
     glLineWidth(1.0f);
     for(size_t i = 0; i < stlObject.triangles.size(); i++){
         glBegin(GL_TRIANGLES);
-        if(stlObject.triangles[i].isExist)
+        if(stlObject.triangles[i].isGood)
             glColor3ub(color.r, color.g, color.b);
         else
             glColor3ub(colorCut.r, colorCut.g, colorCut.b);
@@ -95,6 +95,23 @@ void man::AbstractBone::drawObjectGL() const
         glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
         glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);
         glEnd();
+    }
+    if(basePoint){
+        QMap<QString, Point3F>::const_iterator chlPt;
+        for(chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
+            glLineWidth(2.0f);
+            glBegin(GL_LINES);
+            glColor3ub(colGoldenRod.r, colGoldenRod.g, colGoldenRod.b);
+            glVertex3f(basePoint->x, basePoint->y, basePoint->z);
+            glVertex3f(chlPt.value().x, chlPt.value().y, chlPt.value().z);
+            glEnd();
+        }
+        for(size_t i = 0; i < interSects.size(); i++){
+            glPointSize(6.0f);
+            glBegin(GL_POINTS);
+            glVertex3f(interSects[i].x, interSects[i].y, interSects[i].z);
+            glEnd();
+        }
     }
 }
 

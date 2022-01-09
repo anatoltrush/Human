@@ -34,12 +34,12 @@ public:
 
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
-    void resetBonesExistence();
+    void resetBones();
 
 private:
     void calcHeight();
 
-    void rotateBonesFull(AbstractBone* startBone);
+    void rotateBonesAll(AbstractBone* startBone);
 };
 
 }

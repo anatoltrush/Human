@@ -5,7 +5,7 @@
 
 namespace man{
 
-class HumanBone : public AbstractBone, public IProperty
+class HumanBone : public AbstractBone
 {
 public:
     HumanBone();

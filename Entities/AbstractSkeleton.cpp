@@ -130,16 +130,16 @@ man::Status man::AbstractSkeleton::construct()
     calcHeight();
 
     // --- Apply rotation ---    
-    rotateBonesFull(startBone);
+    rotateBonesAll(startBone);
 
     // --- Reset bones ---
-    resetBonesExistence();
+    resetBones();
 
     isConstructDone = true;
     return StatusOk;
 }
 
-void man::AbstractSkeleton::rotateBonesFull(AbstractBone *startBone)
+void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
 {
     startBone->rotateBone(startBone->childrenPoints.begin().value(), startBone->rotation);
     std::vector<AbstractBone*> vecParents = {startBone};
@@ -186,18 +186,21 @@ QMap<QString, QVariant> man::AbstractSkeleton::getPropertyList() const
 
 }
 
-void man::AbstractSkeleton::resetBonesExistence()
+void man::AbstractSkeleton::resetBones()
 {
-    for(const auto &bn : bones)
+    for(const auto &bn : qAsConst(bones)){
+        bn->isExist = this->isHuman;
+        bn->interSects.clear();
         for(auto &tr : bn->stlObject.triangles)
-            tr.isExist = this->isHuman;
+            tr.isGood = this->isHuman;
+    }
 }
 
 void man::AbstractSkeleton::calcHeight()
 {
     Point3F highestPt;
     Point3F lowestPt;
-    for(const auto &bn : bones){
+    for(const auto &bn : qAsConst(bones)){
         Point3F hPt = bn->getHighestPoint();
         if(hPt.z > highestPt.z) highestPt = hPt;
         // ---

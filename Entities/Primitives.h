@@ -18,7 +18,7 @@ struct Point3F
     float y = 0.0f;
     float z = 0.0f;
 
-    Point3F operator + (const Point3F &other){
+    virtual Point3F operator + (const Point3F &other){
         Point3F retPoint;
         retPoint.x = this->x + other.x;
         retPoint.y = this->y + other.y;
@@ -26,7 +26,7 @@ struct Point3F
         return retPoint;
     }
 
-    Point3F operator - (const Point3F &other){
+    virtual Point3F operator - (const Point3F &other){
         Point3F retPoint;
         retPoint.x = this->x - other.x;
         retPoint.y = this->y - other.y;
@@ -34,14 +34,14 @@ struct Point3F
         return retPoint;
     }
 
-    Point3F operator -= (const Point3F &other){
+    virtual Point3F operator -= (const Point3F &other){
         this->x -= other.x;
         this->y -= other.y;
         this->z -= other.z;
         return *this;
     }
 
-    Point3F operator += (const Point3F &other){
+    virtual Point3F operator += (const Point3F &other){
         this->x += other.x;
         this->y += other.y;
         this->z += other.z;
@@ -57,6 +57,18 @@ struct Point3FStr : Point3F
     Point3F toPoint3F(){
         return Point3F(this->x, this->y, this->z);
     }
+};
+
+struct Point4F : Point3F
+{
+    Point4F() {}
+    Point4F(const Point3F &pt){
+        x = pt.x;
+        y = pt.y;
+        z = pt.z;
+    }
+
+    float d = 0.0f;
 };
 
 struct Angle : Point3F
@@ -94,7 +106,7 @@ struct Triangle
     Vertex normal;
     uint16_t attrByteCount = 0;
 
-    bool isExist = true;
+    bool isGood = true;
 };
 
 struct StlObject
@@ -112,6 +124,8 @@ struct StlObject
     {
         objectName = "";
         triangles.clear();
+        square = 0.0f;
+        volume = 0.0f;
     }
 };
 

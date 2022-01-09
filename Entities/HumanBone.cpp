@@ -6,6 +6,7 @@ man::HumanBone::HumanBone()
     color       = colDarkGreen;
     colorCut    = colGrey;
     colorCut.a  = 10;
+    isExist     = true;
 }
 
 man::HumanBone::HumanBone(const QString & name, const QString &pathRel):
