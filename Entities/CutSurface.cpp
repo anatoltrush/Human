@@ -4,13 +4,17 @@ man::CutSurface::CutSurface()
 {
     color = colDeepPink;
 
-    /*surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete
+    surface.vertex[0] = Point3F(-20.0f, -40.0f, 15.0f); // NOTE: delete VERT
+    surface.vertex[1] = Point3F(-20.0f, 40.0f, 15.0f);
+    surface.vertex[2] = Point3F(-20.0f, 0.0f, -60.0f);
+
+    /*surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete ANGLE
     surface.vertex[1] = Point3F(-1.0f, 3.0f, 2.0f);
     surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);*/
 
-    surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete
+    /*surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete HORIZ
     surface.vertex[1] = Point3F(120.0f, 100.0f, -60.0f);
-    surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);
+    surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);*/
 }
 
 void man::CutSurface::execute(AbstractSkeleton *skeleton)
@@ -30,7 +34,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton)
         for(size_t i = 0; i < vecParents.size(); i++)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
-                // ---
+                // --- intersect basePt <-> childPt
                 thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
                 QMap<QString, Point3F>::iterator chIter;
                 for (chIter = thisChild->childrenPoints.begin(); chIter != thisChild->childrenPoints.end(); chIter++){
@@ -157,7 +161,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 
         // -----
         if(isHuman){
-            if(res == 3){ /* all triangle down*/
+            if(res == 3){ // all triangle down
                 tr.isGood = !isHuman;
             }
             else if(res == 2){ // split 2 pt down
@@ -169,9 +173,9 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                     vrxReal.push_back(tr.vertex[it.value()]);
 
                 Vertex X, Z;
-                bool is20 = isIntersect(vrxReal[0], X, vrxReal[1]);
-                bool is21 = isIntersect(vrxReal[0], Z, vrxReal[2]);
-                if(!is20 || !is21) continue;
+                bool is01 = isIntersect(vrxReal[0], X, vrxReal[1]);
+                bool is02 = isIntersect(vrxReal[0], Z, vrxReal[2]);
+                if(!is01 || !is02) continue;
 
                 Triangle sector0(X, vrxReal[0], Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
                 bone->stlObject.additional.push_back(sector0);
@@ -185,13 +189,29 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                     vrxReal.push_back(tr.vertex[it.value()]);
 
                 Vertex X, Y, Z;
+                Y.x = (vrxReal[0].x + vrxReal[1].x) / 2;
+                Y.y = (vrxReal[0].y + vrxReal[1].y) / 2;
+                Y.z = (vrxReal[0].z + vrxReal[1].z) / 2;
 
-                // TODO: -----!!!-----
+                bool is20 = isIntersect(vrxReal[2], X, vrxReal[0]);
+                bool is21 = isIntersect(vrxReal[2], Z, vrxReal[1]);
+                if(!is20 || !is21) continue;
+
+                Triangle sector0(vrxReal[0], Y, X, Vertex(0.0f, 0.0f, 1.0f), isHuman);
+                Triangle sector1(X, Y, Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
+                Triangle sector2(Y, vrxReal[1], Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
+
+                bone->stlObject.additional.push_back(sector0);
+                bone->stlObject.additional.push_back(sector1);
+                bone->stlObject.additional.push_back(sector2);
+
             }
             else{ /* res == 0, all triangle up, do nothing*/ }
         }
         else{
-            if(res == 3){ tr.isGood = !isHuman; } // all triangle down
+            if(res == 3){
+                tr.isGood = !isHuman;
+            } // all triangle down
             else if(res == 2){ // split 2 pt down
                 std::vector<Vertex> vrxReal;
                 QMultiMap<float, int>::iterator it;

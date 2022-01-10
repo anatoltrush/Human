@@ -2,7 +2,7 @@
 	"name": "RightForearm",
 	"model3D": "RightForearm.stl",
 	"rotation": {
-			"x": -45.0,
+			"x": -65.0,
 			"y": 0.0,
 			"z": 0.0
 	},
