@@ -30,22 +30,25 @@ void MainWindow::setCyborg(man::AbstractHuman *cyborg)
 
 void MainWindow::updUi()
 {
+    //ui->widgetGL->cyborg->skeleton->rotateBonesSingle(ui->widgetGL->cyborg->skeleton->bones["RightHand"], man::Angle(-0.2f, 0.0f, 0.0f));
+    //ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton);
+    //ui->widgetGL->update();
     //ui->l_triangles->setText("Tri: " + QString::number(humanAbs->skeleton->bones["Skull"]->stlObject.triangles.size()));
 }
 
 void MainWindow::on_pB_Cut_clicked()
 {
     if(ui->widgetGL->cyborg)
-        ui->widgetGL->cutSufaces.begin()->execute(ui->widgetGL->cyborg->skeleton);
+        ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton);
     if(ui->widgetGL->human)
-        ui->widgetGL->cutSufaces.begin()->execute(ui->widgetGL->human->skeleton);
+        ui->widgetGL->cutSuface.execute(ui->widgetGL->human->skeleton);
     ui->widgetGL->update();
 }
 
 
 void MainWindow::on_pB_CutUp_clicked()
 {
-    for(auto &pt : ui->widgetGL->cutSufaces.begin()->surface.vertex)
+    for(auto &pt : ui->widgetGL->cutSuface.surface.vertex)
         pt.z += 5;
     ui->widgetGL->update();
 }
@@ -53,7 +56,7 @@ void MainWindow::on_pB_CutUp_clicked()
 
 void MainWindow::on_pB_CutDown_clicked()
 {
-    for(auto &pt : ui->widgetGL->cutSufaces.begin()->surface.vertex)
+    for(auto &pt : ui->widgetGL->cutSuface.surface.vertex)
         pt.z -= 4;
     ui->widgetGL->update();
 }

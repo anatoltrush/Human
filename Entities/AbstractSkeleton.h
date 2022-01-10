@@ -30,6 +30,7 @@ public:
     virtual man::Status loadFromJson(const Config& config, bool isHuman);
     virtual man::Status construct();
 
+    AbstractBone* getStartBone();
     void rotateBonesSingle(AbstractBone* startBone, const Angle &angles);
 
     virtual QMap<QString, QVariant> getPropertyList() const override;

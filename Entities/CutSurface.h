@@ -1,7 +1,7 @@
 #ifndef CUTSURFACE_H
 #define CUTSURFACE_H
 
-#include <GL/gl.h>
+#include <QMultiMap>
 
 #include "Entities/AbstractSkeleton.h"
 
@@ -26,14 +26,14 @@ private:
     bool isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3F &ptEnd);
 
     void cutAllLower(AbstractBone* startBone, bool isHuman);
-    void cutSingleLower(AbstractBone* startBone, bool isHuman);
+    void cutSingleLower(AbstractBone* bone, bool isHuman);
+    void splitTriangle();
 
     Point3F vectorProduct(const Point3F &A, const Point3F &B);
     float dotProduct(const Point3F &A, const Point3F &B);
 
     void calcCenter() const;
     void calcPlaneEquation();
-
     float applyEqual(const Point3F &pt);
 };
 

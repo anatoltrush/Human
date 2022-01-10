@@ -2,6 +2,7 @@
 #define PRIMITIVES_H
 
 #include <vector>
+#include <math.h>
 
 #include <QString>
 
@@ -74,6 +75,8 @@ struct Point4F : Point3F
 struct Angle : Point3F
 {
     Angle() {}
+    Angle(float X, float Y, float Z):
+        Point3F(X, Y, Z){}
 
     Angle degToRad() const {
         Angle retPoint;
@@ -101,6 +104,14 @@ struct Color4ub
 struct Triangle
 {
     Triangle() {}
+    Triangle(const Vertex &zero, const Vertex &one, const Vertex &two,
+             const Vertex &norm, bool isGood){
+        vertex[0] = zero;
+        vertex[1] = one;
+        vertex[2] = two;
+        normal = norm;
+        this->isGood = isGood;
+    }
 
     Vertex vertex[3];
     Vertex normal;
@@ -116,6 +127,7 @@ struct StlObject
     QString objectName;
 
     std::vector<Triangle> triangles;
+    std::vector<Triangle> additional;
 
     float square = 0.0f;
     float volume = 0.0f;
@@ -124,6 +136,7 @@ struct StlObject
     {
         objectName = "";
         triangles.clear();
+        additional.clear();
         square = 0.0f;
         volume = 0.0f;
     }

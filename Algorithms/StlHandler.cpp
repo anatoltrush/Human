@@ -5,15 +5,15 @@ man::StlHandler::StlHandler()
 
 }
 
-int man::StlHandler::parseFromFile(const QString &pathToFile, StlObject &object)
+man::Status man::StlHandler::parseFromFile(const QString &pathToFile, StlObject &object)
 {
-    int isFileASCII = isStlASCII(pathToFile);
+    StlFormat isFileASCII = isStlASCII(pathToFile);
     if(isFileASCII == StlASCII){
-        int resASCII = parseFromFileASCII(pathToFile, object);
+        Status resASCII = parseFromFileASCII(pathToFile, object);
         return resASCII;
     }
     else if(isFileASCII == StlBinary){
-        int resBinary = parseFromFileBinary(pathToFile, object);
+        Status resBinary = parseFromFileBinary(pathToFile, object);
         return resBinary;
     }
     else{
@@ -27,10 +27,15 @@ void man::StlHandler::calcAddProps(StlObject &object)
     calcVolume(object);
 }
 
-int man::StlHandler::isStlASCII(const QString &pathToFile)
+man::Status man::StlHandler::svaeToFile(const QString &pathToFile, man::StlObject &object)
+{
+
+}
+
+man::StlFormat man::StlHandler::isStlASCII(const QString &pathToFile)
 {
     std::ifstream inputFileData(pathToFile.toStdString().data());
-    if(!inputFileData) return StatusFileNotFound;
+    if(!inputFileData) return StlBadFormat;
 
     uint16_t startReadSize = 512; // NOTE: stl config
     char chars [startReadSize];
@@ -40,7 +45,7 @@ int man::StlHandler::isStlASCII(const QString &pathToFile)
     return (strData.find(keyWFacetNormal) != std::string::npos) ? StlASCII : StlBinary;
 }
 
-int man::StlHandler::parseFromFileASCII(const QString &pathToFile, StlObject &object)
+man::Status man::StlHandler::parseFromFileASCII(const QString &pathToFile, StlObject &object)
 {
     object.clear();
     //-----
@@ -135,7 +140,7 @@ void man::StlHandler::obtainFromBlocks(std::string &rawString, const std::string
     data.z = strFloats[2].toFloat();
 }
 
-int man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlObject &object)
+man::Status man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlObject &object)
 {
     object.clear();
     //-----

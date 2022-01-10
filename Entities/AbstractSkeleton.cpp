@@ -97,17 +97,11 @@ man::Status man::AbstractSkeleton::construct()
     }
 
     // --- BasePoints ---
-    AbstractBone* startBone = nullptr;
-    QMap<QString, AbstractBone*>::iterator startIter;
-    for (startIter = bones.begin(); startIter != bones.end(); startIter++)
-        if(startIter.value()->parentOffset.str == notAvlbl)
-            startBone = startIter.value();
-    if(!startBone){
+    AbstractBone* startBone = getStartBone();
+    if(!startBone)
         return StatusBoneNotFound;
-    }
-    else{
+    else
         startBone->applyOffsets(startBone->parentOffset.toPoint3F());
-    }
 
     // --- Apply offsets ---
     std::vector<AbstractBone*> vecParents = {startBone};
@@ -137,6 +131,16 @@ man::Status man::AbstractSkeleton::construct()
 
     isConstructDone = true;
     return StatusOk;
+}
+
+man::AbstractBone *man::AbstractSkeleton::getStartBone()
+{
+    AbstractBone* startBone = nullptr;
+    QMap<QString, AbstractBone*>::iterator startIter;
+    for (startIter = bones.begin(); startIter != bones.end(); startIter++)
+        if(startIter.value()->parentOffset.str == notAvlbl)
+            startBone = startIter.value();
+    return startBone;
 }
 
 void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
@@ -193,6 +197,7 @@ void man::AbstractSkeleton::resetBones()
         bn->interSects.clear();
         for(auto &tr : bn->stlObject.triangles)
             tr.isGood = this->isHuman;
+        bn->stlObject.additional.clear();
     }
 }
 

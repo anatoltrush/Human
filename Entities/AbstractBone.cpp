@@ -17,9 +17,11 @@ void man::AbstractBone::fillProperties()
     pathTo3DModelAbs += "/" + boneJsonObject[jsonFieldPath3D].toString();
     // children
     QJsonArray childrenArray = boneJsonObject[jsonFieldChildren].toArray();
-    for(const auto &child : childrenArray){
-        QString chldName = child[jsonFieldName].toString();
-        Point3F offsetPnt(child[QString("x")].toDouble(), child[QString("y")].toDouble(), child[QString("z")].toDouble());
+    for(const auto &child : qAsConst(childrenArray)){
+        QString chldName = child.toObject()[jsonFieldName].toString();
+        Point3F offsetPnt(child.toObject()[QString("x")].toDouble(),
+                child.toObject()[QString("y")].toDouble(),
+                child.toObject()[QString("z")].toDouble());
         childrenPoints.insert(chldName, offsetPnt);
     }
     // parent
@@ -84,8 +86,19 @@ man::Point3F man::AbstractBone::getLowestPoint()
 
 void man::AbstractBone::drawObjectGL() const
 {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glLineWidth(1.0f);
     for(size_t i = 0; i < stlObject.triangles.size(); i++){
+        glBegin(GL_TRIANGLES);
+        if(stlObject.triangles[i].isGood){
+            glColor3ub(color.r, color.g, color.b);
+            glVertex3f(stlObject.triangles[i].vertex[0].x, stlObject.triangles[i].vertex[0].y, stlObject.triangles[i].vertex[0].z);
+            glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
+            glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);
+        }
+        glEnd();
+    }
+    /*for(size_t i = 0; i < stlObject.triangles.size(); i++){
         glBegin(GL_TRIANGLES);
         if(stlObject.triangles[i].isGood)
             glColor3ub(color.r, color.g, color.b);
@@ -95,7 +108,20 @@ void man::AbstractBone::drawObjectGL() const
         glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
         glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);
         glEnd();
+    }*/
+    // ---
+    for(size_t i = 0; i < stlObject.additional.size(); i++){
+        glBegin(GL_TRIANGLES);
+        if(stlObject.additional[i].isGood)
+            glColor3ub(color.r, color.g, color.b);
+        else
+            glColor3ub(colorCut.r, colorCut.g, colorCut.b);
+        glVertex3f(stlObject.additional[i].vertex[0].x, stlObject.additional[i].vertex[0].y, stlObject.additional[i].vertex[0].z);
+        glVertex3f(stlObject.additional[i].vertex[1].x, stlObject.additional[i].vertex[1].y, stlObject.additional[i].vertex[1].z);
+        glVertex3f(stlObject.additional[i].vertex[2].x, stlObject.additional[i].vertex[2].y, stlObject.additional[i].vertex[2].z);
+        glEnd();
     }
+    // ---
     if(basePoint){
         QMap<QString, Point3F>::const_iterator chlPt;
         for(chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){

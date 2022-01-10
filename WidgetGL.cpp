@@ -56,7 +56,7 @@ void WidgetGL::paintGL()
 
     drawAxis();
 
-    cutSufaces.begin()->drawObjectGL();
+    cutSuface.drawObjectGL();
 
     // DRAW
     if(human){

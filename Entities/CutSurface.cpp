@@ -20,11 +20,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton)
     calcPlaneEquation();
 
     // find start bone
-    AbstractBone* startBone = nullptr;
-    QMap<QString, AbstractBone*>::iterator startIter;
-    for (startIter = skeleton->bones.begin(); startIter != skeleton->bones.end(); startIter++)
-        if(startIter.value()->parentOffset.str == notAvlbl)
-            startBone = startIter.value();
+    AbstractBone* startBone = skeleton->getStartBone();
     if(!startBone) return;
 
     // -----
@@ -44,11 +40,8 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton)
                     bool isInter = isIntersect(ptBeg, ptInter, ptEnd);
                     if(isInter){ // IF INTERSECT
                         thisChild->interSects.push_back(ptInter);
-                        if(!skeleton->isHuman){
+                        if(!skeleton->isHuman) // --- one make real bone ---
                             thisChild->isExist = true;
-                            for(auto &tr : thisChild->stlObject.triangles)
-                                tr.isGood = true;
-                        }
                         cutAllLower(skeleton->bones[chIter.key()], skeleton->isHuman);
                         cutSingleLower(thisChild, skeleton->isHuman);
                     }
@@ -64,6 +57,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton)
 
 void man::CutSurface::drawObjectGL() const
 {
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glLineWidth(2.0f);
     glBegin(GL_TRIANGLES);
     glColor3ub(color.r, color.g, color.b);
@@ -115,7 +109,7 @@ bool man::CutSurface::isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3
 
         //SP ( X - O, Y - O ) <=0
         float inter = dotProduct(ptInter - ptBeg, ptInter - ptEnd);
-        if(inter < 0){ // if inter < 0 => отрезок пересекает, иначе нет
+        if(inter < 0.0f){ // if inter < 0 => отрезок пересекает, иначе нет
             isInter = true;
         }
         else isInter = false;
@@ -150,19 +144,99 @@ void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
     }
 }
 
-void man::CutSurface::cutSingleLower(AbstractBone *startBone, bool isHuman)
+void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 {
-    for(auto &tr : startBone->stlObject.triangles){
-        float pt0 = applyEqual(tr.vertex[0]);
-        float pt1 = applyEqual(tr.vertex[1]);
-        float pt2 = applyEqual(tr.vertex[2]);
-        if((pt0 > 0.0f) && (pt1 > 0.0f) && (pt2 > 0.0f)){
-            tr.isGood = !isHuman;
+    for(auto &tr : bone->stlObject.triangles){
+        int res = 0;
+        QMultiMap<float, int>pts;
+        for(int i = 0; i < 3; i++){
+            float pos = applyEqual(tr.vertex[i]);
+            pts.insert(pos, i);
+            if(pos > 0.0f) res++;
+        }
+
+        // -----
+        if(isHuman){
+            if(res == 3){ /* all triangle down*/
+                tr.isGood = !isHuman;
+            }
+            else if(res == 2){ // split 2 pt down
+                tr.isGood = !isHuman;
+                // ---
+                std::vector<Vertex> vrxReal;
+                QMultiMap<float, int>::iterator it;
+                for (it = pts.begin(); it != pts.end(); it++)
+                    vrxReal.push_back(tr.vertex[it.value()]);
+
+                Vertex X, Z;
+                bool is20 = isIntersect(vrxReal[0], X, vrxReal[1]);
+                bool is21 = isIntersect(vrxReal[0], Z, vrxReal[2]);
+                if(!is20 || !is21) continue;
+
+                Triangle sector0(X, vrxReal[0], Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
+                bone->stlObject.additional.push_back(sector0);
+            }
+            else if(res == 1){ // split 1 pt down
+                tr.isGood = !isHuman;
+                // ---
+                std::vector<Vertex> vrxReal;
+                QMultiMap<float, int>::iterator it;
+                for (it = pts.begin(); it != pts.end(); it++)
+                    vrxReal.push_back(tr.vertex[it.value()]);
+
+                Vertex X, Y, Z;
+
+                // TODO: -----!!!-----
+            }
+            else{ /* res == 0, all triangle up, do nothing*/ }
         }
         else{
+            if(res == 3){ tr.isGood = !isHuman; } // all triangle down
+            else if(res == 2){ // split 2 pt down
+                std::vector<Vertex> vrxReal;
+                QMultiMap<float, int>::iterator it;
+                for (it = pts.begin(); it != pts.end(); it++)
+                    vrxReal.push_back(tr.vertex[it.value()]);
 
+                Vertex X, Y, Z;
+                Y.x = (vrxReal[1].x + vrxReal[2].x) / 2;
+                Y.y = (vrxReal[1].y + vrxReal[2].y) / 2;
+                Y.z = (vrxReal[1].z + vrxReal[2].z) / 2;
+
+                bool is01 = isIntersect(vrxReal[0], X, vrxReal[1]);
+                bool is02 = isIntersect(vrxReal[0], Z, vrxReal[2]);
+                if(!is01 || !is02) continue;
+
+                Triangle sector0(vrxReal[1], X, Y, Vertex(0.0f, 0.0f, 1.0f), !isHuman);
+                Triangle sector1(Z, Y, X, Vertex(0.0f, 0.0f, 1.0f), !isHuman);
+                Triangle sector2(Y, Z, vrxReal[2], Vertex(0.0f, 0.0f, 1.0f), !isHuman);
+
+                bone->stlObject.additional.push_back(sector0);
+                bone->stlObject.additional.push_back(sector1);
+                bone->stlObject.additional.push_back(sector2);
+            }
+            else if(res == 1){ // split 1 pt down
+                std::vector<Vertex> vrxReal;
+                QMultiMap<float, int>::iterator it;
+                for (it = pts.begin(); it != pts.end(); it++)
+                    vrxReal.push_back(tr.vertex[it.value()]);
+
+                Vertex X, Z;
+                bool is20 = isIntersect(vrxReal[2], X, vrxReal[0]);
+                bool is21 = isIntersect(vrxReal[2], Z, vrxReal[1]);
+                if(!is20 || !is21) continue;
+
+                Triangle sector0(X, Z, vrxReal[2], Vertex(0.0f, 0.0f, 1.0f), !isHuman);
+                bone->stlObject.additional.push_back(sector0);
+            }
+            else{ /* res == 0, all triangle up, do nothing*/ }
         }
     }
+}
+
+void man::CutSurface::splitTriangle()
+{
+
 }
 
 man::Point3F man::CutSurface::vectorProduct(const Point3F &A, const Point3F &B)
@@ -182,9 +256,9 @@ float man::CutSurface::dotProduct(const Point3F &A, const Point3F &B)
 
 void man::CutSurface::calcCenter() const
 {
-    center.x = (surface.vertex[0].x + surface.vertex[1].x + surface.vertex[2].x) / 3.0f;
-    center.y = (surface.vertex[0].y + surface.vertex[1].y + surface.vertex[2].y) / 3.0f;
-    center.z = (surface.vertex[0].z + surface.vertex[1].z + surface.vertex[2].z) / 3.0f;
+    center.x = (surface.vertex[0].x + surface.vertex[1].x + surface.vertex[2].x) / 3;
+    center.y = (surface.vertex[0].y + surface.vertex[1].y + surface.vertex[2].y) / 3;
+    center.z = (surface.vertex[0].z + surface.vertex[1].z + surface.vertex[2].z) / 3;
 }
 
 void man::CutSurface::calcPlaneEquation()

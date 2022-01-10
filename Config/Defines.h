@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QString>
 #include <QJsonArray>
+#include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonParseError>
@@ -45,6 +46,7 @@ enum Material{
 };
 
 enum StlFormat{
+    StlBadFormat    = -1,
     StlASCII        = 1,
     StlBinary       = 2
 };

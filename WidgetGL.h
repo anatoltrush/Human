@@ -18,7 +18,7 @@ public:
 
     man::AbstractHuman* human = nullptr;
     man::AbstractHuman* cyborg = nullptr;
-    std::vector<man::CutSurface> cutSufaces = {man::CutSurface()};
+    man::CutSurface cutSuface;
 
     void drawAxis();
 
