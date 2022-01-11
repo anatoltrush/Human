@@ -60,13 +60,15 @@ void WidgetGL::paintGL()
 
     // DRAW
     if(human){
-        for(const auto &bone : human->skeleton->bones){
+        for(const auto &bone : qAsConst(human->skeleton->bones)){
+            if(!bone) continue;
             bone->drawObjectGL();
             bone->drawBasePoint();
         }
     }
     if(cyborg){
-        for(const auto &bone : cyborg->skeleton->bones){
+        for(const auto &bone : qAsConst(cyborg->skeleton->bones)){
+            if(!bone) continue;
             bone->drawObjectGL();
             bone->drawBasePoint();
         }

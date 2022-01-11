@@ -4,20 +4,20 @@ man::CutSurface::CutSurface()
 {
     color = colDeepPink;
 
-    surface.vertex[0] = Point3F(-20.0f, -40.0f, 15.0f); // NOTE: delete VERT
+    /*surface.vertex[0] = Point3F(-20.0f, -40.0f, 15.0f); // NOTE: delete VERT
     surface.vertex[1] = Point3F(-20.0f, 40.0f, 15.0f);
-    surface.vertex[2] = Point3F(-20.0f, 0.0f, -60.0f);
+    surface.vertex[2] = Point3F(-20.0f, 0.0f, -60.0f);*/
 
-    /*surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete ANGLE
+    surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete ANGLE
     surface.vertex[1] = Point3F(-1.0f, 3.0f, 2.0f);
-    surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);*/
+    surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);
 
     /*surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete HORIZ
     surface.vertex[1] = Point3F(120.0f, 100.0f, -60.0f);
     surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);*/
 }
 
-void man::CutSurface::execute(AbstractSkeleton *skeleton)
+void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
 {
     if(!skeleton) return;
     skeleton->resetBones();
@@ -43,7 +43,28 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton)
                     Point3F ptEnd = chIter.value();
                     bool isInter = isIntersect(ptBeg, ptInter, ptEnd);
                     if(isInter){ // IF INTERSECT
-                        thisChild->interSects.push_back(ptInter);
+                        // --- check parents have intersects ---
+                        bool isParInter = false;
+                        AbstractBone falseChild = *thisChild;
+                        while (true) {
+                            AbstractBone* thisParent = falseChild.parentPointer;
+                            if(!thisParent){
+                                isParInter = false;
+                                break;
+                            }
+                            // ---
+                            QMap<QString, Point3F>::iterator findInter = thisParent->intersections.find(falseChild.name);
+                            if(findInter != thisParent->intersections.end()){
+                                isParInter = true;
+                                isWarning = true; // --- WARNING --- bad surface angle
+                                break;
+                            }
+                            falseChild = *thisParent;
+                        }
+                        if(isParInter) continue;
+                        // ---
+
+                        thisChild->intersections.insert(chIter.key(), ptInter);
                         if(!skeleton->isHuman) // --- one make real bone ---
                             thisChild->isExist = true;
                         cutAllLower(skeleton->bones[chIter.key()], skeleton->isHuman);
@@ -125,6 +146,8 @@ bool man::CutSurface::isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3
 
 void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
 {
+    if(!startBone) return;
+    // ---
     std::vector<AbstractBone*> allChildBones = {startBone};
     std::vector<AbstractBone*> vecParents = {startBone};
     while (true) {

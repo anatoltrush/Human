@@ -4,7 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <iomanip>
 
+#include "Algorithms/ExtraMath.h"
 #include "Config/Defines.h"
 #include "Entities/Primitives.h"
 
@@ -18,7 +20,7 @@ public:
     Status parseFromFile(const QString &pathToFile, StlObject &object);
     void calcAddProps(StlObject &object);
 
-    Status svaeToFile(const QString &pathToFile, StlObject &object);
+    Status saveToFile(const QString &pathToDir, StlObject &object);
 
 private:
     const std::string keyWSolid          = "solid";
@@ -34,8 +36,7 @@ private:
 
     void calcSquare(StlObject &object);
     void calcVolume(StlObject &object);
-
-    float distance(const Point3F &ptA, const Point3F &ptB);
+    std::string flToSc(float value);
 };
 
 }

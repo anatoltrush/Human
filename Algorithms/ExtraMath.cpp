@@ -37,3 +37,10 @@ man::Point3F man::rotatePoint3FZ(Point3F point, const float &angZ)
     resPoint.z = point.z;
     return resPoint;
 }
+
+float man::distance(const man::Point3F &ptA, const man::Point3F &ptB)
+{
+    return sqrt((ptB.x - ptA.x) * (ptB.x - ptA.x)
+                + (ptB.y - ptA.y) * (ptB.y - ptA.y)
+                + (ptB.z - ptA.z) * (ptB.z - ptA.z));
+}

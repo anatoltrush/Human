@@ -17,3 +17,9 @@ QMap<QString, QVariant> man::AbstractHuman::getPropertyList() const
     props["heigh"] = skeleton->height;
     return props;
 }
+
+man::Status man::AbstractHuman::serialize(const QString &path)
+{
+    Status res = skeleton->serialize(path);
+    return res;
+}

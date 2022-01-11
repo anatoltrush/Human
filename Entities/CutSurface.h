@@ -16,7 +16,7 @@ public:
     Triangle surface;
     Point4F equal;
 
-    void execute(AbstractSkeleton* skeleton);
+    void execute(AbstractSkeleton* skeleton, bool &isWarning);
 
     virtual void drawObjectGL() const override;
 

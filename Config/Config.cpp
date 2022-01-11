@@ -21,7 +21,7 @@ man::Status man::Config::loadConfigData()
     configJsonObject = jsonConfigDocument.object();
 
     QJsonArray skeletonArray = configJsonObject[jsonFieldSkeletons].toArray();
-    for(const auto &skelPths : skeletonArray){
+    for(const auto &skelPths : qAsConst(skeletonArray)){
         QString name = skelPths.toObject().value(jsonFieldName).toString();
         QString path = skelPths.toObject().value(jsonFieldPath).toString();
         pathsToSkeletons.insert(name, path);

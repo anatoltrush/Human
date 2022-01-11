@@ -11,6 +11,7 @@ namespace man{
     Point3F rotatePoint3FY(Point3F point, const float &angY);
     Point3F rotatePoint3FZ(Point3F point, const float &angZ);
 
+    float distance(const Point3F &ptA, const Point3F &ptB);
 }
 
 #endif // EXTRAMATH_H

@@ -30,19 +30,25 @@ void MainWindow::setCyborg(man::AbstractHuman *cyborg)
 
 void MainWindow::updUi()
 {
-    //ui->widgetGL->cyborg->skeleton->rotateBonesSingle(ui->widgetGL->cyborg->skeleton->bones["RightHand"], man::Angle(-0.2f, 0.0f, 0.0f));
-    //ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton);
-    //ui->widgetGL->update();
-    //ui->l_triangles->setText("Tri: " + QString::number(humanAbs->skeleton->bones["Skull"]->stlObject.triangles.size()));
+    /*ui->widgetGL->cyborg->skeleton->rotateBonesSingle(ui->widgetGL->cyborg->skeleton->bones["RightHand"], man::Angle(-0.2f, 0.0f, 0.0f));
+    ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton);
+    ui->widgetGL->update();*/
+    //ui->l_triangles->setText("Tri: " + QString::number(human->skeleton->bones["Skull"]->stlObject.triangles.size()));
 }
 
 void MainWindow::on_pB_Cut_clicked()
 {
+    bool isWarn = false;
     if(ui->widgetGL->cyborg)
-        ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton);
+        ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton, isWarn);
     if(ui->widgetGL->human)
-        ui->widgetGL->cutSuface.execute(ui->widgetGL->human->skeleton);
+        ui->widgetGL->cutSuface.execute(ui->widgetGL->human->skeleton, isWarn);
     ui->widgetGL->update();
+
+    if(isWarn)
+        ui->pB_Cut->setStyleSheet("background-color: orange");
+    else
+        ui->pB_Cut->setStyleSheet("background-color: green");
 }
 
 
@@ -61,3 +67,10 @@ void MainWindow::on_pB_CutDown_clicked()
     ui->widgetGL->update();
 }
 
+
+void MainWindow::on_pB_Srlzd_clicked()
+{
+    //man::Status ser = ui->widgetGL->human->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
+    man::Status ser = ui->widgetGL->cyborg->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
+    ui->pB_Srlzd->setText("Ser = " + QString::number(ser));
+}

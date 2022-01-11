@@ -25,9 +25,9 @@ public:
 
     float height = 0.0f;
 
-    StlHandler stlReader;
+    StlHandler stlHandler;
 
-    virtual man::Status loadFromJson(const Config& config, bool isHuman);
+    virtual man::Status loadFromJson(const Config& config);
     virtual man::Status construct();
 
     AbstractBone* getStartBone();
@@ -36,6 +36,8 @@ public:
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
     void resetBones();
+
+    virtual Status serialize(const QString &pathDir);
 
 private:
     void calcHeight();

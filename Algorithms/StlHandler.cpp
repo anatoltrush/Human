@@ -27,9 +27,39 @@ void man::StlHandler::calcAddProps(StlObject &object)
     calcVolume(object);
 }
 
-man::Status man::StlHandler::svaeToFile(const QString &pathToFile, man::StlObject &object)
+man::Status man::StlHandler::saveToFile(const QString &pathToDir, man::StlObject &object)
 {
+    QString pathAbs = pathToDir + "/" + object.objectName + ".stl";
 
+    std::ofstream fstr(pathAbs.toStdString(), std::ios::out | std::ios::trunc);
+    if(!fstr.is_open())
+        return StatusBadSrlzd;
+
+    std::vector<std::string> data;
+
+    data.push_back(keyWSolid + " " + object.objectName.toStdString() + "\n");
+    for(const auto &tr : object.triangles){
+        std::string nrData = "  " + keyWFacetNormal + " ";
+        nrData += flToSc(tr.normal.x) + " " + flToSc(tr.normal.y) + " " + flToSc(tr.normal.z) + "\n";
+        data.push_back(nrData);
+        data.push_back("    outer loop\n");
+        for(const auto &vr : tr.vertex){
+            std::string vrData = "      " + keyWVertex + " ";
+            vrData += flToSc(vr.x) + " " + flToSc(vr.y) + " " + flToSc(vr.z) + "\n";
+            data.push_back(vrData);
+        }
+        data.push_back("    endloop\n");
+        data.push_back("  endfacet\n");
+    }
+    data.push_back("endsolid " + object.objectName.toStdString());
+
+    // ---
+    for(const auto &str : data)
+        fstr <<str;
+    // ---
+
+    fstr.close();
+    return StatusOk;
 }
 
 man::StlFormat man::StlHandler::isStlASCII(const QString &pathToFile)
@@ -200,9 +230,9 @@ void man::StlHandler::calcVolume(StlObject &object)
 
 }
 
-float man::StlHandler::distance(const Point3F &ptA, const Point3F &ptB)
+std::string man::StlHandler::flToSc(float value)
 {
-    return sqrt((ptB.x - ptA.x) * (ptB.x - ptA.x)
-                + (ptB.y - ptA.y) * (ptB.y - ptA.y)
-                + (ptB.z - ptA.z) * (ptB.z - ptA.z));
+    std::stringstream stream;
+    stream << std::fixed << std::scientific << value;
+    return stream.str();
 }

@@ -25,12 +25,12 @@ public:
 
     Angle rotation;
     Point3F* basePoint = nullptr;
-    std::vector<Point3F> interSects;
 
     Point3FStr parentOffset;
     QMap<QString, Point3F> childrenPoints;
+    QMap<QString, Point3F> intersections;
 
-    std::vector<AbstractBone*> parentsPointers;
+    AbstractBone* parentPointer = nullptr;
     std::vector<AbstractBone*> childrenPointers;
 
     QJsonObject boneJsonObject;

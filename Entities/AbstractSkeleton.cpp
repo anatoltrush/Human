@@ -13,7 +13,7 @@ man::AbstractSkeleton::~AbstractSkeleton()
     std::cout << "-*-*-*-Delete AbsSkel-*-*-*-" <<  name.toStdString() << std::endl; // NOTE: delete
 }
 
-man::Status man::AbstractSkeleton::loadFromJson(const Config &config, bool isHuman)
+man::Status man::AbstractSkeleton::loadFromJson(const Config &config)
 {
     QString pathToEntityRel = config.pathsToSkeletons[this->name];
     QString pathToEntityAbs = config.pathApplication + "/" + pathToEntityRel;
@@ -46,7 +46,7 @@ man::Status man::AbstractSkeleton::loadFromJson(const Config &config, bool isHum
     if (listJsonModels.isEmpty()) return StatusJsonListIsEmpty;
 
     // Fill JSON
-    for(const auto &jsonModel : listJsonModels){
+    for(const auto &jsonModel : qAsConst(listJsonModels)){
         QFile jsonBoneFile(jsonModel.absoluteFilePath());
         if (!jsonBoneFile.open(QIODevice::ReadOnly))
             return StatusBoneNotLoaded;
@@ -78,8 +78,8 @@ man::Status man::AbstractSkeleton::construct()
     QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
-        int res3DLoad = stlReader.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
-        stlReader.calcAddProps(i.value()->stlObject);
+        int res3DLoad = stlHandler.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
+        stlHandler.calcAddProps(i.value()->stlObject);
     }
 
     // --- ChildrenPointers ---
@@ -91,7 +91,7 @@ man::Status man::AbstractSkeleton::construct()
             QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
             if(mapFind != bones.end()){
                 bnIter.value()->childrenPointers.push_back(bones[childName]);
-                bones[childName]->parentsPointers.push_back(bnIter.value());
+                bones[childName]->parentPointer = bnIter.value();
             }
         }
     }
@@ -137,14 +137,18 @@ man::AbstractBone *man::AbstractSkeleton::getStartBone()
 {
     AbstractBone* startBone = nullptr;
     QMap<QString, AbstractBone*>::iterator startIter;
-    for (startIter = bones.begin(); startIter != bones.end(); startIter++)
+    for (startIter = bones.begin(); startIter != bones.end(); startIter++){
+        if(!startIter.value()) continue;
         if(startIter.value()->parentOffset.str == notAvlbl)
             startBone = startIter.value();
+    }
     return startBone;
 }
 
 void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
 {
+    if(!startBone) return;
+    // ---
     startBone->rotateBone(startBone->childrenPoints.begin().value(), startBone->rotation);
     std::vector<AbstractBone*> vecParents = {startBone};
     while (true) {
@@ -163,6 +167,7 @@ void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
 
 void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Angle &angles)
 {
+    if(!startBone) return;
     startBone->rotation = angles;
     // ---
     std::vector<AbstractBone*> allChildBones = {startBone};
@@ -193,12 +198,44 @@ QMap<QString, QVariant> man::AbstractSkeleton::getPropertyList() const
 void man::AbstractSkeleton::resetBones()
 {
     for(const auto &bn : qAsConst(bones)){
+        if(!bn) continue;
         bn->isExist = this->isHuman;
-        bn->interSects.clear();
+        bn->intersections.clear();
         for(auto &tr : bn->stlObject.triangles)
             tr.isGood = this->isHuman;
         bn->stlObject.additional.clear();
     }
+}
+
+man::Status man::AbstractSkeleton::serialize(const QString &pathDir)
+{
+    QMap<QString, AbstractBone*>::iterator i;
+    for (i = bones.begin(); i != bones.end(); i++){
+        if(i.value()->isExist){
+            StlObject object;
+            std::vector<Triangle> allTriangles;
+            // ---
+            for(const auto &tr : i.value()->stlObject.triangles){
+                if(tr.isGood)
+                    allTriangles.push_back(tr);
+            }
+            for(const auto &ad : i.value()->stlObject.additional){
+                if(ad.isGood)
+                    allTriangles.push_back(ad);
+            }
+            // ---
+            object.triangles = allTriangles;
+            if(i.key().isEmpty())
+                object.objectName = QUuid::createUuid().toString();
+            else
+                object.objectName = i.key();
+
+            // --- stlHandler ---
+            Status res = stlHandler.saveToFile(pathDir, object);
+            if(res != StatusOk) return res;
+        }
+    }
+    return StatusOk;
 }
 
 void man::AbstractSkeleton::calcHeight()

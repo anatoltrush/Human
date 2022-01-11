@@ -36,7 +36,8 @@ enum Status{
 
     // other
     StatusNotFinished       = -10,
-    StatusBadFileFormat     = -11
+    StatusBadFileFormat     = -11,
+    StatusBadSrlzd          = -12
 };
 
 enum Material{

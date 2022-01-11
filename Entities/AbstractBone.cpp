@@ -132,10 +132,11 @@ void man::AbstractBone::drawObjectGL() const
             glVertex3f(chlPt.value().x, chlPt.value().y, chlPt.value().z);
             glEnd();
         }
-        for(size_t i = 0; i < interSects.size(); i++){
+        QMap<QString, Point3F>::const_iterator inter;
+        for (inter = intersections.begin(); inter != intersections.end(); inter++){
             glPointSize(6.0f);
             glBegin(GL_POINTS);
-            glVertex3f(interSects[i].x, interSects[i].y, interSects[i].z);
+            glVertex3f(inter.value().x, inter.value().y, inter.value().z);
             glEnd();
         }
     }

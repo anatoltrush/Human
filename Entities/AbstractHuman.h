@@ -19,6 +19,7 @@ public:
 
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
+    virtual Status serialize(const QString &path);
 };
 
 }
