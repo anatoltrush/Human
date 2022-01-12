@@ -44,3 +44,21 @@ float man::distance(const man::Point3F &ptA, const man::Point3F &ptB)
                 + (ptB.y - ptA.y) * (ptB.y - ptA.y)
                 + (ptB.z - ptA.z) * (ptB.z - ptA.z));
 }
+
+float man::squareTriangle(const man::Point3F &A, const man::Point3F &B, const man::Point3F &C)
+{
+    float ab = distance(A, B);
+    float bc = distance(B, C);
+    float ca = distance(C, A);
+
+    float per = (ab + bc + ca) / 2;
+    float sqrTriangle = sqrt(per * (per - ab) * (per - bc) * (per - ca));
+
+    return sqrTriangle;
+}
+
+float man::squarePolygon(std::vector<man::Point3F> &contour)
+{
+    float square = 0.0f;
+    return square;
+}

@@ -35,6 +35,14 @@ struct Point3F
         return retPoint;
     }
 
+    virtual Point3F operator / (float div){
+        Point3F retPoint;
+        retPoint.x = this->x / div;
+        retPoint.y = this->y / div;
+        retPoint.z = this->z / div;
+        return retPoint;
+    }
+
     virtual Point3F operator -= (const Point3F &other){
         this->x -= other.x;
         this->y -= other.y;
@@ -111,6 +119,13 @@ struct Triangle
         vertex[2] = two;
         normal = norm;
         this->isGood = isGood;
+    }
+
+    std::vector<Point3F> toVector(){
+        std::vector<Point3F> contour;
+        for(int i = 0; i < 3; i++)
+            contour.push_back(vertex[i]);
+        return contour;
     }
 
     Vertex vertex[3];

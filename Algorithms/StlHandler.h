@@ -18,7 +18,7 @@ public:
     StlHandler();
 
     Status parseFromFile(const QString &pathToFile, StlObject &object);
-    void calcAddProps(StlObject &object);
+    void calcAddProperties(StlObject &object);
 
     Status saveToFile(const QString &pathToDir, StlObject &object);
 

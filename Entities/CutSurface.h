@@ -24,10 +24,11 @@ public:
 
 private:
     bool isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3F &ptEnd);
+    bool isInContour(std::vector<Point3F> &contour, const Point3F &pt);
 
     void cutAllLower(AbstractBone* startBone, bool isHuman);
     void cutSingleLower(AbstractBone* bone, bool isHuman);
-    void splitTriangle();
+    std::vector<Triangle> makePlug(std::vector<Point3F> &pts);
 
     Point3F vectorProduct(const Point3F &A, const Point3F &B);
     float dotProduct(const Point3F &A, const Point3F &B);

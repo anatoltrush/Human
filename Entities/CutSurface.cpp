@@ -8,13 +8,21 @@ man::CutSurface::CutSurface()
     surface.vertex[1] = Point3F(-20.0f, 40.0f, 15.0f);
     surface.vertex[2] = Point3F(-20.0f, 0.0f, -60.0f);*/
 
-    surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete ANGLE
+    /*surface.vertex[0] = Point3F(3.0f, -2.0f, 4.0f); // NOTE: delete ANGLE
     surface.vertex[1] = Point3F(-1.0f, 3.0f, 2.0f);
-    surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);
+    surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);*/
 
-    /*surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete HORIZ
+    surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete HORIZ
+    surface.vertex[1] = Point3F(120.0f, 100.0f, -60.0f);
+    surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);
+
+    /*surface.vertex[0] = Point3F(0.0f, 100.0f, -60.0f); // NOTE: delete HORIZ HALF
     surface.vertex[1] = Point3F(120.0f, 100.0f, -60.0f);
     surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);*/
+
+    /*surface.vertex[0] = Point3F(-1.0f, 1.0f, -60.0f); // NOTE: delete HORIZ small
+    surface.vertex[1] = Point3F(1.0f, 1.0f, -60.0f);
+    surface.vertex[2] = Point3F(0.0f, -1.0f, -60.0f);*/
 }
 
 void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
@@ -135,13 +143,37 @@ bool man::CutSurface::isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3
         //SP ( X - O, Y - O ) <=0
         float inter = dotProduct(ptInter - ptBeg, ptInter - ptEnd);
         if(inter < 0.0f){ // if inter < 0 => отрезок пересекает, иначе нет
-            isInter = true;
+            std::vector <Point3F> contour = {surface.toVector()};
+            isInter = isInContour(contour, ptInter);
         }
         else isInter = false;
     }
     else isInter = false;
 
     return isInter;
+}
+
+bool man::CutSurface::isInContour(std::vector<man::Point3F> &contour, const Point3F &pt)
+{
+    // float contSquare = squarePolygon(contour); // TODO: implement squarePolygon()
+    float contSquare = squareTriangle(contour[0], contour[1], contour[2]);
+
+    uint64_t sqrSumm = 0;
+
+    for(size_t i = 0; i < contour.size(); i++){
+        size_t nextInd = i + 1;
+        if(nextInd == contour.size())
+            nextInd = 0;
+
+        Point3F A = contour[i];
+        Point3F B = pt;
+        Point3F C = contour[nextInd];
+
+        float triSq = squareTriangle(A, B, C);
+        sqrSumm += triSq;
+    }
+
+    return ((sqrSumm + 0.001f/*small add*/) > contSquare) ? false : true;
 }
 
 void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
@@ -173,6 +205,8 @@ void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
 
 void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 {
+    std::vector<Point3F> plugPts;
+    // -----
     for(auto &tr : bone->stlObject.triangles){
         int res = 0;
         QMultiMap<float, int>pts;
@@ -202,6 +236,9 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 
                 Triangle sector0(X, vrxReal[0], Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
                 bone->stlObject.additional.push_back(sector0);
+                // ---
+                plugPts.push_back(X);
+                plugPts.push_back(Z);
             }
             else if(res == 1){ // split 1 pt down
                 tr.isGood = !isHuman;
@@ -227,7 +264,9 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 bone->stlObject.additional.push_back(sector0);
                 bone->stlObject.additional.push_back(sector1);
                 bone->stlObject.additional.push_back(sector2);
-
+                // ---
+                plugPts.push_back(X);
+                plugPts.push_back(Z);
             }
             else{ /* res == 0, all triangle up, do nothing*/ }
         }
@@ -257,6 +296,9 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 bone->stlObject.additional.push_back(sector0);
                 bone->stlObject.additional.push_back(sector1);
                 bone->stlObject.additional.push_back(sector2);
+                // ---
+                plugPts.push_back(X);
+                plugPts.push_back(Z);
             }
             else if(res == 1){ // split 1 pt down
                 std::vector<Vertex> vrxReal;
@@ -271,15 +313,56 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 
                 Triangle sector0(X, Z, vrxReal[2], Vertex(0.0f, 0.0f, 1.0f), !isHuman);
                 bone->stlObject.additional.push_back(sector0);
+                // ---
+                plugPts.push_back(X);
+                plugPts.push_back(Z);
             }
             else{ /* res == 0, all triangle up, do nothing*/ }
         }
     }
+    std::vector<Triangle> plug = makePlug(plugPts);
+    bone->stlObject.additional.insert(bone->stlObject.additional.end(), plug.begin(), plug.end());
 }
 
-void man::CutSurface::splitTriangle()
+std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<man::Point3F> &pts)
 {
+    std::vector<man::Point3F> unique = pts;
+    float precision = 0.001f;
+    for(size_t i = 0; i < unique.size(); i++){
+        for(size_t j = 0; j < unique.size(); j++){
+            if(i == j) continue;
+            float dist = distance(unique[i], unique[j]);
+            if(dist < precision){
+                unique.erase(unique.begin() + i);
+                i--;
+            }
+        }
+    }
 
+    // ---
+    std::vector<man::Triangle> resVec;
+    // ---
+    if(unique.size() < 3){}
+    else if(unique.size() == 3){
+        Triangle res = Triangle(unique[0], unique[1], unique[2], Vertex(0.0f, 0.0f, 1.0f), true);
+        resVec.push_back(res);
+    }
+    else{
+        int numCircle = 12;
+        Point3F p1;
+        Point3F p2;
+
+        // --- find 2 points ---
+        float radius = 0.0f;
+        for(size_t i = 0; i < unique.size(); i++){
+            for(size_t j = 0; j < unique.size(); j++){
+
+            }
+        }
+        Point3F center = (p1 + p2) / 2;
+        // TODO: ...
+    }
+    return resVec;
 }
 
 man::Point3F man::CutSurface::vectorProduct(const Point3F &A, const Point3F &B)

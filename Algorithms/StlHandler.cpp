@@ -21,7 +21,7 @@ man::Status man::StlHandler::parseFromFile(const QString &pathToFile, StlObject 
     }
 }
 
-void man::StlHandler::calcAddProps(StlObject &object)
+void man::StlHandler::calcAddProperties(StlObject &object)
 {
     calcSquare(object);
     calcVolume(object);
@@ -213,16 +213,8 @@ man::Status man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlO
 void man::StlHandler::calcSquare(StlObject &object)
 {
     object.square = 0.0f;
-    for(const auto &tri : object.triangles){
-        float ab = distance(tri.vertex[0], tri.vertex[1]);
-        float bc = distance(tri.vertex[1], tri.vertex[2]);
-        float ca = distance(tri.vertex[2], tri.vertex[0]);
-
-        float per = (ab + bc + ca) / 2;
-
-        float sqrTri = sqrt(per * (per - ab) * (per - bc) * (per - ca));
-        object.square += sqrTri;
-    }
+    for(const auto &tri : object.triangles)
+        object.square += squareTriangle(tri.vertex[0], tri.vertex[1], tri.vertex[2]);
 }
 
 void man::StlHandler::calcVolume(StlObject &object)

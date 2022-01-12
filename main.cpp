@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     cout << "AbsBone: " + to_string(sizeof(man::AbstractBone)) << endl;
 
     if(conCybSkel == man::StatusOk){w.setCyborg(&cyborg);}
-    if(conHumSkel == man::StatusOk){w.setHuman(&human);}
+    //if(conHumSkel == man::StatusOk){w.setHuman(&human);}
 
     QMap<QString, QVariant> props = cyborg.getPropertyList();
 

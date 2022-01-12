@@ -79,7 +79,7 @@ man::Status man::AbstractSkeleton::construct()
     for (i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
         int res3DLoad = stlHandler.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
-        stlHandler.calcAddProps(i.value()->stlObject);
+        stlHandler.calcAddProperties(i.value()->stlObject);
     }
 
     // --- ChildrenPointers ---

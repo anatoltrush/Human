@@ -12,6 +12,9 @@ namespace man{
     Point3F rotatePoint3FZ(Point3F point, const float &angZ);
 
     float distance(const Point3F &ptA, const Point3F &ptB);
+    float squareTriangle(const Point3F &A, const Point3F &B, const Point3F &C);
+    float squarePolygon(std::vector<Point3F> &contour);
+
 }
 
 #endif // EXTRAMATH_H

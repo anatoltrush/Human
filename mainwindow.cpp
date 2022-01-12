@@ -46,7 +46,7 @@ void MainWindow::on_pB_Cut_clicked()
     ui->widgetGL->update();
 
     if(isWarn)
-        ui->pB_Cut->setStyleSheet("background-color: orange");
+        ui->pB_Cut->setStyleSheet("background-color: yellow");
     else
         ui->pB_Cut->setStyleSheet("background-color: green");
 }
