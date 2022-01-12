@@ -69,8 +69,12 @@ void MainWindow::on_pB_CutDown_clicked()
 
 
 void MainWindow::on_pB_Srlzd_clicked()
-{
+{    
+#ifdef _WIN64
+    man::Status ser = ui->widgetGL->cyborg->serialize("D:\\");
+#else
     //man::Status ser = ui->widgetGL->human->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
     man::Status ser = ui->widgetGL->cyborg->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
+#endif
     ui->pB_Srlzd->setText("Ser = " + QString::number(ser));
 }

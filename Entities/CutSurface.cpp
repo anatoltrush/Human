@@ -234,7 +234,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 bool is02 = isIntersect(vrxReal[0], Z, vrxReal[2]);
                 if(!is01 || !is02) continue;
 
-                Triangle sector0(X, vrxReal[0], Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
+                Triangle sector0(X, vrxReal[0], Z, tr.normal, isHuman);
                 bone->stlObject.additional.push_back(sector0);
                 // ---
                 plugPts.push_back(X);
@@ -257,9 +257,9 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 bool is21 = isIntersect(vrxReal[2], Z, vrxReal[1]);
                 if(!is20 || !is21) continue;
 
-                Triangle sector0(vrxReal[0], Y, X, Vertex(0.0f, 0.0f, 1.0f), isHuman);
-                Triangle sector1(X, Y, Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
-                Triangle sector2(Y, vrxReal[1], Z, Vertex(0.0f, 0.0f, 1.0f), isHuman);
+                Triangle sector0(vrxReal[0], Y, X, tr.normal, isHuman);
+                Triangle sector1(X, Y, Z, tr.normal, isHuman);
+                Triangle sector2(Y, vrxReal[1], Z, tr.normal, isHuman);
 
                 bone->stlObject.additional.push_back(sector0);
                 bone->stlObject.additional.push_back(sector1);
@@ -289,9 +289,9 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 bool is02 = isIntersect(vrxReal[0], Z, vrxReal[2]);
                 if(!is01 || !is02) continue;
 
-                Triangle sector0(vrxReal[1], X, Y, Vertex(0.0f, 0.0f, 1.0f), !isHuman);
-                Triangle sector1(Z, Y, X, Vertex(0.0f, 0.0f, 1.0f), !isHuman);
-                Triangle sector2(Y, Z, vrxReal[2], Vertex(0.0f, 0.0f, 1.0f), !isHuman);
+                Triangle sector0(vrxReal[1], X, Y, tr.normal, !isHuman);
+                Triangle sector1(Z, Y, X, tr.normal, !isHuman);
+                Triangle sector2(Y, Z, vrxReal[2], tr.normal, !isHuman);
 
                 bone->stlObject.additional.push_back(sector0);
                 bone->stlObject.additional.push_back(sector1);
@@ -311,7 +311,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 bool is21 = isIntersect(vrxReal[2], Z, vrxReal[1]);
                 if(!is20 || !is21) continue;
 
-                Triangle sector0(X, Z, vrxReal[2], Vertex(0.0f, 0.0f, 1.0f), !isHuman);
+                Triangle sector0(X, Z, vrxReal[2], tr.normal, !isHuman);
                 bone->stlObject.additional.push_back(sector0);
                 // ---
                 plugPts.push_back(X);
@@ -344,23 +344,51 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<man::Point3F> &
     // ---
     if(unique.size() < 3){}
     else if(unique.size() == 3){
-        Triangle res = Triangle(unique[0], unique[1], unique[2], Vertex(0.0f, 0.0f, 1.0f), true);
-        resVec.push_back(res);
+        Triangle addTri = Triangle(unique[0], unique[1], unique[2], Vertex(0.0f, 0.0f, 1.0f), true);
+        resVec.push_back(addTri);
     }
     else{
-        int numCircle = 12;
-        Point3F p1;
-        Point3F p2;
+        Point3F center;
+        for(size_t i = 0; i < unique.size(); i++)
+            center += unique[i];
+        center /= unique.size();
+        // ---
+        Point3F pFar;
+        float maxDist = 0.0f;
+        for(size_t i = 0; i < unique.size(); i++){
+            float distFar = distance(center, unique[i]);
+            if(distFar > maxDist){
+                maxDist = distFar;
+                pFar = unique[i];
+            }
+        }
 
+        /*Point3F p1;
+        Point3F p2;
         // --- find 2 points ---
-        float radius = 0.0f;
+        float maxDist = 0.0f;
         for(size_t i = 0; i < unique.size(); i++){
             for(size_t j = 0; j < unique.size(); j++){
-
+                if(i == j) continue;
+                float distP1P2 = distance(unique[i], unique[j]);
+                if(distP1P2 > maxDist){
+                    maxDist = distP1P2;
+                    p1 = unique[i];
+                    p2 = unique[j];
+                }
             }
         }
         Point3F center = (p1 + p2) / 2;
-        // TODO: ...
+        // ---
+        for(size_t i = 0; i < unique.size(); i++){
+            size_t nextInd = i + 1;
+            if(nextInd == unique.size())
+                nextInd = 0;
+            Point3F A = unique[i];
+            Point3F B = unique[nextInd];
+            Triangle addTri = Triangle(center, A, B, Vertex(0.0f, 0.0f, 1.0f), true);
+            resVec.push_back(addTri);
+        }*/
     }
     return resVec;
 }
