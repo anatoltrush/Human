@@ -59,6 +59,63 @@ float man::squareTriangle(const man::Point3F &A, const man::Point3F &B, const ma
 
 float man::squarePolygon(std::vector<man::Point3F> &contour)
 {
+    // TODO: implement float man::squarePolygon(std::vector<man::Point3F> &contour)
     float square = 0.0f;
     return square;
+}
+
+bool man::isInContour(const std::vector<man::Point3F> &contour, const Point3F &pt)
+{
+    // float contSquare = squarePolygon(contour); // FIXME: change to squarePolygon()
+    float contourSquare = squareTriangle(contour[0], contour[1], contour[2]);
+
+    uint64_t partsSummSqr = 0;
+    //float partsSummSqr = 0.0f; // ! error
+    for(size_t i = 0; i < contour.size(); i++){
+        size_t nextInd = i + 1;
+        if(nextInd == contour.size())
+            nextInd = 0;
+
+        Point3F A = contour[i];
+        Point3F B = pt;
+        Point3F C = contour[nextInd];
+
+        float triSqare = squareTriangle(A, B, C);
+        partsSummSqr += triSqare;
+    }
+
+    //contourSquare += 0.01f; // small add for float
+    if(partsSummSqr > contourSquare)
+        return false;
+    else
+        return true;
+}
+
+std::vector<man::Point3F> man::makeUnique(const std::vector<man::Point3F> &pts, float precision)
+{
+    std::vector<Point3F> unique = pts;
+    for(size_t i = 0; i < unique.size(); i++){
+        for(size_t j = 0; j < unique.size(); j++){
+            if(i == j) continue;
+            float dist = distance(unique[i], unique[j]);
+            if(dist < precision){
+                unique.erase(unique.begin() + i);
+                i--;
+            }
+        }
+    }
+    return unique;
+}
+
+std::vector<man::Point3F> man::getPtsFromTris(const std::vector<man::Triangle> &tris, float precision)
+{
+    std::vector<Point3F>resVec;
+    for(const auto &tr : tris){
+        resVec.push_back(tr.vertex[0]);
+        resVec.push_back(tr.vertex[1]);
+        resVec.push_back(tr.vertex[2]);
+    }
+    // ---
+    resVec = makeUnique(resVec, precision);
+    return resVec;
 }

@@ -5,7 +5,7 @@ man::StlHandler::StlHandler()
 
 }
 
-man::Status man::StlHandler::parseFromFile(const QString &pathToFile, StlObject &object)
+man::Status man::StlHandler::parseFromFile(QString &pathToFile, StlObject &object)
 {
     StlFormat isFileASCII = isStlASCII(pathToFile);
     if(isFileASCII == StlASCII){
@@ -62,10 +62,32 @@ man::Status man::StlHandler::saveToFile(const QString &pathToDir, man::StlObject
     return StatusOk;
 }
 
-man::StlFormat man::StlHandler::isStlASCII(const QString &pathToFile)
+man::StlFormat man::StlHandler::isStlASCII(QString &pathToFile)
 {
-    std::ifstream inputFileData(pathToFile.toStdString().data());
-    if(!inputFileData) return StlBadFormat;
+    QString ext;
+    for(int i = pathToFile.size() - 1; i >= 0; i--){
+        ext.push_back(pathToFile[i]);
+        if(pathToFile[i] == ".") break;
+    }
+    std::reverse(ext.begin(), ext.end());
+    pathToFile.remove(ext);
+    // ---
+    QString pathToLow = pathToFile + ext.toLower();
+    QString pathToUp = pathToFile + ext.toUpper();
+    // ---
+    std::ifstream inputFileData(pathToLow.toStdString().data());
+    if(!inputFileData){
+        inputFileData = std::ifstream(pathToUp.toStdString().data());
+        if(!inputFileData){
+            return StlBadFormat;
+        }
+        else{
+            pathToFile += ext.toUpper();
+        }
+    }
+    else{
+        pathToFile += ext.toLower();
+    }
 
     uint16_t startReadSize = 512; // NOTE: stl config
     char chars [startReadSize];

@@ -118,7 +118,9 @@ struct Color4ub
 
 struct Triangle
 {
-    Triangle() {}
+    Triangle() {
+        contour.clear();
+    }
     Triangle(const Vertex &zero, const Vertex &one, const Vertex &two,
              const Vertex &norm, bool isGood){
         vertex[0] = zero;
@@ -126,10 +128,11 @@ struct Triangle
         vertex[2] = two;
         normal = norm;
         this->isGood = isGood;
+        contour.clear();
     }
 
-    std::vector<Point3F> toVector(){
-        std::vector<Point3F> contour;
+    const std::vector<Point3F>& toVector(){
+        contour.clear();
         for(int i = 0; i < 3; i++)
             contour.push_back(vertex[i]);
         return contour;
@@ -140,6 +143,9 @@ struct Triangle
     uint16_t attrByteCount = 0;
 
     bool isGood = true;
+
+private:
+    std::vector<Point3F> contour;
 };
 
 struct StlObject

@@ -23,8 +23,7 @@ public:
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
 private:
-    bool isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3F &ptEnd);
-    bool isInContour(std::vector<Point3F> &contour, const Point3F &pt);
+    bool isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3F &ptEnd);    
 
     void cutAllLower(AbstractBone* startBone, bool isHuman);
     void cutSingleLower(AbstractBone* bone, bool isHuman);
@@ -32,6 +31,8 @@ private:
 
     Point3F vectorProduct(const Point3F &A, const Point3F &B);
     float dotProduct(const Point3F &A, const Point3F &B);
+    void normalize(Point3F &pt);
+    void normalize(Point4F &pt);
 
     void calcCenter() const;
     void calcPlaneEquation();

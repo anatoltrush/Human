@@ -15,6 +15,9 @@ namespace man{
     float squareTriangle(const Point3F &A, const Point3F &B, const Point3F &C);
     float squarePolygon(std::vector<Point3F> &contour);
 
+    bool isInContour(const std::vector<Point3F> &contour, const Point3F &pt);
+    std::vector<Point3F> makeUnique(const std::vector<Point3F> &pts, float precision);
+    std::vector<Point3F> getPtsFromTris(const std::vector<Triangle>& tris, float precision);
 }
 
 #endif // EXTRAMATH_H

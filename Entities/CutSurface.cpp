@@ -12,8 +12,8 @@ man::CutSurface::CutSurface()
     surface.vertex[1] = Point3F(-1.0f, 3.0f, 2.0f);
     surface.vertex[2] = Point3F(2.0f, 2.0f, 1.0f);*/
 
-    surface.vertex[0] = Point3F(-120.0f, 100.0f, -60.0f); // NOTE: delete HORIZ
-    surface.vertex[1] = Point3F(120.0f, 100.0f, -60.0f);
+    surface.vertex[0] = Point3F(-120.0f, 100.0f, -80.0f); // NOTE: delete HORIZ
+    surface.vertex[1] = Point3F(120.0f, 100.0f, -80.0f);
     surface.vertex[2] = Point3F(0.0f, -120.0f, -60.0f);
 
     /*surface.vertex[0] = Point3F(0.0f, 100.0f, -60.0f); // NOTE: delete HORIZ HALF
@@ -30,6 +30,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
     if(!skeleton) return;
     skeleton->resetBones();
     calcPlaneEquation();
+    normalize(equal);
 
     // find start bone
     AbstractBone* startBone = skeleton->getStartBone();
@@ -117,6 +118,7 @@ bool man::CutSurface::isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3
 
     //N = VP ( B - A, C - A )
     Point3F N = vectorProduct(surface.vertex[1] - surface.vertex[0], surface.vertex[2] - surface.vertex[0]);
+    normalize(N);
 
     //V = A - X
     Point3F V = surface.vertex[0] - ptBeg;
@@ -142,38 +144,13 @@ bool man::CutSurface::isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3
 
         //SP ( X - O, Y - O ) <=0
         float inter = dotProduct(ptInter - ptBeg, ptInter - ptEnd);
-        if(inter < 0.0f){ // if inter < 0 => отрезок пересекает, иначе нет
-            std::vector <Point3F> contour = {surface.toVector()};
-            isInter = isInContour(contour, ptInter);
-        }
+        if(inter < 0.0f) // if inter < 0 => отрезок пересекает, иначе нет
+            isInter = isInContour(surface.toVector(), ptInter);
         else isInter = false;
     }
     else isInter = false;
 
     return isInter;
-}
-
-bool man::CutSurface::isInContour(std::vector<man::Point3F> &contour, const Point3F &pt)
-{
-    // float contSquare = squarePolygon(contour); // TODO: implement squarePolygon()
-    float contSquare = squareTriangle(contour[0], contour[1], contour[2]);
-
-    uint64_t sqrSumm = 0;
-
-    for(size_t i = 0; i < contour.size(); i++){
-        size_t nextInd = i + 1;
-        if(nextInd == contour.size())
-            nextInd = 0;
-
-        Point3F A = contour[i];
-        Point3F B = pt;
-        Point3F C = contour[nextInd];
-
-        float triSq = squareTriangle(A, B, C);
-        sqrSumm += triSq;
-    }
-
-    return ((sqrSumm + 0.001f/*small add*/) > contSquare) ? false : true;
 }
 
 void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
@@ -211,7 +188,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
         int res = 0;
         QMultiMap<float, int>pts;
         for(int i = 0; i < 3; i++){
-            float pos = applyEqual(tr.vertex[i]);
+            float pos = applyEqual(tr.vertex[i]);            
             pts.insert(pos, i);
             if(pos > 0.0f) res++;
         }
@@ -326,18 +303,8 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 
 std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<man::Point3F> &pts)
 {
-    std::vector<man::Point3F> unique = pts;
     float precision = 0.001f;
-    for(size_t i = 0; i < unique.size(); i++){
-        for(size_t j = 0; j < unique.size(); j++){
-            if(i == j) continue;
-            float dist = distance(unique[i], unique[j]);
-            if(dist < precision){
-                unique.erase(unique.begin() + i);
-                i--;
-            }
-        }
-    }
+    std::vector<Point3F> unique = makeUnique(pts, precision);
 
     // ---
     std::vector<man::Triangle> resVec;
@@ -352,43 +319,46 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<man::Point3F> &
         for(size_t i = 0; i < unique.size(); i++)
             center += unique[i];
         center /= unique.size();
-        // ---
-        Point3F pFar;
-        float maxDist = 0.0f;
-        for(size_t i = 0; i < unique.size(); i++){
-            float distFar = distance(center, unique[i]);
-            if(distFar > maxDist){
-                maxDist = distFar;
-                pFar = unique[i];
-            }
-        }
 
-        /*Point3F p1;
-        Point3F p2;
-        // --- find 2 points ---
         float maxDist = 0.0f;
+        Point3F farest;
         for(size_t i = 0; i < unique.size(); i++){
-            for(size_t j = 0; j < unique.size(); j++){
-                if(i == j) continue;
-                float distP1P2 = distance(unique[i], unique[j]);
-                if(distP1P2 > maxDist){
-                    maxDist = distP1P2;
-                    p1 = unique[i];
-                    p2 = unique[j];
-                }
+            float dist = distance(center, unique[i]);
+            if(dist > maxDist){
+                farest = unique[i];
+                maxDist = dist;
             }
         }
-        Point3F center = (p1 + p2) / 2;
         // ---
-        for(size_t i = 0; i < unique.size(); i++){
+        int vertCount = 12;
+        float degStepZ = 360.0f / (float)vertCount;
+        std::vector<Point3F> hours(vertCount, farest);
+        // ---
+        float degX = acosf(equal.x);
+        float degY = acosf(equal.y);
+        float degZ = acosf(equal.z);
+        // --- rotate triangles ---
+        Angle angle;
+        for(size_t i = 0; i < hours.size(); i++){
+            angle.x = 0.0f;
+            angle.y = 0.0f;
+            angle.z += degStepZ;
+            hours[i] = rotatePoint3F(hours[i], angle.degToRad(), center);
+        }
+        // --- rotate circle ---
+        Angle angleCir(-10.0f, 0.0f, 0.0f);
+        for(size_t i = 0; i < hours.size(); i++){
+            hours[i] = rotatePoint3F(hours[i], angleCir.degToRad(), center);
+        }
+        // --- make triangles ---
+        for(size_t i = 0; i < hours.size(); i++){
             size_t nextInd = i + 1;
-            if(nextInd == unique.size())
+            if(nextInd == hours.size())
                 nextInd = 0;
-            Point3F A = unique[i];
-            Point3F B = unique[nextInd];
-            Triangle addTri = Triangle(center, A, B, Vertex(0.0f, 0.0f, 1.0f), true);
+
+            Triangle addTri(hours[i], center, hours[nextInd], Vertex(0.0f, 0.0f, 1.0f), true);
             resVec.push_back(addTri);
-        }*/
+        }
     }
     return resVec;
 }
@@ -406,6 +376,27 @@ float man::CutSurface::dotProduct(const Point3F &A, const Point3F &B)
 {
     float vsp = A.x * B.x + A.y * B.y + A.z * B.z;
     return vsp;
+}
+
+void man::CutSurface::normalize(Point3F &pt)
+{
+    float mlr = 0.0f;
+
+    mlr = sqrt(pow(pt.x, 2) + pow(pt.y, 2) + pow(pt.z, 2));
+    pt.x = pt.x/mlr;
+    pt.y = pt.y/mlr;
+    pt.z = pt.z/mlr;
+}
+
+void man::CutSurface::normalize(Point4F &pt)
+{
+    float mlr = 0.0f;
+
+    mlr = sqrt(pow(pt.x, 2) + pow(pt.y, 2) + pow(pt.z, 2));
+    pt.x = pt.x/mlr;
+    pt.y = pt.y/mlr;
+    pt.z = pt.z/mlr;
+    pt.d = pt.d/mlr;
 }
 
 void man::CutSurface::calcCenter() const
