@@ -2,7 +2,7 @@
 
 WidgetGL::WidgetGL(QWidget *parent):QOpenGLWidget(parent)
 {
-
+    scale = man::Point3F(0.005f, 0.005f, 0.005f);
 }
 
 void WidgetGL::drawAxis()
@@ -32,11 +32,24 @@ void WidgetGL::initializeGL()
     //glEnable(GL_CULL_FACE); // говорим, что будем строить только внешние поверхности
     //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // фигуры будут закрашены с обеих сторон
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // видны только ребра
+
+    prevSize = this->size();
 }
 
 void WidgetGL::resizeGL(int w, int h)
-{
+{    
+    koeff.x = prevSize.width() / (float)w;
+    koeff.y = prevSize.height() / (float)h;
+    koeff.z = 1.0f;
 
+    //koeff.x /= cos(rotation.degToRad().z);
+    //koeff.y *= cos(rotation.degToRad().z);
+
+    scale *= koeff;
+    constScale = scale;
+
+    prevSize.setWidth(w);
+    prevSize.setHeight(h);
 }
 
 void WidgetGL::paintGL()
@@ -52,7 +65,7 @@ void WidgetGL::paintGL()
     glRotatef(rotation.y, 0.0, 1.0, 0.0);
     glRotatef(rotation.z, 0.0, 0.0, 1.0);
 
-    glScalef(scale, scale, scale);
+    glScalef(scale.x, scale.y, scale.z);
 
     drawAxis();
 
@@ -86,10 +99,14 @@ void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
     rotation.x -= (180/scale*(GLfloat)(pe->position().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
     rotation.z -= (180/scale*(GLfloat)(pe->position().x() - mousePos.x())/width()) * scale;
 #else
-    rotation.x -= (180/scale*(GLfloat)(pe->pos().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
-    rotation.z -= (180/scale*(GLfloat)(pe->pos().x() - mousePos.x())/width()) * scale;
+    rotation.x -= (180/scale.z*(GLfloat)(pe->pos().y() - mousePos.y())/height()) * scale.z; // вычисляем углы поворота
+    rotation.z -= (180/scale.z*(GLfloat)(pe->pos().x() - mousePos.x())/width()) * scale.z;
 #endif
     mousePos = pe->pos();
+
+    scale.x *= cos(rotation.degToRad().z);
+    scale.y /= cos(rotation.degToRad().z);
+    std::cout << rotation.z << " | " << cos(rotation.degToRad().z) << std::endl;
 
     update();
 }
@@ -102,7 +119,8 @@ void WidgetGL::mouseReleaseEvent(QMouseEvent *pe)
 void WidgetGL::wheelEvent(QWheelEvent *pe)
 {
     float wheelScale = 1.1f;
-    if ((pe->angleDelta().y()) > 0) scale *= wheelScale;
+    if ((pe->angleDelta().y()) > 0)
+        scale *= wheelScale;
     else scale /= wheelScale;
 
     update();

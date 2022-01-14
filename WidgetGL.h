@@ -12,9 +12,13 @@ class WidgetGL : public QOpenGLWidget
 public:
     WidgetGL(QWidget *parent = 0);
 
-    man::Point3F rotation;
-    float scale = 0.005f;
+    man::Angle rotation;
+    man::Point3F scale;
+    man::Point3F constScale;
+    man::Point3F koeff;
     QPoint mousePos; // переменная для запоминания позиции нажатия мышки
+
+    QSize prevSize;
 
     man::AbstractHuman* human = nullptr;
     man::AbstractHuman* cyborg = nullptr;

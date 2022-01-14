@@ -57,10 +57,24 @@ struct Point3F
         return *this;
     }
 
+    virtual Point3F operator *= (const Point3F &other){
+        this->x *= other.x;
+        this->y *= other.y;
+        this->z *= other.z;
+        return *this;
+    }
+
     virtual Point3F operator /= (float div){
         this->x /= div;
         this->y /= div;
         this->z /= div;
+        return *this;
+    }
+
+    virtual Point3F operator *= (float mult){
+        this->x *= mult;
+        this->y *= mult;
+        this->z *= mult;
         return *this;
     }
 };

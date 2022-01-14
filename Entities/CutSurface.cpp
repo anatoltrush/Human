@@ -346,7 +346,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<man::Point3F> &
             hours[i] = rotatePoint3F(hours[i], angle.degToRad(), center);
         }
         // --- rotate circle ---
-        Angle angleCir(-10.0f, 0.0f, 0.0f);
+        Angle angleCir(0.0f, 0.0f, 0.0f);
         for(size_t i = 0; i < hours.size(); i++){
             hours[i] = rotatePoint3F(hours[i], angleCir.degToRad(), center);
         }
