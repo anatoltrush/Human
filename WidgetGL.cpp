@@ -59,7 +59,9 @@ void WidgetGL::paintGL()
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_SMOOTH);
 
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    glFrustum(-1000.0f, 1000.0f, -1000.0f, 1000.0f, -1000.0f, 1000.0f);
 
     glRotatef(rotation.x, 1.0, 0.0, 0.0);
     glRotatef(rotation.y, 0.0, 1.0, 0.0);
@@ -96,18 +98,22 @@ void WidgetGL::mousePressEvent(QMouseEvent *pe)
 void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
 {
 #if QT_VERSION_MAJOR > 5
-    rotation.x -= (180/scale*(GLfloat)(pe->position().y() - mousePos.y())/height()) * scale; // вычисляем углы поворота
-    rotation.z -= (180/scale*(GLfloat)(pe->position().x() - mousePos.x())/width()) * scale;
+    rotation.x -= 1/scale.y*(GLfloat)(pe->position().y() - mousePos.y())/height(); // вычисляем углы поворота
+    rotation.z -= 1/scale.x*(GLfloat)(pe->position().x() - mousePos.x())/width();
 #else
-    rotation.x -= (180/scale.z*(GLfloat)(pe->pos().y() - mousePos.y())/height()) * scale.z; // вычисляем углы поворота
-    rotation.z -= (180/scale.z*(GLfloat)(pe->pos().x() - mousePos.x())/width()) * scale.z;
+    rotation.x -= 1/scale.z*(GLfloat)(pe->pos().y() - mousePos.y())/height(); // вычисляем углы поворота
+    rotation.z -= 1/scale.z*(GLfloat)(pe->pos().x() - mousePos.x())/width();
 #endif
     mousePos = pe->pos();
 
-    scale.x *= cos(rotation.degToRad().z);
-    scale.y /= cos(rotation.degToRad().z);
-    std::cout << rotation.z << " | " << cos(rotation.degToRad().z) << std::endl;
+    float diffXY = constScale.y - constScale.x;
+    float addScale = diffXY * abs(sin(rotation.degToRad().z));
 
+    //scale.x = constScale.x + addScale;
+    //scale.y = constScale.y - addScale;
+    //std::cout << rotation.z << " | " << /*addScale*/ sin(rotation.degToRad().z) << std::endl;
+    //std::cout << "scale.x | " << scale.x << std::endl;
+    //std::cout << "scale.y | " << scale.y << std::endl;
     update();
 }
 

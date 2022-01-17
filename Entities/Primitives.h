@@ -35,11 +35,11 @@ struct Point3F
         return retPoint;
     }
 
-    virtual Point3F operator / (float div){
+    virtual Point3F operator * (const Point3F &other){
         Point3F retPoint;
-        retPoint.x = this->x / div;
-        retPoint.y = this->y / div;
-        retPoint.z = this->z / div;
+        retPoint.x = this->x * other.x;
+        retPoint.y = this->y * other.y;
+        retPoint.z = this->z * other.z;
         return retPoint;
     }
 
@@ -62,6 +62,14 @@ struct Point3F
         this->y *= other.y;
         this->z *= other.z;
         return *this;
+    }
+
+    virtual Point3F operator / (float div){
+        Point3F retPoint;
+        retPoint.x = this->x / div;
+        retPoint.y = this->y / div;
+        retPoint.z = this->z / div;
+        return retPoint;
     }
 
     virtual Point3F operator /= (float div){

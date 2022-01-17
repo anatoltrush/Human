@@ -67,7 +67,7 @@ man::StlFormat man::StlHandler::isStlASCII(QString &pathToFile)
     QString ext;
     for(int i = pathToFile.size() - 1; i >= 0; i--){
         ext.push_back(pathToFile[i]);
-        if(pathToFile[i] == ".") break;
+        if(pathToFile[i] == '.') break;
     }
     std::reverse(ext.begin(), ext.end());
     pathToFile.remove(ext);
