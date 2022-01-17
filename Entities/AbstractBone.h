@@ -24,11 +24,11 @@ public:
     Material material = Material::Plastic;
 
     Angle rotation;
-    Point3F* basePoint = nullptr;
+    QVector3D* basePoint = nullptr;
 
     Point3FStr parentOffset;
-    QMap<QString, Point3F> childrenPoints;
-    QMap<QString, Point3F> intersections;
+    QMap<QString, QVector3D> childrenPoints;
+    QMap<QString, QVector3D> intersections;
 
     AbstractBone* parentPointer = nullptr;
     std::vector<AbstractBone*> childrenPointers;
@@ -38,11 +38,11 @@ public:
     StlObject stlObject;
 
     void fillProperties();
-    void rotateBone(const Point3F &basePoint, const Angle &angles);
-    void applyOffsets(const Point3F &offset);
+    void rotateBone(const QVector3D &basePoint, const Angle &angles);
+    void applyOffsets(const QVector3D &offset);
 
-    Point3F getHighestPoint();
-    Point3F getLowestPoint();
+    QVector3D getHighestPoint();
+    QVector3D getLowestPoint();
 
     virtual void drawObjectGL() const override;
     void drawBasePoint() const;

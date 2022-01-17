@@ -40,12 +40,12 @@ man::Status man::StlHandler::saveToFile(const QString &pathToDir, man::StlObject
     data.push_back(keyWSolid + " " + object.objectName.toStdString() + "\n");
     for(const auto &tr : object.triangles){
         std::string nrData = "  " + keyWFacetNormal + " ";
-        nrData += flToSc(tr.normal.x) + " " + flToSc(tr.normal.y) + " " + flToSc(tr.normal.z) + "\n";
+        nrData += flToSc(tr.normal.x()) + " " + flToSc(tr.normal.y()) + " " + flToSc(tr.normal.z()) + "\n";
         data.push_back(nrData);
         data.push_back("    outer loop\n");
         for(const auto &vr : tr.vertex){
             std::string vrData = "      " + keyWVertex + " ";
-            vrData += flToSc(vr.x) + " " + flToSc(vr.y) + " " + flToSc(vr.z) + "\n";
+            vrData += flToSc(vr.x()) + " " + flToSc(vr.y()) + " " + flToSc(vr.z()) + "\n";
             data.push_back(vrData);
         }
         data.push_back("    endloop\n");
@@ -166,7 +166,7 @@ man::Status man::StlHandler::parseFromFileASCII(const QString &pathToFile, StlOb
     return StatusOk;
 }
 
-void man::StlHandler::obtainFromBlocks(std::string &rawString, const std::string &keyWord, Point3F &data)
+void man::StlHandler::obtainFromBlocks(std::string &rawString, const std::string &keyWord, QVector3D &data)
 {
     // from front
     for(size_t i = 0; i < rawString.size(); i++){
@@ -187,9 +187,9 @@ void man::StlHandler::obtainFromBlocks(std::string &rawString, const std::string
     // data
     QString strData = QString::fromStdString(rawString);
     QStringList strFloats = strData.split(' ');
-    data.x = strFloats[0].toFloat();
-    data.y = strFloats[1].toFloat();
-    data.z = strFloats[2].toFloat();
+    data.setX(strFloats[0].toFloat());
+    data.setY(strFloats[1].toFloat());
+    data.setZ(strFloats[2].toFloat());
 }
 
 man::Status man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlObject &object)
@@ -212,13 +212,13 @@ man::Status man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlO
         inputFileData.read((char*)triData, triReadSize * 4);
 
         Triangle triangle;
-        triangle.normal.x = triData[0];
-        triangle.normal.y = triData[1];
-        triangle.normal.z = triData[2];
+        triangle.normal.setX(triData[0]);
+        triangle.normal.setY(triData[1]);
+        triangle.normal.setZ(triData[2]);
         for(size_t indVert = 0; indVert < 3; indVert++){
-            triangle.vertex[indVert].x = triData[(indVert + 1) * 3 + 0];
-            triangle.vertex[indVert].y = triData[(indVert + 1) * 3 + 1];
-            triangle.vertex[indVert].z = triData[(indVert + 1) * 3 + 2];
+            triangle.vertex[indVert].setX(triData[(indVert + 1) * 3 + 0]);
+            triangle.vertex[indVert].setY(triData[(indVert + 1) * 3 + 1]);
+            triangle.vertex[indVert].setZ(triData[(indVert + 1) * 3 + 2]);
         }
 
         uint8_t attBtCntSize = 2;

@@ -1,55 +1,48 @@
 #include "ExtraMath.h"
 
-man::Point3F man::rotatePoint3F(Point3F point, const Point3F &angleRad, Point3F basePoint)
+QVector3D man::rotatePoint3F(QVector3D point, const QVector3D &angleRad, QVector3D basePoint)
 {
-    Point3F diffPt = point - basePoint;
-    Point3F aftXrot = rotatePoint3FX(diffPt, angleRad.x);
-    Point3F aftYrot = rotatePoint3FY(aftXrot, angleRad.y);
-    Point3F aftZrot = rotatePoint3FZ(aftYrot, angleRad.z);
+    QVector3D diffPt = point - basePoint;
+    QVector3D aftXrot = rotatePoint3FX(diffPt, angleRad.x());
+    QVector3D aftYrot = rotatePoint3FY(aftXrot, angleRad.y());
+    QVector3D aftZrot = rotatePoint3FZ(aftYrot, angleRad.z());
 
     aftZrot += basePoint;
     return aftZrot;
 }
 
-man::Point3F man::rotatePoint3FX(Point3F point, const float &angX)
+QVector3D man::rotatePoint3FX(QVector3D point, const float &angX)
 {
-    Point3F resPoint;
-    resPoint.x = point.x;
-    resPoint.y = point.y * cos(angX) - point.z * sin(angX);
-    resPoint.z = point.y * sin(angX) + point.z * cos(angX);
+    QVector3D resPoint;
+    resPoint.setX(point.x());
+    resPoint.setY(point.y() * cos(angX) - point.z() * sin(angX));
+    resPoint.setZ(point.y() * sin(angX) + point.z() * cos(angX));
     return resPoint;
 }
 
-man::Point3F man::rotatePoint3FY(Point3F point, const float &angY)
+QVector3D man::rotatePoint3FY(QVector3D point, const float &angY)
 {
-    Point3F resPoint;
-    resPoint.x = point.x * cos(angY) + point.z * sin(angY);
-    resPoint.y = point.y;
-    resPoint.z = -point.x * sin(angY) + point.z * cos(angY);
+    QVector3D resPoint;
+    resPoint.setX(point.x() * cos(angY) + point.z() * sin(angY));
+    resPoint.setY(point.y());
+    resPoint.setZ(-point.x() * sin(angY) + point.z() * cos(angY));
     return resPoint;
 }
 
-man::Point3F man::rotatePoint3FZ(Point3F point, const float &angZ)
+QVector3D man::rotatePoint3FZ(QVector3D point, const float &angZ)
 {
-    Point3F resPoint;
-    resPoint.x = point.x * cos(angZ) - point.y * sin(angZ);
-    resPoint.y = point.x * sin(angZ) + point.y * cos(angZ);
-    resPoint.z = point.z;
+    QVector3D resPoint;
+    resPoint.setX(point.x() * cos(angZ) - point.y() * sin(angZ));
+    resPoint.setY(point.x() * sin(angZ) + point.y() * cos(angZ));
+    resPoint.setZ(point.z());
     return resPoint;
 }
 
-float man::distance(const man::Point3F &ptA, const man::Point3F &ptB)
+float man::squareTriangle(const QVector3D &A, const QVector3D &B, const QVector3D &C)
 {
-    return sqrt((ptB.x - ptA.x) * (ptB.x - ptA.x)
-                + (ptB.y - ptA.y) * (ptB.y - ptA.y)
-                + (ptB.z - ptA.z) * (ptB.z - ptA.z));
-}
-
-float man::squareTriangle(const man::Point3F &A, const man::Point3F &B, const man::Point3F &C)
-{
-    float ab = distance(A, B);
-    float bc = distance(B, C);
-    float ca = distance(C, A);
+    float ab = A.distanceToPoint(B);
+    float bc = B.distanceToPoint(C);
+    float ca = C.distanceToPoint(A);
 
     float per = (ab + bc + ca) / 2;
     float sqrTriangle = sqrt(per * (per - ab) * (per - bc) * (per - ca));
@@ -57,14 +50,14 @@ float man::squareTriangle(const man::Point3F &A, const man::Point3F &B, const ma
     return sqrTriangle;
 }
 
-float man::squarePolygon(std::vector<man::Point3F> &contour)
+float man::squarePolygon(std::vector<QVector3D> &contour)
 {
     // TODO: implement float man::squarePolygon(std::vector<man::Point3F> &contour)
     float square = 0.0f;
     return square;
 }
 
-bool man::isInContour(const std::vector<man::Point3F> &contour, const Point3F &pt)
+bool man::isInContour(const std::vector<QVector3D> &contour, const QVector3D &pt)
 {
     // float contSquare = squarePolygon(contour); // FIXME: change to squarePolygon()
     float contourSquare = squareTriangle(contour[0], contour[1], contour[2]);
@@ -76,9 +69,9 @@ bool man::isInContour(const std::vector<man::Point3F> &contour, const Point3F &p
         if(nextInd == contour.size())
             nextInd = 0;
 
-        Point3F A = contour[i];
-        Point3F B = pt;
-        Point3F C = contour[nextInd];
+        QVector3D A = contour[i];
+        QVector3D B = pt;
+        QVector3D C = contour[nextInd];
 
         float triSqare = squareTriangle(A, B, C);
         partsSummSqr += triSqare;
@@ -91,13 +84,13 @@ bool man::isInContour(const std::vector<man::Point3F> &contour, const Point3F &p
         return true;
 }
 
-std::vector<man::Point3F> man::makeUnique(const std::vector<man::Point3F> &pts, float precision)
+std::vector<QVector3D> man::makeUnique(const std::vector<QVector3D> &pts, float precision)
 {
-    std::vector<Point3F> unique = pts;
+    std::vector<QVector3D> unique = pts;
     for(size_t i = 0; i < unique.size(); i++){
         for(size_t j = 0; j < unique.size(); j++){
             if(i == j) continue;
-            float dist = distance(unique[i], unique[j]);
+            float dist = unique[i].distanceToPoint(unique[j]);
             if(dist < precision){
                 unique.erase(unique.begin() + i);
                 i--;
@@ -107,9 +100,9 @@ std::vector<man::Point3F> man::makeUnique(const std::vector<man::Point3F> &pts, 
     return unique;
 }
 
-std::vector<man::Point3F> man::getPtsFromTris(const std::vector<man::Triangle> &tris, float precision)
+std::vector<QVector3D> man::getPtsFromTris(const std::vector<man::Triangle> &tris, float precision)
 {
-    std::vector<Point3F>resVec;
+    std::vector<QVector3D>resVec;
     for(const auto &tr : tris){
         resVec.push_back(tr.vertex[0]);
         resVec.push_back(tr.vertex[1]);

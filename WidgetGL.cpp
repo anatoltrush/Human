@@ -2,7 +2,7 @@
 
 WidgetGL::WidgetGL(QWidget *parent):QOpenGLWidget(parent)
 {
-    scale = man::Point3F(0.005f, 0.005f, 0.005f);
+    scale = QVector3D(0.005f, 0.005f, 0.005f);
 }
 
 void WidgetGL::drawAxis()
@@ -38,9 +38,9 @@ void WidgetGL::initializeGL()
 
 void WidgetGL::resizeGL(int w, int h)
 {    
-    koeff.x = prevSize.width() / (float)w;
-    koeff.y = prevSize.height() / (float)h;
-    koeff.z = 1.0f;
+    koeff.setX(prevSize.width() / (float)w);
+    koeff.setY(prevSize.height() / (float)h);
+    koeff.setZ(1.0f);
 
     //koeff.x /= cos(rotation.degToRad().z);
     //koeff.y *= cos(rotation.degToRad().z);
@@ -63,11 +63,11 @@ void WidgetGL::paintGL()
     glLoadIdentity();
     glFrustum(-1000.0f, 1000.0f, -1000.0f, 1000.0f, -1000.0f, 1000.0f);
 
-    glRotatef(rotation.x, 1.0, 0.0, 0.0);
-    glRotatef(rotation.y, 0.0, 1.0, 0.0);
-    glRotatef(rotation.z, 0.0, 0.0, 1.0);
+    glRotatef(rotation.x(), 1.0, 0.0, 0.0);
+    glRotatef(rotation.y(), 0.0, 1.0, 0.0);
+    glRotatef(rotation.z(), 0.0, 0.0, 1.0);
 
-    glScalef(scale.x, scale.y, scale.z);
+    glScalef(scale.x(), scale.y(), scale.z());
 
     drawAxis();
 
@@ -98,16 +98,16 @@ void WidgetGL::mousePressEvent(QMouseEvent *pe)
 void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
 {
 #if QT_VERSION_MAJOR > 5
-    rotation.x -= 1/scale.y*(GLfloat)(pe->position().y() - mousePos.y())/height(); // вычисляем углы поворота
-    rotation.z -= 1/scale.x*(GLfloat)(pe->position().x() - mousePos.x())/width();
+    rotation.setX(rotation.x() - (1/scale.y() * (GLfloat)(pe->position().y() - mousePos.y())/height()));
+    rotation.setZ(rotation.z() - (1/scale.x() * (GLfloat)(pe->position().x() - mousePos.x())/width()));
 #else
     rotation.x -= 1/scale.z*(GLfloat)(pe->pos().y() - mousePos.y())/height(); // вычисляем углы поворота
     rotation.z -= 1/scale.z*(GLfloat)(pe->pos().x() - mousePos.x())/width();
 #endif
     mousePos = pe->pos();
 
-    float diffXY = constScale.y - constScale.x;
-    float addScale = diffXY * abs(sin(rotation.degToRad().z));
+    float diffXY = constScale.y() - constScale.x();
+    float addScale = diffXY * abs(sin(rotation.degToRad().z()));
 
     //scale.x = constScale.x + addScale;
     //scale.y = constScale.y - addScale;

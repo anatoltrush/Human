@@ -3,9 +3,8 @@
 man::HumanBone::HumanBone()
 {
     material    = Material::HumanTissue;
-    color       = colDarkGreen;
-    colorCut    = colGrey;
-    colorCut.a  = 10;
+    color       = Qt::darkGreen;
+    colorCut    = Qt::gray;
     isExist     = true;
 }
 

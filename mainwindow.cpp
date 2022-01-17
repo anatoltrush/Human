@@ -55,7 +55,7 @@ void MainWindow::on_pB_Cut_clicked()
 void MainWindow::on_pB_CutUp_clicked()
 {
     for(auto &pt : ui->widgetGL->cutSuface.surface.vertex)
-        pt.z += 5;
+        pt.setZ(pt.z() + 5.0f);
     ui->widgetGL->update();
 }
 
@@ -63,7 +63,7 @@ void MainWindow::on_pB_CutUp_clicked()
 void MainWindow::on_pB_CutDown_clicked()
 {
     for(auto &pt : ui->widgetGL->cutSuface.surface.vertex)
-        pt.z -= 4;
+        pt.setZ(pt.z() - 4.0f);
     ui->widgetGL->update();
 }
 

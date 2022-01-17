@@ -30,7 +30,7 @@ private:
     StlFormat isStlASCII(QString &pathToFile);
 
     Status parseFromFileASCII(const QString &pathToFile, StlObject &object);
-    void obtainFromBlocks(std::string &rawString, const std::string &keyWord, Point3F &data);
+    void obtainFromBlocks(std::string &rawString, const std::string &keyWord, QVector3D &data);
 
     Status parseFromFileBinary(const QString &pathToFile, StlObject &object);
 

@@ -13,9 +13,9 @@ public:
     WidgetGL(QWidget *parent = 0);
 
     man::Angle rotation;
-    man::Point3F scale;
-    man::Point3F constScale;
-    man::Point3F koeff;
+    QVector3D scale;
+    QVector3D constScale;
+    QVector3D koeff;
     QPoint mousePos; // переменная для запоминания позиции нажатия мышки
 
     QSize prevSize;

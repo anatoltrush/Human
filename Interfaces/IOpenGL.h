@@ -1,9 +1,11 @@
 #ifndef IOPENGL_H
 #define IOPENGL_H
 
-#include "Config/Colors.h"
+#include <QColor>
 
 namespace man{
+
+const QColor colOrange(218, 165, 32);
 
 class IOpenGL
 {
@@ -11,8 +13,8 @@ public:
     IOpenGL() = default;
     virtual ~IOpenGL() = default;
 
-    Color4ub color      = colBlack;
-    Color4ub colorCut   = colGrey;
+    QColor color      = Qt::black;
+    QColor colorCut   = Qt::gray;
 
     virtual void drawObjectGL() const = 0;
 

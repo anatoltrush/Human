@@ -12,9 +12,9 @@ class CutSurface : public IOpenGL, public IProperty
 public:
     CutSurface();
 
-    mutable Point3F center;
+    mutable QVector3D center;
     Triangle surface;
-    Point4F equal;
+    QVector4D equal;
 
     void execute(AbstractSkeleton* skeleton, bool &isWarning);
 
@@ -23,20 +23,18 @@ public:
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
 private:
-    bool isIntersect(const Point3F &ptBeg, Point3F &ptInter, Point3F &ptEnd);    
+    bool isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QVector3D &ptEnd);
 
     void cutAllLower(AbstractBone* startBone, bool isHuman);
     void cutSingleLower(AbstractBone* bone, bool isHuman);
-    std::vector<Triangle> makePlug(std::vector<Point3F> &pts);
+    std::vector<Triangle> makePlug(std::vector<QVector3D> &pts);
 
-    Point3F vectorProduct(const Point3F &A, const Point3F &B);
-    float dotProduct(const Point3F &A, const Point3F &B);
-    void normalize(Point3F &pt);
-    void normalize(Point4F &pt);
+    QVector3D vectorProduct(const QVector3D &A, const QVector3D &B);
+    float dotProduct(const QVector3D &A, const QVector3D &B); // FIXME: delete
 
     void calcCenter() const;
     void calcPlaneEquation();
-    float applyEqual(const Point3F &pt);
+    float applyEqual(const QVector3D &pt);
 };
 
 }

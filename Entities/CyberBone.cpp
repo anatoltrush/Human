@@ -3,9 +3,8 @@
 man::CyberBone::CyberBone()
 {    
     material    = Material::Plastic;
-    color       = colDarkBlue;
-    colorCut    = colGrey;
-    colorCut.a  = 10;
+    color       = Qt::darkBlue;
+    colorCut    = Qt::gray;
     isExist     = false;
 }
 

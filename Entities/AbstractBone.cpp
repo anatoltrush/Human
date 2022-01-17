@@ -2,8 +2,8 @@
 
 man::AbstractBone::AbstractBone()
 {
-    color       = colDeepSkyBlue;
-    colorCut    = colGrey;
+    color       = Qt::cyan;
+    colorCut    = Qt::gray;
 }
 
 man::AbstractBone::~AbstractBone()
@@ -19,25 +19,25 @@ void man::AbstractBone::fillProperties()
     QJsonArray childrenArray = boneJsonObject[jsonFieldChildren].toArray();
     for(const auto &child : qAsConst(childrenArray)){
         QString chldName = child.toObject()[jsonFieldName].toString();
-        Point3F offsetPnt(child.toObject()[QString("x")].toDouble(),
+        QVector3D offsetPnt(child.toObject()[QString("x")].toDouble(),
                 child.toObject()[QString("y")].toDouble(),
                 child.toObject()[QString("z")].toDouble());
         childrenPoints.insert(chldName, offsetPnt);
     }
     // parent
     QJsonObject parPoint = boneJsonObject[jsonFieldParent].toObject();
-    parentOffset.x = parPoint["x"].toDouble();
-    parentOffset.y = parPoint["y"].toDouble();
-    parentOffset.z = parPoint["z"].toDouble();
+    parentOffset.setX(parPoint["x"].toDouble());
+    parentOffset.setY(parPoint["y"].toDouble());
+    parentOffset.setZ(parPoint["z"].toDouble());
     parentOffset.str = parPoint[jsonFieldName].toString();
     // rotation
     QJsonObject rotate = boneJsonObject[jsonFieldRotate].toObject();
-    rotation.x = rotate["x"].toDouble();
-    rotation.y = rotate["y"].toDouble();
-    rotation.z = rotate["z"].toDouble();
+    rotation.setX(rotate["x"].toDouble());
+    rotation.setY(rotate["y"].toDouble());
+    rotation.setZ(rotate["z"].toDouble());
 }
 
-void man::AbstractBone::rotateBone(const Point3F &basePoint, const Angle &angles)
+void man::AbstractBone::rotateBone(const QVector3D &basePoint, const Angle &angles)
 {
     // children points
     for(auto &chlPt : childrenPoints)
@@ -49,38 +49,33 @@ void man::AbstractBone::rotateBone(const Point3F &basePoint, const Angle &angles
             vr = rotatePoint3F(vr, angles.degToRad(), basePoint);
 }
 
-void man::AbstractBone::applyOffsets(const Point3F &offset)
+void man::AbstractBone::applyOffsets(const QVector3D &offset)
 {
-    for(auto &chP : childrenPoints){
-        chP.x += offset.x;
-        chP.y += offset.y;
-        chP.z += offset.z;
-    }
+    for(auto &chP : childrenPoints)
+        chP += offset;
     // -----
-    for(auto &tr : stlObject.triangles){
-        for(int i = 0; i < 3; i++){
-            tr.vertex[i].x += offset.x;
-            tr.vertex[i].y += offset.y;
-            tr.vertex[i].z += offset.z;
-        }
-    }
+    for(auto &tr : stlObject.triangles)
+        for(int i = 0; i < 3; i++)
+            tr.vertex[i] += offset;
 }
 
-man::Point3F man::AbstractBone::getHighestPoint()
+QVector3D man::AbstractBone::getHighestPoint()
 {
-    Point3F highPt;
+    QVector3D highPt;
     for(const auto &tr : stlObject.triangles)
         for(const auto &vr : tr.vertex)
-            if(vr.z > highPt.z) highPt = vr;
+            if(vr.z() > highPt.z())
+                highPt = vr;
     return highPt;
 }
 
-man::Point3F man::AbstractBone::getLowestPoint()
+QVector3D man::AbstractBone::getLowestPoint()
 {
-    Point3F lowPt;
+    QVector3D lowPt;
     for(const auto &tr : stlObject.triangles)
         for(const auto &vr : tr.vertex)
-            if(vr.z < lowPt.z) lowPt = vr;
+            if(vr.z() < lowPt.z())
+                lowPt = vr;
     return lowPt;
 }
 
@@ -91,10 +86,10 @@ void man::AbstractBone::drawObjectGL() const
     for(size_t i = 0; i < stlObject.triangles.size(); i++){
         glBegin(GL_TRIANGLES);
         if(stlObject.triangles[i].isGood){
-            glColor3ub(color.r, color.g, color.b);
-            glVertex3f(stlObject.triangles[i].vertex[0].x, stlObject.triangles[i].vertex[0].y, stlObject.triangles[i].vertex[0].z);
-            glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
-            glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);
+            glColor3ub(color.red(), color.green(), color.blue());
+            glVertex3f(stlObject.triangles[i].vertex[0].x(), stlObject.triangles[i].vertex[0].y(), stlObject.triangles[i].vertex[0].z());
+            glVertex3f(stlObject.triangles[i].vertex[1].x(), stlObject.triangles[i].vertex[1].y(), stlObject.triangles[i].vertex[1].z());
+            glVertex3f(stlObject.triangles[i].vertex[2].x(), stlObject.triangles[i].vertex[2].y(), stlObject.triangles[i].vertex[2].z());
         }
         glEnd();
     }
@@ -113,30 +108,30 @@ void man::AbstractBone::drawObjectGL() const
     for(size_t i = 0; i < stlObject.additional.size(); i++){
         glBegin(GL_TRIANGLES);
         if(stlObject.additional[i].isGood)
-            glColor3ub(color.r, color.g, color.b);
+            glColor3ub(color.red(), color.green(), color.blue());
         else
-            glColor3ub(colorCut.r, colorCut.g, colorCut.b);
-        glVertex3f(stlObject.additional[i].vertex[0].x, stlObject.additional[i].vertex[0].y, stlObject.additional[i].vertex[0].z);
-        glVertex3f(stlObject.additional[i].vertex[1].x, stlObject.additional[i].vertex[1].y, stlObject.additional[i].vertex[1].z);
-        glVertex3f(stlObject.additional[i].vertex[2].x, stlObject.additional[i].vertex[2].y, stlObject.additional[i].vertex[2].z);
+            glColor3ub(colorCut.red(), colorCut.green(), colorCut.blue());
+        glVertex3f(stlObject.additional[i].vertex[0].x(), stlObject.additional[i].vertex[0].y(), stlObject.additional[i].vertex[0].z());
+        glVertex3f(stlObject.additional[i].vertex[1].x(), stlObject.additional[i].vertex[1].y(), stlObject.additional[i].vertex[1].z());
+        glVertex3f(stlObject.additional[i].vertex[2].x(), stlObject.additional[i].vertex[2].y(), stlObject.additional[i].vertex[2].z());
         glEnd();
     }
     // ---
     if(basePoint){
-        QMap<QString, Point3F>::const_iterator chlPt;
+        QMap<QString, QVector3D>::const_iterator chlPt;
         for(chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
             glLineWidth(2.0f);
             glBegin(GL_LINES);
-            glColor3ub(colGoldenRod.r, colGoldenRod.g, colGoldenRod.b);
-            glVertex3f(basePoint->x, basePoint->y, basePoint->z);
-            glVertex3f(chlPt.value().x, chlPt.value().y, chlPt.value().z);
+            glColor3ub(colOrange.red(), colOrange.green(), colOrange.blue());
+            glVertex3f(basePoint->x(), basePoint->y(), basePoint->z());
+            glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
             glEnd();
         }
-        QMap<QString, Point3F>::const_iterator inter;
+        QMap<QString, QVector3D>::const_iterator inter;
         for (inter = intersections.begin(); inter != intersections.end(); inter++){
             glPointSize(6.0f);
             glBegin(GL_POINTS);
-            glVertex3f(inter.value().x, inter.value().y, inter.value().z);
+            glVertex3f(inter.value().x(), inter.value().y(), inter.value().z());
             glEnd();
         }
     }
@@ -146,12 +141,13 @@ void man::AbstractBone::drawBasePoint() const
 {
     if(!basePoint) return;
 
+    QColor bp = Qt::darkRed;
     glLineWidth(2.0f);
     glBegin(GL_TRIANGLES);
-    glColor3ub(colDarkRed.r, colDarkRed.g, colDarkRed.b);
-    glVertex3f(basePoint->x - 1, basePoint->y, basePoint->z + 1);
-    glVertex3f(basePoint->x + 1, basePoint->y, basePoint->z + 1);
-    glVertex3f(basePoint->x, basePoint->y, basePoint->z - 1);
+    glColor3ub(bp.red(), bp.green(), bp.blue());
+    glVertex3f(basePoint->x() - 1, basePoint->y(), basePoint->z() + 1);
+    glVertex3f(basePoint->x() + 1, basePoint->y(), basePoint->z() + 1);
+    glVertex3f(basePoint->x(), basePoint->y(), basePoint->z() - 1);
     glEnd();
 }
 

@@ -85,7 +85,7 @@ man::Status man::AbstractSkeleton::construct()
     // --- ChildrenPointers ---
     QMap<QString, AbstractBone*>::iterator bnIter;
     for (bnIter = bones.begin(); bnIter != bones.end(); bnIter++){
-        QMap<QString, Point3F>::iterator chldIter;
+        QMap<QString, QVector3D>::iterator chldIter;
         for(chldIter = bnIter.value()->childrenPoints.begin(); chldIter != bnIter.value()->childrenPoints.end(); chldIter++){
             QString childName = chldIter.key();
             QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
@@ -111,7 +111,7 @@ man::Status man::AbstractSkeleton::construct()
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
-                Point3F fullOffSet = *thisChild->basePoint + thisChild->parentOffset.toPoint3F();
+                QVector3D fullOffSet = *thisChild->basePoint + thisChild->parentOffset.toPoint3F();
                 thisChild->applyOffsets(fullOffSet);
                 // ---
                 vecChildren.push_back(thisChild);
@@ -240,14 +240,14 @@ man::Status man::AbstractSkeleton::serialize(const QString &pathDir)
 
 void man::AbstractSkeleton::calcHeight()
 {
-    Point3F highestPt;
-    Point3F lowestPt;
+    QVector3D highestPt;
+    QVector3D lowestPt;
     for(const auto &bn : qAsConst(bones)){
-        Point3F hPt = bn->getHighestPoint();
-        if(hPt.z > highestPt.z) highestPt = hPt;
+        QVector3D hPt = bn->getHighestPoint();
+        if(hPt.z() > highestPt.z()) highestPt = hPt;
         // ---
-        Point3F lPt = bn->getLowestPoint();
-        if(lPt.z < lowestPt.z) lowestPt = lPt;
+        QVector3D lPt = bn->getLowestPoint();
+        if(lPt.z() < lowestPt.z()) lowestPt = lPt;
     }
-    this->height = highestPt.z - lowestPt.z;
+    this->height = highestPt.z() - lowestPt.z();
 }
