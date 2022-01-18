@@ -6,6 +6,7 @@
 
 #include <QString>
 #include <QVector3D>
+#include <QVector4D>
 
 namespace man{
 

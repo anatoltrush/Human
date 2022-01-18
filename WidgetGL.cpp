@@ -101,8 +101,8 @@ void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
     rotation.setX(rotation.x() - (1/scale.y() * (GLfloat)(pe->position().y() - mousePos.y())/height()));
     rotation.setZ(rotation.z() - (1/scale.x() * (GLfloat)(pe->position().x() - mousePos.x())/width()));
 #else
-    rotation.x -= 1/scale.z*(GLfloat)(pe->pos().y() - mousePos.y())/height(); // вычисляем углы поворота
-    rotation.z -= 1/scale.z*(GLfloat)(pe->pos().x() - mousePos.x())/width();
+    rotation.setX(rotation.x() - (1/scale.z() * (GLfloat)(pe->pos().y() - mousePos.y())/height()));
+    rotation.setZ(rotation.z() - (1/scale.z() * (GLfloat)(pe->pos().x() - mousePos.x())/width()));
 #endif
     mousePos = pe->pos();
 
