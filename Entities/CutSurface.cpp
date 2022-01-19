@@ -29,7 +29,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
 {
     if(!skeleton) return;
     skeleton->resetBones();
-    calcPlaneEquation();
+    equal = calcPlaneEquation(surface.vertex[0], surface.vertex[1], surface.vertex[2]);
     equal.normalize();
 
     // find start bone
@@ -319,7 +319,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
         for(size_t i = 0; i < unique.size(); i++)
             center += unique[i];
         center /= unique.size();
-
+        // --- farest ---
         float maxDist = 0.0f;
         QVector3D farest;
         for(size_t i = 0; i < unique.size(); i++){
@@ -330,46 +330,38 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
             }
         }
         // ---
-        int vertCount = 12;
-        float degStepZ = 360.0f / (float)vertCount;
-        std::vector<QVector3D> hours(vertCount, farest);
-        // ---
-        float degX = acosf(equal.x());
-        float degY = acosf(equal.y());
-        float degZ = acosf(equal.z());
-        // --- rotate triangles ---
-        Angle angle;
-        for(size_t i = 0; i < hours.size(); i++){
-            angle.setX(0.0f);
-            angle.setY(0.0f);
-            angle.setZ(angle.z() + degStepZ);
-            hours[i] = rotatePoint3F(hours[i], angle.degToRad(), center);
+        QMap<float, QVector3D*> outs;
+        for(size_t i = 0; i < unique.size(); i++){
+            float ang = angle3Points(farest, center, unique[i], QVector3D(equal.x(), equal.y(), equal.z()));
+            outs.insert(ang, &unique[i]);
         }
-        // --- rotate circle ---
-        Angle angleCir(0.0f, 0.0f, 0.0f);
-        for(size_t i = 0; i < hours.size(); i++){
-            hours[i] = rotatePoint3F(hours[i], angleCir.degToRad(), center);
-        }
+        std::vector<QVector3D*> vers;
+        QMap<float, QVector3D*>::iterator outIter;
+        for (outIter = outs.begin(); outIter != outs.end(); outIter++)
+            vers.push_back(outIter.value());
+
         // --- make triangles ---
-        for(size_t i = 0; i < hours.size(); i++){
+        for(size_t i = 0; i < vers.size(); i++){
+            size_t nextInd = i + 1;
+            if(nextInd == vers.size())
+                nextInd = 0;
+            Triangle addTri(center, *vers[i], *vers[nextInd], QVector3D(0.0f, 0.0f, 1.0f), true);
+            resVec.push_back(addTri);
+        }
+
+        int a = 5;
+
+        // --- make triangles ---
+        /*for(size_t i = 0; i < hours.size(); i++){
             size_t nextInd = i + 1;
             if(nextInd == hours.size())
                 nextInd = 0;
 
             Triangle addTri(hours[i], center, hours[nextInd], QVector3D(0.0f, 0.0f, 1.0f), true);
             resVec.push_back(addTri);
-        }
+        }*/
     }
     return resVec;
-}
-
-QVector3D man::CutSurface::vectorProduct(const QVector3D &A, const QVector3D &B)
-{
-    QVector3D VP;
-    VP.setX(A.y() * B.z() - B.y() * A.z());
-    VP.setY(A.z() * B.x() - B.z() * A.x());
-    VP.setZ(A.x() * B.y() - B.x() * A.y());
-    return VP;
 }
 
 float man::CutSurface::dotProduct(const QVector3D &A, const QVector3D &B)
@@ -383,18 +375,6 @@ void man::CutSurface::calcCenter() const
     center.setX((surface.vertex[0].x() + surface.vertex[1].x() + surface.vertex[2].x()) / 3);
     center.setY((surface.vertex[0].y() + surface.vertex[1].y() + surface.vertex[2].y()) / 3);
     center.setZ((surface.vertex[0].z() + surface.vertex[1].z() + surface.vertex[2].z()) / 3);
-}
-
-void man::CutSurface::calcPlaneEquation()
-{
-    QVector3D BA = surface.vertex[1] - surface.vertex[0];
-    QVector3D CA = surface.vertex[2] - surface.vertex[0];
-
-    QVector3D N3 = vectorProduct(BA, CA);
-    QVector4D N(N3);
-    N.setW(-N.x() * surface.vertex[0].x() - N.y() * surface.vertex[0].y() - N.z() * surface.vertex[0].z());
-
-    equal = N;
 }
 
 float man::CutSurface::applyEqual(const QVector3D &pt)

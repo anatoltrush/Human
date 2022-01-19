@@ -16,6 +16,11 @@ namespace man{
     bool isInContour(const std::vector<QVector3D> &contour, const QVector3D &pt);
     std::vector<QVector3D> makeUnique(const std::vector<QVector3D> &pts, float precision);
     std::vector<QVector3D> getPtsFromTris(const std::vector<Triangle>& tris, float precision);
+
+    QVector3D vectorProduct(const QVector3D &A, const QVector3D &B);
+    QVector4D calcPlaneEquation(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2);
+
+    float angle3Points(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2, const QVector3D &planeNorm);
 }
 
 #endif // EXTRAMATH_H

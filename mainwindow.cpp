@@ -78,3 +78,14 @@ void MainWindow::on_pB_Srlzd_clicked()
 #endif
     ui->pB_Srlzd->setText("Ser = " + QString::number(ser));
 }
+
+void MainWindow::on_pB_ReArr_clicked()
+{
+    man::Status resArrange =
+            reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
+
+    if(resArrange == man::StatusOk)
+        ui->pB_ReArr->setStyleSheet("background-color: green");
+    else
+        ui->pB_ReArr->setStyleSheet("background-color: yellow");
+}

@@ -15,29 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" colspan="6">
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="WidgetGL" name="widgetGL" native="true"/>
-      <widget class="QListView" name="listView">
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="1" column="4">
-     <widget class="QPushButton" name="pB_Srlzd">
-      <property name="text">
-       <string>Ser</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="1">
      <widget class="QPushButton" name="pB_Cut">
       <property name="text">
@@ -64,10 +41,40 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0" colspan="7">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="WidgetGL" name="widgetGL" native="true"/>
+      <widget class="QListView" name="listView">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QPushButton" name="pB_Srlzd">
+      <property name="text">
+       <string>Ser</string>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="3">
      <widget class="QPushButton" name="pB_CutDown">
       <property name="text">
        <string>Down</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="QPushButton" name="pB_ReArr">
+      <property name="text">
+       <string>ReArrange</string>
       </property>
      </widget>
     </item>

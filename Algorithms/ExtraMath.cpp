@@ -112,3 +112,44 @@ std::vector<QVector3D> man::getPtsFromTris(const std::vector<man::Triangle> &tri
     resVec = makeUnique(resVec, precision);
     return resVec;
 }
+
+QVector3D man::vectorProduct(const QVector3D &A, const QVector3D &B)
+{
+    QVector3D VP;
+    VP.setX(A.y() * B.z() - B.y() * A.z());
+    VP.setY(A.z() * B.x() - B.z() * A.x());
+    VP.setZ(A.x() * B.y() - B.x() * A.y());
+    return VP;
+}
+
+QVector4D man::calcPlaneEquation(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2)
+{
+    QVector3D BA = pt1 - pt0;
+    QVector3D CA = pt2 - pt0;
+
+    QVector3D N3 = vectorProduct(BA, CA);
+    QVector4D N(N3);
+    N.setW(-N.x() * pt0.x() - N.y() * pt0.y() - N.z() * pt0.z());
+
+    return N;
+}
+
+float man::angle3Points(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2, const QVector3D &planeNorm)
+{
+    QVector3D v1 = pt1 - pt0;
+    QVector3D v2 = pt2 - pt1;
+
+    QVector3D cross = QVector3D::crossProduct(v1, v2);
+    float dot = QVector3D::dotProduct(v1, v2);
+
+    float angle = std::atan2(cross.length(), dot);
+    float test = QVector3D::dotProduct(planeNorm, cross);
+    if (test < 0.0f)
+        angle = M_PI_2 - angle;
+
+    float degree = angle * 180.0f / M_PI;
+    if (degree < 0.0f)
+        degree += 360.0f;
+
+    return degree;
+}
