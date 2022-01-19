@@ -329,6 +329,11 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
                 maxDist = dist;
             }
         }
+        // --- right line ---
+        QVector3D perpend(farest.x(), farest.y(), 0.0f);
+        QVector2D right2d(perpend.toVector2D());
+        float zPos = 0.0f;
+        QVector3D right3d(right2d, zPos);
         // ---
         QMap<float, QVector3D*> outs;
         for(size_t i = 0; i < unique.size(); i++){

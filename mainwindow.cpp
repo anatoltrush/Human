@@ -88,4 +88,6 @@ void MainWindow::on_pB_ReArr_clicked()
         ui->pB_ReArr->setStyleSheet("background-color: green");
     else
         ui->pB_ReArr->setStyleSheet("background-color: yellow");
+
+    ui->widgetGL->update();
 }
