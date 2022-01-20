@@ -5,6 +5,7 @@ man::HumanBone::HumanBone()
     material    = Material::HumanTissue;
     color       = Qt::darkGreen;
     colorCut    = Qt::gray;
+    colorHull   = colGoldenRod;
     isExist     = true;
 }
 

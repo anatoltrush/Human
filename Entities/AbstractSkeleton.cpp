@@ -156,7 +156,9 @@ void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
         for(size_t i = 0; i < vecParents.size(); i++)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
+                // make smthng
                 rotateBonesSingle(thisChild, thisChild->rotation);
+                // ---
                 vecChildren.push_back(thisChild);
             }
         // -----
@@ -212,7 +214,7 @@ man::Status man::AbstractSkeleton::serialize(const QString &pathDir)
     QMap<QString, AbstractBone*>::iterator i;
     for (i = bones.begin(); i != bones.end(); i++){
         if(i.value()->isExist){
-            StlObject object;
+            StlObject object; // temporary obj
             std::vector<Triangle> allTriangles;
             // ---
             for(const auto &tr : i.value()->stlObject.triangles){

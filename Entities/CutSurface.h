@@ -1,6 +1,7 @@
 #ifndef CUTSURFACE_H
 #define CUTSURFACE_H
 
+#include <QVector2D>
 #include <QMultiMap>
 
 #include "Entities/AbstractSkeleton.h"

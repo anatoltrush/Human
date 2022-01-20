@@ -309,7 +309,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
     // ---
     std::vector<man::Triangle> resVec;
     // ---
-    if(unique.size() < 3){}
+    /*if(unique.size() < 3){}
     else if(unique.size() == 3){
         Triangle addTri = Triangle(unique[0], unique[1], unique[2], QVector3D(0.0f, 0.0f, 1.0f), true);
         resVec.push_back(addTri);
@@ -365,7 +365,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
             Triangle addTri(hours[i], center, hours[nextInd], QVector3D(0.0f, 0.0f, 1.0f), true);
             resVec.push_back(addTri);
         }*/
-    }
+    //}
     return resVec;
 }
 

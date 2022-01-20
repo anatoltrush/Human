@@ -5,6 +5,7 @@ man::CyberBone::CyberBone()
     material    = Material::Plastic;
     color       = Qt::darkBlue;
     colorCut    = Qt::gray;
+    colorHull   = colFuchsia;
     isExist     = false;
 }
 
