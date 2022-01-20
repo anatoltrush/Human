@@ -30,8 +30,6 @@ private:
     void cutSingleLower(AbstractBone* bone, bool isHuman);
     std::vector<Triangle> makePlug(std::vector<QVector3D> &pts);
 
-    float dotProduct(const QVector3D &A, const QVector3D &B); // FIXME: delete
-
     void calcCenter() const;
     float applyEqual(const QVector3D &pt);
 };

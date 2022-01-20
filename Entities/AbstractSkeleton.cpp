@@ -7,8 +7,7 @@ man::AbstractSkeleton::AbstractSkeleton()
 
 man::AbstractSkeleton::~AbstractSkeleton()
 {
-    QMap<QString, AbstractBone*>::iterator i;
-    for (i = bones.begin(); i != bones.end(); i++)
+    for (auto i = bones.begin(); i != bones.end(); i++)
         delete i.value();
     std::cout << "-*-*-*-Delete AbsSkel-*-*-*-" <<  name.toStdString() << std::endl; // NOTE: delete
 }
@@ -75,23 +74,19 @@ man::Status man::AbstractSkeleton::construct()
 {
     if(bones.isEmpty()) return StatusBonesListIsEmpty;
     // -----
-    QMap<QString, AbstractBone*>::iterator i;
-    for (i = bones.begin(); i != bones.end(); i++){
+    for (auto i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
         int res3DLoad = stlHandler.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
         stlHandler.calcAddProperties(i.value()->stlObject);
     }
 
     // --- ChildrenPointers ---
-    QMap<QString, AbstractBone*>::iterator bnIter;
-    for (bnIter = bones.begin(); bnIter != bones.end(); bnIter++){
-        QMap<QString, QVector3D>::iterator chldIter;
-        for(chldIter = bnIter.value()->childrenPoints.begin(); chldIter != bnIter.value()->childrenPoints.end(); chldIter++){
-            QString childName = chldIter.key();
-            QMap<QString, AbstractBone*>::iterator mapFind = bones.find(childName);
-            if(mapFind != bones.end()){
-                bnIter.value()->childrenPointers.push_back(bones[childName]);
-                bones[childName]->parentPointer = bnIter.value();
+    for(auto bnI = bones.begin(); bnI != bones.end(); bnI++){
+        for(auto chldI = bnI.value()->childrenPoints.begin(); chldI != bnI.value()->childrenPoints.end(); chldI++){
+            QString childName = chldI.key();
+            if(bones.find(childName) != bones.end()){
+                bnI.value()->childrenPointers.push_back(bones[childName]);
+                bones[childName]->parentPointer = bnI.value();
             }
         }
     }
@@ -136,11 +131,10 @@ man::Status man::AbstractSkeleton::construct()
 man::AbstractBone *man::AbstractSkeleton::getStartBone()
 {
     AbstractBone* startBone = nullptr;
-    QMap<QString, AbstractBone*>::iterator startIter;
-    for (startIter = bones.begin(); startIter != bones.end(); startIter++){
-        if(!startIter.value()) continue;
-        if(startIter.value()->parentOffset.str == notAvlbl)
-            startBone = startIter.value();
+    for (auto i = bones.begin(); i != bones.end(); i++){
+        if(!i.value()) continue;
+        if(i.value()->parentOffset.str == notAvlbl)
+            startBone = i.value();
     }
     return startBone;
 }
@@ -211,8 +205,8 @@ void man::AbstractSkeleton::resetBones()
 
 man::Status man::AbstractSkeleton::serialize(const QString &pathDir)
 {
-    QMap<QString, AbstractBone*>::iterator i;
-    for (i = bones.begin(); i != bones.end(); i++){
+    for (auto i = bones.begin(); i != bones.end(); i++){
+        if(!i.value()) continue;
         if(i.value()->isExist){
             StlObject object; // temporary obj
             std::vector<Triangle> allTriangles;

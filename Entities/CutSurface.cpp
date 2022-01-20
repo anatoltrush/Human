@@ -45,11 +45,10 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 // --- intersect basePt <-> childPt
                 thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
-                QMap<QString, QVector3D>::iterator chIter;
-                for (chIter = thisChild->childrenPoints.begin(); chIter != thisChild->childrenPoints.end(); chIter++){
+                for(auto chPtI = thisChild->childrenPoints.begin(); chPtI != thisChild->childrenPoints.end(); chPtI++){
                     QVector3D ptBeg = *thisChild->basePoint;
                     QVector3D ptInter;
-                    QVector3D ptEnd = chIter.value();
+                    QVector3D ptEnd = chPtI.value();
                     bool isInter = isIntersect(ptBeg, ptInter, ptEnd);
                     if(isInter){ // IF INTERSECT
                         // --- check parents have intersects ---
@@ -62,8 +61,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
                                 break;
                             }
                             // ---
-                            QMap<QString, QVector3D>::iterator findInter = thisParent->intersections.find(falseChild.name);
-                            if(findInter != thisParent->intersections.end()){
+                            if(thisParent->intersections.find(falseChild.name) != thisParent->intersections.end()){
                                 isParInter = true;
                                 isWarning = true; // --- WARNING --- bad surface angle
                                 break;
@@ -73,10 +71,10 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
                         if(isParInter) continue;
                         // ---
 
-                        thisChild->intersections.insert(chIter.key(), ptInter);
+                        thisChild->intersections.insert(chPtI.key(), ptInter);
                         if(!skeleton->isHuman) // --- one make real bone ---
                             thisChild->isExist = true;
-                        cutAllLower(skeleton->bones[chIter.key()], skeleton->isHuman);
+                        cutAllLower(skeleton->bones[chPtI.key()], skeleton->isHuman);
                         cutSingleLower(thisChild, skeleton->isHuman);
                     }
                 }
@@ -126,12 +124,12 @@ bool man::CutSurface::isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QV
     // расстояние до плоскости по нормали
     //d = SP ( N, V )
     //W = Y - X
-    float d = dotProduct(N, V);
+    float d = QVector3D::dotProduct(N, V);
     QVector3D W = ptEnd - ptBeg;
 
     // приближение к плоскости по нормали при прохождении отрезка
     //e = SP ( N, W )
-    float e =  dotProduct(N, W);
+    float e =  QVector3D::dotProduct(N, W);
 
     //if( e!=0 )
     //  O = X + W * d/e;
@@ -143,7 +141,7 @@ bool man::CutSurface::isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QV
         ptInter.setZ(ptBeg.z()  +  W.z() * d / e);
 
         //SP ( X - O, Y - O ) <=0
-        float inter = dotProduct(ptInter - ptBeg, ptInter - ptEnd);
+        float inter = QVector3D::dotProduct(ptInter - ptBeg, ptInter - ptEnd);
         if(inter < 0.0f) // if inter < 0 => отрезок пересекает, иначе нет
             isInter = isInContour(surface.toVector(), ptInter);
         else isInter = false;
@@ -202,8 +200,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 tr.isGood = !isHuman;
                 // ---
                 std::vector<QVector3D> vrxReal;
-                QMultiMap<float, int>::iterator it;
-                for (it = pts.begin(); it != pts.end(); it++)
+                for (auto it = pts.begin(); it != pts.end(); it++)
                     vrxReal.push_back(tr.vertex[it.value()]);
 
                 QVector3D X, Z;
@@ -221,8 +218,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
                 tr.isGood = !isHuman;
                 // ---
                 std::vector<QVector3D> vrxReal;
-                QMultiMap<float, int>::iterator it;
-                for (it = pts.begin(); it != pts.end(); it++)
+                for (auto it = pts.begin(); it != pts.end(); it++)
                     vrxReal.push_back(tr.vertex[it.value()]);
 
                 QVector3D X, Y, Z;
@@ -253,8 +249,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
             } // all triangle down
             else if(res == 2){ // split 2 pt down
                 std::vector<QVector3D> vrxReal;
-                QMultiMap<float, int>::iterator it;
-                for (it = pts.begin(); it != pts.end(); it++)
+                for(auto it = pts.begin(); it != pts.end(); it++)
                     vrxReal.push_back(tr.vertex[it.value()]);
 
                 QVector3D X, Y, Z;
@@ -279,8 +274,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
             }
             else if(res == 1){ // split 1 pt down
                 std::vector<QVector3D> vrxReal;
-                QMultiMap<float, int>::iterator it;
-                for (it = pts.begin(); it != pts.end(); it++)
+                for (auto it = pts.begin(); it != pts.end(); it++)
                     vrxReal.push_back(tr.vertex[it.value()]);
 
                 QVector3D X, Z;
@@ -309,7 +303,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
     // ---
     std::vector<man::Triangle> resVec;
     // ---
-    /*if(unique.size() < 3){}
+    if(unique.size() < 3){}
     else if(unique.size() == 3){
         Triangle addTri = Triangle(unique[0], unique[1], unique[2], QVector3D(0.0f, 0.0f, 1.0f), true);
         resVec.push_back(addTri);
@@ -319,60 +313,27 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
         for(size_t i = 0; i < unique.size(); i++)
             center += unique[i];
         center /= unique.size();
-        // --- farest ---
-        float maxDist = 0.0f;
-        QVector3D farest;
+
+        // --- calc all dist to center ---
+        QMultiMap<float, QVector3D> pointsDist;
         for(size_t i = 0; i < unique.size(); i++){
-            float dist = center.distanceToPoint(unique[i]);
-            if(dist > maxDist){
-                farest = unique[i];
-                maxDist = dist;
-            }
+            float distPt = center.distanceToPoint(unique[i]);
+            pointsDist.insert(distPt, unique[i]);
         }
-        // --- right line ---
-        QVector3D perpend(farest.x(), farest.y(), 0.0f);
-        QVector2D right2d(perpend.toVector2D());
-        float zPos = 0.0f;
-        QVector3D right3d(right2d, zPos);
+
+        // --- fill and reverse vector ---
+        std::vector<QVector3D> sorted;
+        for(auto iter = pointsDist.begin(); iter != pointsDist.end(); iter++)
+            sorted.push_back(iter.value());
+        std::reverse(sorted.begin(), sorted.end());
+        Triangle startTri(sorted[0], sorted[1], sorted[2], QVector3D(0.0f, 0.0f, 1.0f), true);
+        std::vector<Triangle> tris = {startTri};
+
+        // --- check other points ---
         // ---
-        QMap<float, QVector3D*> outs;
-        for(size_t i = 0; i < unique.size(); i++){
-            float ang = angle3Points(farest, center, unique[i], QVector3D(equal.x(), equal.y(), equal.z()));
-            outs.insert(ang, &unique[i]);
-        }
-        std::vector<QVector3D*> vers;
-        QMap<float, QVector3D*>::iterator outIter;
-        for (outIter = outs.begin(); outIter != outs.end(); outIter++)
-            vers.push_back(outIter.value());
-
-        // --- make triangles ---
-        for(size_t i = 0; i < vers.size(); i++){
-            size_t nextInd = i + 1;
-            if(nextInd == vers.size())
-                nextInd = 0;
-            Triangle addTri(center, *vers[i], *vers[nextInd], QVector3D(0.0f, 0.0f, 1.0f), true);
-            resVec.push_back(addTri);
-        }
-
-        int a = 5;
-
-        // --- make triangles ---
-        /*for(size_t i = 0; i < hours.size(); i++){
-            size_t nextInd = i + 1;
-            if(nextInd == hours.size())
-                nextInd = 0;
-
-            Triangle addTri(hours[i], center, hours[nextInd], QVector3D(0.0f, 0.0f, 1.0f), true);
-            resVec.push_back(addTri);
-        }*/
-    //}
+        resVec.insert(resVec.end(), tris.begin(), tris.end());
+    }
     return resVec;
-}
-
-float man::CutSurface::dotProduct(const QVector3D &A, const QVector3D &B)
-{
-    float vsp = A.x() * B.x() + A.y() * B.y() + A.z() * B.z();
-    return vsp;
 }
 
 void man::CutSurface::calcCenter() const

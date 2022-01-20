@@ -28,8 +28,7 @@ man::Status man::ReArranger::reArrangeDistances(const man::AbstractHuman &native
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* nativeChild = vecParents[i]->childrenPointers[j];
                 // make smthng
-                QMap<QString, AbstractBone*>::iterator mapFind = cyber.skeleton->bones.find(nativeChild->name);
-                if(mapFind != cyber.skeleton->bones.end()){
+                if(cyber.skeleton->bones.find(nativeChild->name) != cyber.skeleton->bones.end()){
                     AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
                     moveAndStretch(nativeChild, cyberChild);
                 }
@@ -51,11 +50,7 @@ man::Status man::ReArranger::reArrangeAngle(const man::AbstractHuman &native, ma
 }
 
 void man::ReArranger::moveAndStretch(AbstractBone *native, AbstractBone *cyber)
-{ // need to move all down
-    /*alg
-     * -
-     * /
-
+{ // Need to move all down
     // --- MOVE ---
     QVector3D diffDist = *cyber->basePoint - *native->basePoint;
     // --- base pt ---
@@ -73,8 +68,7 @@ void man::ReArranger::moveAndStretch(AbstractBone *native, AbstractBone *cyber)
 
     // --- STRETCH ---
     for(auto it = native->childrenPoints.begin(); it!=native->childrenPoints.end(); it++){
-        QMap<QString, QVector3D>::iterator mapFindChPt = cyber->childrenPoints.find(it.key());
-        if(mapFindChPt != cyber->childrenPoints.end()){
+        if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
             float distNative = native->basePoint->distanceToPoint(it.value());
             float distCyber = cyber->basePoint->distanceToPoint(cyber->childrenPoints[it.key()]);
             float koeff = distNative / distCyber;

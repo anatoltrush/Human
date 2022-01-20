@@ -117,8 +117,7 @@ void man::AbstractBone::drawObjectGL() const
     }
     // ---
     if(basePoint){
-        QMap<QString, QVector3D>::const_iterator chlPt;
-        for(chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
+        for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
             glLineWidth(2.0f);
             glBegin(GL_LINES);
             glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
@@ -126,8 +125,7 @@ void man::AbstractBone::drawObjectGL() const
             glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
             glEnd();
         }
-        QMap<QString, QVector3D>::const_iterator inter;
-        for (inter = intersections.begin(); inter != intersections.end(); inter++){
+        for (auto inter = intersections.begin(); inter != intersections.end(); inter++){
             glPointSize(6.0f);
             glBegin(GL_POINTS);
             glVertex3f(inter.value().x(), inter.value().y(), inter.value().z());

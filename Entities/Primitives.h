@@ -12,7 +12,7 @@ namespace man{
 
 #define DEG_TO_RAD(deg) ((deg) * M_PI / 180.0f)
 
-class Point3FStr : public QVector3D
+struct Point3FStr : public QVector3D
 {
 public:
     Point3FStr() {}
@@ -23,7 +23,7 @@ public:
     }
 };
 
-class Angle : public QVector3D
+struct Angle : public QVector3D
 {
 public:
     Angle() {}
@@ -39,9 +39,15 @@ public:
     }
 };
 
-class Triangle
+struct Line
 {
-public:
+    Line() {}
+    QVector3D ptBeg;
+    QVector3D ptEnd;
+};
+
+struct Triangle
+{
     Triangle() {
         contour.clear();
     }
@@ -72,9 +78,8 @@ private:
     std::vector<QVector3D> contour;
 };
 
-class StlObject
+struct StlObject
 {
-public:
     StlObject() {}
 
     QString objectName;
