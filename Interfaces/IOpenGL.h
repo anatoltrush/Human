@@ -26,7 +26,7 @@ public:
     QColor colorCut   = Qt::gray;
     QColor colorHull  = Qt::lightGray;
 
-    virtual void drawObjectGL() const = 0;
+    virtual void drawObjectGL() = 0;
 
 };
 

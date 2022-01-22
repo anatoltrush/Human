@@ -78,7 +78,7 @@ QVector3D man::AbstractBone::getLowestPoint()
     return lowPt;
 }
 
-void man::AbstractBone::drawObjectGL() const
+void man::AbstractBone::drawObjectGL()
 {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glLineWidth(1.0f);

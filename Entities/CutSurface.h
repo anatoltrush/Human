@@ -13,13 +13,13 @@ class CutSurface : public IOpenGL, public IProperty
 public:
     CutSurface();
 
-    mutable QVector3D center;
+    QVector3D center;
     Triangle surface;
     QVector4D equal;
 
     void execute(AbstractSkeleton* skeleton, bool &isWarning);
 
-    virtual void drawObjectGL() const override;
+    virtual void drawObjectGL() override;
 
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
@@ -30,8 +30,8 @@ private:
     void cutSingleLower(AbstractBone* bone, bool isHuman);
     std::vector<Triangle> makePlug(std::vector<QVector3D> &pts);
 
-    void calcCenter() const;
     float applyEqual(const QVector3D &pt);
+    void smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour);
 };
 
 }

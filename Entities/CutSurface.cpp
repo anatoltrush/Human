@@ -87,7 +87,7 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
     }
 }
 
-void man::CutSurface::drawObjectGL() const
+void man::CutSurface::drawObjectGL()
 {
     //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glLineWidth(2.0f);
@@ -100,7 +100,7 @@ void man::CutSurface::drawObjectGL() const
     // --- center ---
     glPointSize(8.0f);
     glBegin(GL_POINTS);
-    calcCenter();
+    center = getCenter(surface.toVector());
     glVertex3f(center.x(), center.y(), center.z());
     glEnd();
 }
@@ -143,7 +143,7 @@ bool man::CutSurface::isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QV
         //SP ( X - O, Y - O ) <=0
         float inter = QVector3D::dotProduct(ptInter - ptBeg, ptInter - ptEnd);
         if(inter < 0.0f) // if inter < 0 => отрезок пересекает, иначе нет
-            isInter = isInContour(surface.toVector(), ptInter);
+            isInter = isInTriangle(surface.toVector(), ptInter);
         else isInter = false;
     }
     else isInter = false;
@@ -297,8 +297,8 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 
 std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts)
 {
-    float precision = 0.001f;
-    std::vector<QVector3D> unique = makeUnique(pts, precision);
+    float precision = 0.0001f;
+    std::vector<QVector3D> unique = makeUniquePts(pts, precision);
 
     // ---
     std::vector<man::Triangle> resVec;
@@ -309,10 +309,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
         resVec.push_back(addTri);
     }
     else{
-        QVector3D center;
-        for(size_t i = 0; i < unique.size(); i++)
-            center += unique[i];
-        center /= unique.size();
+        QVector3D center = getCenter(unique);
 
         // --- calc all dist to center ---
         QMultiMap<float, QVector3D> pointsDist;
@@ -327,24 +324,84 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
             sorted.push_back(iter.value());
         std::reverse(sorted.begin(), sorted.end());
         Triangle startTri(sorted[0], sorted[1], sorted[2], QVector3D(0.0f, 0.0f, 1.0f), true);
-        std::vector<Triangle> tris = {startTri};
+        center = getCenter(startTri.toVector());
+        std::vector<Triangle> tris;
+        std::vector<QVector3D> outerContour;
 
         // --- check other points ---
+        for(size_t i = 0; i < startTri.toVector().size(); i++){
+            size_t nextInd = i + 1;
+            if(nextInd == startTri.toVector().size())
+                nextInd = 0;
+            // ---
+            QVector3D A = startTri.toVector()[i];
+            QVector3D B = startTri.toVector()[nextInd];
+            // ---
+            QMap<float, QVector3D> mapAngles;
+            std::vector<QVector3D> part;
+            for(size_t j = 0; j < unique.size(); j++){
+                QVector3D crossCoord;
+                bool isCross = isLineCross(A, B, center, unique[j], crossCoord);
+                if(isCross){
+                    float ang = angle3Pts0_180(A, center, unique[j]);
+                    mapAngles.insert(ang, unique[j]);
+                }
+            }
+            if(mapAngles.size() > 0){
+                std::vector<QVector3D> angsVec;
+                for(auto angIt = mapAngles.begin(); angIt != mapAngles.end(); angIt++)
+                    angsVec.push_back(angIt.value());
+                // ---
+                for(size_t k = 0; k < angsVec.size() - 1; k++){
+                    Triangle tri(center, angsVec[k], angsVec[k + 1], QVector3D(0.0f, 0.0f, 1.0f), true);
+                    tris.push_back(tri);
+                    part.push_back(angsVec[k]);
+                }
+                Triangle lastTri(center, angsVec.back(), B, QVector3D(0.0f, 0.0f, 1.0f), true);
+                tris.push_back(lastTri);
+                part.push_back(angsVec.back());
+            }
+            outerContour.insert(outerContour.end(), part.begin(), part.end());
+        }
+        smoothContour(tris, outerContour);
         // ---
         resVec.insert(resVec.end(), tris.begin(), tris.end());
     }
     return resVec;
 }
 
-void man::CutSurface::calcCenter() const
-{
-    center.setX((surface.vertex[0].x() + surface.vertex[1].x() + surface.vertex[2].x()) / 3);
-    center.setY((surface.vertex[0].y() + surface.vertex[1].y() + surface.vertex[2].y()) / 3);
-    center.setZ((surface.vertex[0].z() + surface.vertex[1].z() + surface.vertex[2].z()) / 3);
-}
-
 float man::CutSurface::applyEqual(const QVector3D &pt)
 {
     float res = equal.x() * pt.x() + equal.y() * pt.y() + equal.z() * pt.z() + equal.w();
     return res;
+}
+
+void man::CutSurface::smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour)
+{ // TODO: impl
+    /*QVector3D center = getCenter(contour);
+    // ---
+    for(size_t i = 0; i < contour.size(); i++){
+        size_t indZero = i;
+        size_t indOne = i + 1;
+        if(indOne == contour.size()) indOne = 0;
+        size_t indTwo = indOne + 1;
+        if(indTwo == contour.size()) indTwo = 0;
+        // ---
+        QVector3D crossZero;
+        bool isCrossZero = isLineCross(center, contour[indZero], contour[indOne], contour[indTwo], crossZero);
+        QVector3D crossTwo;
+        bool isCrossTwo = isLineCross(center, contour[indTwo], contour[indOne], contour[indZero], crossTwo);
+        // ---
+        Triangle tempTri(contour[indZero], center, contour[indTwo], QVector3D(0, 0, 0), false);
+        bool isPtIn = isInTriangle(tempTri.toVector(), contour[indOne]);
+        if(isPtIn || isCrossZero || isCrossTwo){
+            // make triangle
+            Triangle newTri(contour[indZero], contour[indOne], contour[indTwo], QVector3D(0, 0, 1), true);
+            triangles.push_back(newTri);
+            // ---
+            contour.erase(contour.begin() + indOne);
+            center = getCenter(contour);
+            i--;
+        }
+    }*/
 }

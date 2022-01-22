@@ -44,7 +44,7 @@ public:
     QVector3D getHighestPoint();
     QVector3D getLowestPoint();
 
-    virtual void drawObjectGL() const override;
+    virtual void drawObjectGL() override;
     void drawBasePoint() const;
 
     QMap<QString, QVariant> getPropertyList() const override;

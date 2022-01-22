@@ -61,7 +61,7 @@ struct Triangle
         contour.clear();
     }
 
-    const std::vector<QVector3D>& toVector(){
+    std::vector<QVector3D>& toVector(){
         contour.clear();
         for(int i = 0; i < 3; i++)
             contour.push_back(vertex[i]);
