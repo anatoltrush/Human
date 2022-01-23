@@ -12,9 +12,9 @@ man::CutSurface::CutSurface()
     surface.vertex[1] = QVector3D(-1.0f, 3.0f, 2.0f);
     surface.vertex[2] = QVector3D(2.0f, 2.0f, 1.0f);*/
 
-    surface.vertex[0] = QVector3D(-120.0f, 100.0f, -80.0f); // NOTE: delete HORIZ
-    surface.vertex[1] = QVector3D(120.0f, 100.0f, -80.0f);
-    surface.vertex[2] = QVector3D(0.0f, -120.0f, -60.0f);
+    planeSurface.vertex[0] = QVector3D(-120.0f, 100.0f, -80.0f); // NOTE: delete HORIZ
+    planeSurface.vertex[1] = QVector3D(120.0f, 100.0f, -80.0f);
+    planeSurface.vertex[2] = QVector3D(0.0f, -120.0f, -60.0f);
 
     /*surface.vertex[0] = QVector3D(0.0f, 100.0f, -60.0f); // NOTE: delete HORIZ HALF
     surface.vertex[1] = QVector3D(120.0f, 100.0f, -60.0f);
@@ -29,8 +29,8 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
 {
     if(!skeleton) return;
     skeleton->resetBones();
-    equal = calcPlaneEquation(surface.vertex[0], surface.vertex[1], surface.vertex[2]);
-    equal.normalize();
+    planeEqual = calcPlaneEquation(planeSurface.vertex[0], planeSurface.vertex[1], planeSurface.vertex[2]);
+    planeEqual.normalize();
 
     // find start bone
     AbstractBone* startBone = skeleton->getStartBone();
@@ -93,15 +93,15 @@ void man::CutSurface::drawObjectGL()
     glLineWidth(2.0f);
     glBegin(GL_TRIANGLES);
     glColor3ub(color.red(), color.green(), color.blue());
-    glVertex3f(surface.vertex[0].x(), surface.vertex[0].y(), surface.vertex[0].z());
-    glVertex3f(surface.vertex[1].x(), surface.vertex[1].y(), surface.vertex[1].z());
-    glVertex3f(surface.vertex[2].x(), surface.vertex[2].y(), surface.vertex[2].z());
+    glVertex3f(planeSurface.vertex[0].x(), planeSurface.vertex[0].y(), planeSurface.vertex[0].z());
+    glVertex3f(planeSurface.vertex[1].x(), planeSurface.vertex[1].y(), planeSurface.vertex[1].z());
+    glVertex3f(planeSurface.vertex[2].x(), planeSurface.vertex[2].y(), planeSurface.vertex[2].z());
     glEnd();
     // --- center ---
     glPointSize(8.0f);
     glBegin(GL_POINTS);
-    center = getCenter(surface.toVector());
-    glVertex3f(center.x(), center.y(), center.z());
+    planeCenter = getCenter(planeSurface.toVector());
+    glVertex3f(planeCenter.x(), planeCenter.y(), planeCenter.z());
     glEnd();
 }
 
@@ -115,11 +115,11 @@ bool man::CutSurface::isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QV
     bool isInter = false;
 
     //N = VP ( B - A, C - A )
-    QVector3D N = vectorProduct(surface.vertex[1] - surface.vertex[0], surface.vertex[2] - surface.vertex[0]);
+    QVector3D N = vectorProduct(planeSurface.vertex[1] - planeSurface.vertex[0], planeSurface.vertex[2] - planeSurface.vertex[0]);
     N.normalize();
 
     //V = A - X
-    QVector3D V = surface.vertex[0] - ptBeg;
+    QVector3D V = planeSurface.vertex[0] - ptBeg;
 
     // расстояние до плоскости по нормали
     //d = SP ( N, V )
@@ -143,7 +143,7 @@ bool man::CutSurface::isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QV
         //SP ( X - O, Y - O ) <=0
         float inter = QVector3D::dotProduct(ptInter - ptBeg, ptInter - ptEnd);
         if(inter < 0.0f) // if inter < 0 => отрезок пересекает, иначе нет
-            isInter = isInTriangle(surface.toVector(), ptInter);
+            isInter = isInTriangle(planeSurface.toVector(), ptInter);
         else isInter = false;
     }
     else isInter = false;
@@ -363,7 +363,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
             }
             outerContour.insert(outerContour.end(), part.begin(), part.end());
         }
-        smoothContour(tris, outerContour);
+        smoothContour(tris, outerContour, center);
         // ---
         resVec.insert(resVec.end(), tris.begin(), tris.end());
     }
@@ -372,36 +372,34 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
 
 float man::CutSurface::applyEqual(const QVector3D &pt)
 {
-    float res = equal.x() * pt.x() + equal.y() * pt.y() + equal.z() * pt.z() + equal.w();
+    float res = planeEqual.x() * pt.x() + planeEqual.y() * pt.y() + planeEqual.z() * pt.z() + planeEqual.w();
     return res;
 }
 
-void man::CutSurface::smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour)
-{ // TODO: impl
-    /*QVector3D center = getCenter(contour);
-    // ---
+void man::CutSurface::smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour, const QVector3D &center)
+{
     for(size_t i = 0; i < contour.size(); i++){
-        size_t indZero = i;
         size_t indOne = i + 1;
         if(indOne == contour.size()) indOne = 0;
         size_t indTwo = indOne + 1;
         if(indTwo == contour.size()) indTwo = 0;
         // ---
-        QVector3D crossZero;
-        bool isCrossZero = isLineCross(center, contour[indZero], contour[indOne], contour[indTwo], crossZero);
-        QVector3D crossTwo;
-        bool isCrossTwo = isLineCross(center, contour[indTwo], contour[indOne], contour[indZero], crossTwo);
+        QVector3D A = contour[i];
+        QVector3D B = contour[indOne];
+        QVector3D C = contour[indTwo];
         // ---
-        Triangle tempTri(contour[indZero], center, contour[indTwo], QVector3D(0, 0, 0), false);
-        bool isPtIn = isInTriangle(tempTri.toVector(), contour[indOne]);
-        if(isPtIn || isCrossZero || isCrossTwo){
-            // make triangle
-            Triangle newTri(contour[indZero], contour[indOne], contour[indTwo], QVector3D(0, 0, 1), true);
-            triangles.push_back(newTri);
-            // ---
-            contour.erase(contour.begin() + indOne);
-            center = getCenter(contour);
-            i--;
+        Triangle tempTri(A, center, C, QVector3D(0, 0, 0), false);
+        bool isPtIn = isInTriangle(tempTri.toVector(), B);
+        if(isPtIn){
+            float distAB = A.distanceToPoint(B);
+            float distBC = B.distanceToPoint(C);
+            float distAC = A.distanceToPoint(C);
+            if(((distAB + distBC) - distAC) > 0.001f){
+                Triangle newTri(A, B, C, QVector3D(0, 0, 1), true);
+                triangles.push_back(newTri);
+                contour.erase(contour.begin() + indOne);
+                i--;
+            }
         }
-    }*/
+    }
 }

@@ -44,7 +44,7 @@ float man::squareTriangle(const QVector3D &A, const QVector3D &B, const QVector3
     float bc = B.distanceToPoint(C);
     float ca = C.distanceToPoint(A);
 
-    float per = (ab + bc + ca) / 2;
+    float per = (ab + bc + ca) / 2.0f;
     float sqrTriangle = sqrt(per * (per - ab) * (per - bc) * (per - ca));
 
     return sqrTriangle;
@@ -62,8 +62,8 @@ bool man::isInTriangle(const std::vector<QVector3D> &contour, const QVector3D &p
     // float contSquare = squarePolygon(contour); // FIXME: change to squarePolygon()
     float contourSquare = squareTriangle(contour[0], contour[1], contour[2]);
 
+    //float partsSummSqr = 0.0f; // error!
     uint64_t partsSummSqr = 0;
-    //float partsSummSqr = 0.0f; // ! error
     for(size_t i = 0; i < contour.size(); i++){
         size_t nextInd = i + 1;
         if(nextInd == contour.size())
@@ -76,8 +76,6 @@ bool man::isInTriangle(const std::vector<QVector3D> &contour, const QVector3D &p
         float triSqare = squareTriangle(A, B, C);
         partsSummSqr += triSqare;
     }
-
-    //contourSquare += 0.01f; // small add for float
     if(partsSummSqr > contourSquare)
         return false;
     else

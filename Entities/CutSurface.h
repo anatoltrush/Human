@@ -13,9 +13,9 @@ class CutSurface : public IOpenGL, public IProperty
 public:
     CutSurface();
 
-    QVector3D center;
-    Triangle surface;
-    QVector4D equal;
+    QVector3D planeCenter;
+    Triangle planeSurface;
+    QVector4D planeEqual;
 
     void execute(AbstractSkeleton* skeleton, bool &isWarning);
 
@@ -31,7 +31,7 @@ private:
     std::vector<Triangle> makePlug(std::vector<QVector3D> &pts);
 
     float applyEqual(const QVector3D &pt);
-    void smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour);
+    void smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour, const QVector3D &center);
 };
 
 }
