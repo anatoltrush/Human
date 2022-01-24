@@ -143,7 +143,7 @@ void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
 {
     if(!startBone) return;
     // ---
-    startBone->rotateBone(startBone->childrenPoints.begin().value(), startBone->rotation);
+    startBone->rotateBone(startBone->childrenPoints.begin().value(), startBone->rotationStart);
     std::vector<AbstractBone*> vecParents = {startBone};
     while (true) {
         std::vector<AbstractBone*> vecChildren;
@@ -151,7 +151,7 @@ void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 // make smthng
-                rotateBonesSingle(thisChild, thisChild->rotation);
+                rotateBonesSingle(thisChild, thisChild->rotationStart);
                 // ---
                 vecChildren.push_back(thisChild);
             }
@@ -164,7 +164,7 @@ void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
 void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Angle &angles)
 {
     if(!startBone) return;
-    startBone->rotation = angles;
+    startBone->rotationStart = angles;
     // ---
     std::vector<AbstractBone*> allChildBones = {startBone};
     std::vector<AbstractBone*> vecParents = {startBone};

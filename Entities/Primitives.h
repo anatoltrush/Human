@@ -39,13 +39,6 @@ public:
     }
 };
 
-struct Line
-{
-    Line() {}
-    QVector3D ptBeg;
-    QVector3D ptEnd;
-};
-
 struct Triangle
 {
     Triangle() {

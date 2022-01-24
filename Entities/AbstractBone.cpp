@@ -31,9 +31,9 @@ void man::AbstractBone::fillProperties()
     parentOffset.str = parPoint[jsonFieldName].toString();
     // rotation
     QJsonObject rotate = boneJsonObject[jsonFieldRotate].toObject();
-    rotation.setX(rotate["x"].toDouble());
-    rotation.setY(rotate["y"].toDouble());
-    rotation.setZ(rotate["z"].toDouble());
+    rotationStart.setX(rotate["x"].toDouble());
+    rotationStart.setY(rotate["y"].toDouble());
+    rotationStart.setZ(rotate["z"].toDouble());
 }
 
 void man::AbstractBone::rotateBone(const QVector3D &basePoint, const Angle &angles)
@@ -46,6 +46,11 @@ void man::AbstractBone::rotateBone(const QVector3D &basePoint, const Angle &angl
     for(auto &tr : stlObject.triangles)
         for(auto &vr : tr.vertex)
             vr = rotatePoint3F(vr, angles.degToRad(), basePoint);
+
+    // base point
+
+    // write angle
+    rotationCurrent += angles;
 }
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)

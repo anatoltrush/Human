@@ -74,8 +74,8 @@ void MainWindow::on_pB_Srlzd_clicked()
     man::Status serC = ui->widgetGL->cyborg->serialize("D:\\");
     man::Status serH = ui->widgetGL->human->serialize("D:\\STL\\");
 #else
-    //man::Status ser = ui->widgetGL->human->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
-    man::Status ser = ui->widgetGL->cyborg->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
+    man::Status serH; // = ui->widgetGL->human->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
+    man::Status serC = ui->widgetGL->cyborg->serialize("/home/atrush/Desktop/PROJECTS/StLiGr/garbage/");
 #endif
     ui->pB_Srlzd->setText("Ser = " + QString::number(serC) + " | " + QString::number(serH));
 }

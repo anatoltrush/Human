@@ -23,7 +23,8 @@ public:
 
     Material material = Material::Plastic;
 
-    Angle rotation;
+    Angle rotationStart;
+    Angle rotationCurrent;
     QVector3D* basePoint = nullptr;
 
     Point3FStr parentOffset;
