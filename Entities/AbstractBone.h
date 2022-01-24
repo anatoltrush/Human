@@ -25,7 +25,7 @@ public:
 
     Angle rotationStart;
     Angle rotationCurrent;
-    QVector3D* basePoint = nullptr;
+    QVector3D basePoint;
 
     Point3FStr parentOffset;
     QMap<QString, QVector3D> childrenPoints;

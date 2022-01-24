@@ -52,7 +52,7 @@ float man::squareTriangle(const QVector3D &A, const QVector3D &B, const QVector3
 
 float man::squarePolygon(std::vector<QVector3D> &contour)
 {
-    // TODO: implement float man::squarePolygon(std::vector<man::Point3F> &contour)
+    // TODO: implement | float man::squarePolygon(std::vector<man::Point3F> &contour)
     float square = 0.0f;
     return square;
 }

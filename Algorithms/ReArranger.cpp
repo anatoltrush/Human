@@ -45,7 +45,7 @@ man::Status man::ReArranger::reArrangeDistances(const man::AbstractHuman &native
 
 man::Status man::ReArranger::reArrangeAngle(const man::AbstractHuman &native, man::AbstractHuman &cyber)
 {
-    // TODO: implement
+    // TODO: implement | man::ReArranger::reArrangeAngle
     return StatusOk;
 }
 

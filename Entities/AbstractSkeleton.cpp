@@ -164,7 +164,6 @@ void man::AbstractSkeleton::rotateBonesAll(AbstractBone *startBone)
 void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Angle &angles)
 {
     if(!startBone) return;
-    startBone->rotationStart = angles;
     // ---
     std::vector<AbstractBone*> allChildBones = {startBone};
     std::vector<AbstractBone*> vecParents = {startBone};

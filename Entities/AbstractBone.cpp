@@ -47,7 +47,7 @@ void man::AbstractBone::rotateBone(const QVector3D &basePoint, const Angle &angl
         for(auto &vr : tr.vertex)
             vr = rotatePoint3F(vr, angles.degToRad(), basePoint);
 
-    // base point
+    // TODO: base point
 
     // write angle
     rotationCurrent += angles;
