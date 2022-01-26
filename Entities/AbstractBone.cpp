@@ -36,18 +36,19 @@ void man::AbstractBone::fillProperties()
     rotationStart.setZ(rotate["z"].toDouble());
 }
 
-void man::AbstractBone::rotateBone(const QVector3D &basePoint, const Angle &angles)
+void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &angles)
 {
     // children points
     for(auto &chlPt : childrenPoints)
-        chlPt = rotatePoint3F(chlPt, angles.degToRad(), basePoint);
+        chlPt = rotatePoint3F(chlPt, angles.degToRad(), centerPoint);
 
     // stl
     for(auto &tr : stlObject.triangles)
         for(auto &vr : tr.vertex)
-            vr = rotatePoint3F(vr, angles.degToRad(), basePoint);
+            vr = rotatePoint3F(vr, angles.degToRad(), centerPoint);
 
-    // TODO: base point
+    // base point
+    basePoint = rotatePoint3F(basePoint, angles.degToRad(), centerPoint);
 
     // write angle
     rotationCurrent += angles;
@@ -121,35 +122,31 @@ void man::AbstractBone::drawObjectGL()
         glEnd();
     }
     // ---
-    if(basePoint){
-        for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
-            glLineWidth(2.0f);
-            glBegin(GL_LINES);
-            glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
-            glVertex3f(basePoint->x(), basePoint->y(), basePoint->z());
-            glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
-            glEnd();
-        }
-        for (auto inter = intersections.begin(); inter != intersections.end(); inter++){
-            glPointSize(6.0f);
-            glBegin(GL_POINTS);
-            glVertex3f(inter.value().x(), inter.value().y(), inter.value().z());
-            glEnd();
-        }
+    for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
+        glLineWidth(2.0f);
+        glBegin(GL_LINES);
+        glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
+        glVertex3f(basePoint.x(), basePoint.y(), basePoint.z());
+        glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
+        glEnd();
+    }
+    for (auto inter = intersections.begin(); inter != intersections.end(); inter++){
+        glPointSize(6.0f);
+        glBegin(GL_POINTS);
+        glVertex3f(inter.value().x(), inter.value().y(), inter.value().z());
+        glEnd();
     }
 }
 
 void man::AbstractBone::drawBasePoint() const
 {
-    if(!basePoint) return;
-
     QColor bp = Qt::darkRed;
     glLineWidth(2.0f);
     glBegin(GL_TRIANGLES);
     glColor3ub(bp.red(), bp.green(), bp.blue());
-    glVertex3f(basePoint->x() - 1, basePoint->y(), basePoint->z() + 1);
-    glVertex3f(basePoint->x() + 1, basePoint->y(), basePoint->z() + 1);
-    glVertex3f(basePoint->x(), basePoint->y(), basePoint->z() - 1);
+    glVertex3f(basePoint.x() - 1, basePoint.y(), basePoint.z() + 1);
+    glVertex3f(basePoint.x() + 1, basePoint.y(), basePoint.z() + 1);
+    glVertex3f(basePoint.x(), basePoint.y(), basePoint.z() - 1);
     glEnd();
 }
 

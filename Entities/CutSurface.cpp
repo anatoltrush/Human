@@ -44,9 +44,9 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 // --- intersect basePt <-> childPt
-                thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
+                thisChild->basePoint = vecParents[i]->childrenPoints[thisChild->name];
                 for(auto chPtI = thisChild->childrenPoints.begin(); chPtI != thisChild->childrenPoints.end(); chPtI++){
-                    QVector3D ptBeg = *thisChild->basePoint;
+                    QVector3D ptBeg = thisChild->basePoint;
                     QVector3D ptInter;
                     QVector3D ptEnd = chPtI.value();
                     bool isInter = isIntersect(ptBeg, ptInter, ptEnd);

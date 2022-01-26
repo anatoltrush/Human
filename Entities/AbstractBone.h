@@ -39,7 +39,7 @@ public:
     StlObject stlObject;
 
     void fillProperties();
-    void rotateBone(const QVector3D &basePoint, const Angle &angles);
+    void rotateBone(const QVector3D &centerPoint, const Angle &angles);
     void applyOffsets(const QVector3D &offset);
 
     QVector3D getHighestPoint();

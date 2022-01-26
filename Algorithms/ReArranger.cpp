@@ -52,9 +52,9 @@ man::Status man::ReArranger::reArrangeAngle(const man::AbstractHuman &native, ma
 void man::ReArranger::moveAndStretch(AbstractBone *native, AbstractBone *cyber)
 { // Need to move all down
     // --- MOVE ---
-    QVector3D diffDist = *cyber->basePoint - *native->basePoint;
+    QVector3D diffDist = cyber->basePoint - native->basePoint;
     // --- base pt ---
-    *cyber->basePoint -= diffDist;
+    cyber->basePoint -= diffDist;
     // --- chl pts ---
     for(auto& chlPt : cyber->childrenPoints)
         chlPt -= diffDist;
@@ -69,10 +69,10 @@ void man::ReArranger::moveAndStretch(AbstractBone *native, AbstractBone *cyber)
     // --- STRETCH ---
     for(auto it = native->childrenPoints.begin(); it!=native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
-            float distNative = native->basePoint->distanceToPoint(it.value());
-            float distCyber = cyber->basePoint->distanceToPoint(cyber->childrenPoints[it.key()]);
+            float distNative = native->basePoint.distanceToPoint(it.value());
+            float distCyber = cyber->basePoint.distanceToPoint(cyber->childrenPoints[it.key()]);
             float koeff = distNative / distCyber;
-            QVector3D fullCybOffset = *cyber->basePoint + cyber->parentOffset;
+            QVector3D fullCybOffset = cyber->basePoint + cyber->parentOffset;
             // --- stl ---
             for(auto& tri : cyber->stlObject.triangles)
                 for(auto &vr : tri.vertex)

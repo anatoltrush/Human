@@ -105,8 +105,8 @@ man::Status man::AbstractSkeleton::construct()
         for(size_t i = 0; i < vecParents.size(); i++)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
-                thisChild->basePoint = &vecParents[i]->childrenPoints[thisChild->name];
-                QVector3D fullOffSet = *thisChild->basePoint + thisChild->parentOffset.toPoint3F();
+                thisChild->basePoint = vecParents[i]->childrenPoints[thisChild->name];
+                QVector3D fullOffSet = thisChild->basePoint + thisChild->parentOffset.toPoint3F();
                 thisChild->applyOffsets(fullOffSet);
                 // ---
                 vecChildren.push_back(thisChild);
@@ -165,14 +165,14 @@ void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Ang
 {
     if(!startBone) return;
     // ---
-    std::vector<AbstractBone*> allChildBones = {startBone};
+    std::vector<AbstractBone*> allChildrenBones = {startBone};
     std::vector<AbstractBone*> vecParents = {startBone};
     while (true) {
         std::vector<AbstractBone*> vecChildren;
         for(size_t i = 0; i < vecParents.size(); i++)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
-                allChildBones.push_back(thisChild);
+                allChildrenBones.push_back(thisChild);
                 // ---
                 vecChildren.push_back(thisChild);
             }
@@ -181,8 +181,8 @@ void man::AbstractSkeleton::rotateBonesSingle(AbstractBone *startBone, const Ang
         vecParents = vecChildren;
     }
     // ---
-    for(const auto &bn : allChildBones)
-        bn->rotateBone(*startBone->basePoint, angles);
+    for(const auto &bn : allChildrenBones)
+        bn->rotateBone(startBone->basePoint, angles);
 }
 
 QMap<QString, QVariant> man::AbstractSkeleton::getPropertyList() const
