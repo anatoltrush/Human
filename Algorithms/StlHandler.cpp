@@ -21,12 +21,6 @@ man::Status man::StlHandler::parseFromFile(QString &pathToFile, StlObject &objec
     }
 }
 
-void man::StlHandler::calcAddProperties(StlObject &object)
-{
-    calcSquare(object);
-    calcVolume(object);
-}
-
 man::Status man::StlHandler::saveToFile(const QString &pathToDir, man::StlObject &object)
 {
     QString pathAbs = pathToDir + "/" + object.objectName + ".stl";
@@ -230,18 +224,6 @@ man::Status man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlO
     }
 
     return StatusOk;
-}
-
-void man::StlHandler::calcSquare(StlObject &object)
-{
-    object.square = 0.0f;
-    for(const auto &tri : object.triangles)
-        object.square += squareTriangle(tri.vertex[0], tri.vertex[1], tri.vertex[2]);
-}
-
-void man::StlHandler::calcVolume(StlObject &object)
-{
-
 }
 
 std::string man::StlHandler::flToSc(float value)

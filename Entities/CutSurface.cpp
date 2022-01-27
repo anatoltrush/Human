@@ -4,9 +4,9 @@ man::CutSurface::CutSurface()
 {
     color = Qt::magenta;
 
-    /*surface.vertex[0] = QVector3D(-20.0f, -40.0f, 15.0f); // NOTE: delete VERT
-    surface.vertex[1] = QVector3D(-20.0f, 40.0f, 15.0f);
-    surface.vertex[2] = QVector3D(-20.0f, 0.0f, -60.0f);*/
+    /*planeSurface.vertex[0] = QVector3D(-20.0f, -40.0f, 15.0f); // NOTE: delete VERT
+    planeSurface.vertex[1] = QVector3D(-20.0f, 40.0f, 15.0f);
+    planeSurface.vertex[2] = QVector3D(-20.0f, 0.0f, -60.0f);*/
 
     /*surface.vertex[0] = QVector3D(3.0f, -2.0f, 4.0f); // NOTE: delete ANGLE
     surface.vertex[1] = QVector3D(-1.0f, 3.0f, 2.0f);
@@ -14,7 +14,7 @@ man::CutSurface::CutSurface()
 
     planeSurface.vertex[0] = QVector3D(-120.0f, 100.0f, -80.0f); // NOTE: delete HORIZ
     planeSurface.vertex[1] = QVector3D(120.0f, 100.0f, -80.0f);
-    planeSurface.vertex[2] = QVector3D(0.0f, -120.0f, -60.0f);
+    planeSurface.vertex[2] = QVector3D(0.0f, -120.0f, -50.0f);
 
     /*surface.vertex[0] = QVector3D(0.0f, 100.0f, -60.0f); // NOTE: delete HORIZ HALF
     surface.vertex[1] = QVector3D(120.0f, 100.0f, -60.0f);
@@ -44,7 +44,6 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
                 // --- intersect basePt <-> childPt
-                thisChild->basePoint = vecParents[i]->childrenPoints[thisChild->name];
                 for(auto chPtI = thisChild->childrenPoints.begin(); chPtI != thisChild->childrenPoints.end(); chPtI++){
                     QVector3D ptBeg = thisChild->basePoint;
                     QVector3D ptInter;
@@ -175,6 +174,7 @@ void man::CutSurface::cutAllLower(AbstractBone *startBone, bool isHuman)
         bn->isExist = !isHuman;
         for(auto &tr : bn->stlObject.triangles)
             tr.isGood = !isHuman;
+        calcAddProperties(bn->stlObject, false);
     }
 }
 
@@ -293,6 +293,7 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
     }
     std::vector<Triangle> plug = makePlug(plugPts);
     bone->stlObject.additional.insert(bone->stlObject.additional.end(), plug.begin(), plug.end());
+    calcAddProperties(bone->stlObject, false);
 }
 
 std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts)
@@ -363,7 +364,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
             }
             outerContour.insert(outerContour.end(), part.begin(), part.end());
         }
-        smoothContour(tris, outerContour, center);
+        //smoothContour(tris, outerContour, center);
         // ---
         resVec.insert(resVec.end(), tris.begin(), tris.end());
     }

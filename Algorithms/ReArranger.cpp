@@ -1,21 +1,8 @@
 #include "ReArranger.h"
 
-man::ReArranger::ReArranger()
-{
-
-}
+man::ReArranger::ReArranger(){}
 
 man::Status man::ReArranger::reArrange(const man::AbstractHuman &native, man::AbstractHuman &cyber)
-{
-    Status resDists = reArrangeDistances(native, cyber);
-    if(resDists == StatusOk){
-        Status resAngles = reArrangeAngle(native, cyber);
-        return resAngles;
-    }
-    else return resDists;
-}
-
-man::Status man::ReArranger::reArrangeDistances(const man::AbstractHuman &native, man::AbstractHuman &cyber)
 {
     AbstractBone* startBoneCyber = cyber.skeleton->getStartBone();
     AbstractBone* startBoneNative = native.skeleton->getStartBone();
@@ -30,7 +17,9 @@ man::Status man::ReArranger::reArrangeDistances(const man::AbstractHuman &native
                 // make smthng
                 if(cyber.skeleton->bones.find(nativeChild->name) != cyber.skeleton->bones.end()){
                     AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
-                    moveAndStretch(nativeChild, cyberChild);
+                    offsetBone(nativeChild, cyberChild);
+                    scaleBone(nativeChild, cyberChild);
+                    rotateBone(nativeChild, cyberChild);
                 }
                 // ---
                 vecChildren.push_back(nativeChild);
@@ -43,15 +32,8 @@ man::Status man::ReArranger::reArrangeDistances(const man::AbstractHuman &native
     return StatusOk;
 }
 
-man::Status man::ReArranger::reArrangeAngle(const man::AbstractHuman &native, man::AbstractHuman &cyber)
+void man::ReArranger::offsetBone(AbstractBone *native, AbstractBone *cyber)
 {
-    // TODO: implement | man::ReArranger::reArrangeAngle
-    return StatusOk;
-}
-
-void man::ReArranger::moveAndStretch(AbstractBone *native, AbstractBone *cyber)
-{ // Need to move all down
-    // --- MOVE ---
     QVector3D diffDist = cyber->basePoint - native->basePoint;
     // --- base pt ---
     cyber->basePoint -= diffDist;
@@ -65,22 +47,38 @@ void man::ReArranger::moveAndStretch(AbstractBone *native, AbstractBone *cyber)
     for(auto& addTri : cyber->stlObject.additional)
         for(auto &vr : addTri.vertex)
             vr -= diffDist;
+}
 
-    // --- STRETCH ---
-    for(auto it = native->childrenPoints.begin(); it!=native->childrenPoints.end(); it++){
+void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cyber)
+{
+    for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
             float distNative = native->basePoint.distanceToPoint(it.value());
             float distCyber = cyber->basePoint.distanceToPoint(cyber->childrenPoints[it.key()]);
             float koeff = distNative / distCyber;
-            QVector3D fullCybOffset = cyber->basePoint + cyber->parentOffset;
+            // --- chl pts ---
+            for(auto& chlPt : cyber->childrenPoints)
+                chlPt = QVector3D((chlPt - cyber->basePoint) * koeff + cyber->basePoint);
             // --- stl ---
             for(auto& tri : cyber->stlObject.triangles)
                 for(auto &vr : tri.vertex)
-                    vr = QVector3D((vr - fullCybOffset) * koeff + fullCybOffset);
-            // --- chl pts ---
-            for(auto& chlPt : cyber->childrenPoints)
-                chlPt = QVector3D((chlPt - fullCybOffset) * koeff + fullCybOffset); // ???
+                    vr = QVector3D((vr - cyber->basePoint) * koeff + cyber->basePoint);
         }
-        else{/*maybe return*/}
+        else{} // return?
+    }
+}
+
+void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
+{
+    for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
+        if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
+            //if(cyber->name == "LeftShin"){
+                Angle diffAngle = native->rotationCurrent - cyber->rotationCurrent;
+                // --- chl pts ---
+                for(auto& chlPt : cyber->childrenPoints)
+                    chlPt = rotatePoint3F(chlPt, diffAngle.degToRad(), cyber->basePoint);
+            //}
+        }
+        else{} // return?
     }
 }

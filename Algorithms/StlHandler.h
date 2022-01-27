@@ -17,8 +17,7 @@ class StlHandler
 public:
     StlHandler();
 
-    Status parseFromFile(QString &pathToFile, StlObject &object);
-    void calcAddProperties(StlObject &object);
+    Status parseFromFile(QString &pathToFile, StlObject &object);    
 
     Status saveToFile(const QString &pathToDir, StlObject &object);
 
@@ -34,8 +33,6 @@ private:
 
     Status parseFromFileBinary(const QString &pathToFile, StlObject &object);
 
-    void calcSquare(StlObject &object);
-    void calcVolume(StlObject &object);
     std::string flToSc(float value);
 };
 

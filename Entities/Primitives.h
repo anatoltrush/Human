@@ -80,15 +80,18 @@ struct StlObject
     std::vector<Triangle> triangles;
     std::vector<Triangle> additional;
 
-    float square = 0.0f;
-    float volume = 0.0f;
+    float squareFull = 0.0f;
+    float volumeFull = 0.0f;
+
+    float squareCut = 0.0f;
+    float volumeCut = 0.0f;
 
     void clear(){
         objectName = "";
         triangles.clear();
         additional.clear();
-        square = 0.0f;
-        volume = 0.0f;
+        squareFull = 0.0f;
+        volumeFull = 0.0f;
     }
 };
 

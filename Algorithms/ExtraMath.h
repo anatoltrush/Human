@@ -27,6 +27,11 @@ namespace man{
 
     float angle3Pts0_180(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2);
     QVector3D getCenter(std::vector<QVector3D> &contour);
+
+    // STL
+    void calcAddProperties(StlObject &object, bool isFull);
+    void calcSquare(StlObject &object, bool isFull);
+    void calcVolume(StlObject &object, bool isFull);
 }
 
 #endif // EXTRAMATH_H

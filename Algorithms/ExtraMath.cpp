@@ -235,3 +235,39 @@ bool man::isCrossContour(const std::vector<QVector3D> &contour, const QVector3D 
     }
     return res;*/
 }
+
+void man::calcAddProperties(StlObject &object, bool isFull)
+{
+    calcSquare(object, isFull);
+    calcVolume(object, isFull);
+}
+
+void man::calcSquare(StlObject &object, bool isFull)
+{
+    if(isFull){
+        object.squareFull = 0.0f;
+        for(const auto &tri : object.triangles)
+            object.squareFull += squareTriangle(tri.vertex[0], tri.vertex[1], tri.vertex[2]);
+    }
+    else {
+        object.squareCut = 0.0f;
+        for(const auto &tri : object.triangles){
+            if(tri.isGood)
+                object.squareCut += squareTriangle(tri.vertex[0], tri.vertex[1], tri.vertex[2]);
+        }
+        for(const auto &ad : object.additional){
+            if(ad.isGood)
+                object.squareCut += squareTriangle(ad.vertex[0], ad.vertex[1], ad.vertex[2]);
+        }
+    }
+}
+
+void man::calcVolume(StlObject &object, bool isFull)
+{
+    if(isFull){
+
+    }
+    else{
+
+    }
+}

@@ -10,13 +10,12 @@ class ReArranger
 public:
     ReArranger();
 
-    Status reArrange(const AbstractHuman &native, AbstractHuman &cyber);
+    Status reArrange(const AbstractHuman &native, AbstractHuman &cyber); // TODO: if have intermediate elements
 
 private:
-    Status reArrangeDistances(const AbstractHuman &native, AbstractHuman &cyber); // TODO: if have intermediate elements
-    Status reArrangeAngle(const AbstractHuman &native, AbstractHuman &cyber);
-
-    void moveAndStretch(AbstractBone *native, AbstractBone* cyber);// FIXME: error, only first work
+    void offsetBone(AbstractBone *native, AbstractBone* cyber);
+    void scaleBone(AbstractBone *native, AbstractBone* cyber);
+    void rotateBone(AbstractBone *native, AbstractBone* cyber);
 };
 
 }

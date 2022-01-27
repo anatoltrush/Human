@@ -77,7 +77,7 @@ man::Status man::AbstractSkeleton::construct()
     for (auto i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
         int res3DLoad = stlHandler.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
-        stlHandler.calcAddProperties(i.value()->stlObject);
+        calcAddProperties(i.value()->stlObject, true);
     }
 
     // --- ChildrenPointers ---
@@ -208,18 +208,15 @@ man::Status man::AbstractSkeleton::serialize(const QString &pathDir)
         if(!i.value()) continue;
         if(i.value()->isExist){
             StlObject object; // temporary obj
-            std::vector<Triangle> allTriangles;
-            // ---
             for(const auto &tr : i.value()->stlObject.triangles){
                 if(tr.isGood)
-                    allTriangles.push_back(tr);
+                    object.triangles.push_back(tr);
             }
             for(const auto &ad : i.value()->stlObject.additional){
                 if(ad.isGood)
-                    allTriangles.push_back(ad);
+                    object.triangles.push_back(ad);
             }
             // ---
-            object.triangles = allTriangles;
             if(i.key().isEmpty())
                 object.objectName = QUuid::createUuid().toString();
             else
