@@ -72,12 +72,15 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
 {
     for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
-            //if(cyber->name == "LeftShin"){
-                Angle diffAngle = native->rotationCurrent - cyber->rotationCurrent;
-                // --- chl pts ---
-                for(auto& chlPt : cyber->childrenPoints)
-                    chlPt = rotatePoint3F(chlPt, diffAngle.degToRad(), cyber->basePoint);
-            //}
+            QVector3D diff3D = native->rotationCurrent - cyber->rotationCurrent;
+            Angle diffAngle(diff3D.x(), diff3D.y(), diff3D.z());
+            // --- chl pts ---
+            /*for(auto& chlPt : cyber->childrenPoints)
+                chlPt = rotatePoint3F(chlPt, diffAngle.degToRad(), cyber->basePoint);
+            // --- stl ---
+            for(auto& tri : cyber->stlObject.triangles)
+                for(auto &vr : tri.vertex)
+                    vr = rotatePoint3F(vr, diffAngle.degToRad(), cyber->basePoint);*/
         }
         else{} // return?
     }
