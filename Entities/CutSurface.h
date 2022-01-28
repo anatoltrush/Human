@@ -31,7 +31,7 @@ private:
     std::vector<Triangle> makePlug(std::vector<QVector3D> &pts);
 
     float applyEqual(const QVector3D &pt);
-    void smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour, const QVector3D &center); // TODO: change
+    void smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour, const QVector3D &center); // TODO: change smoothContour()
 };
 
 }

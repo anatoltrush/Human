@@ -1,6 +1,6 @@
 {
-	"name": "RightHand",
-	"model3D": "RightHand.stl",
+	"name": "RightShin",
+	"model3D": "RightShin.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,17 +10,17 @@
 		
 	],
 	"parent":{
-			"name": "Spine",
-			"x": 5.0,
+			"name": "RightLeg",
+			"x": 0.0,
 			"y": 0.0,
 			"z": -3.0
 	},
 	"children":[
 		{
-			"name": "RightForearm",
+			"name": "na",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -88.0
+			"z": -40.0
 		}
 	]
 }

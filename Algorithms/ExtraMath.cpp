@@ -132,18 +132,25 @@ QVector4D man::calcPlaneEquation(const QVector3D &pt0, QVector3D &pt1, const QVe
     return N;
 }
 
-float man::angle3Pts0_180(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2)
+float man::angle3Pts0_180(const QVector3D &pt0, QVector3D &mid, const QVector3D &pt1)
 {
-    QVector3D v1 = pt0 - pt1;
-    QVector3D v2 = pt2 - pt1;
+    QVector3D v1 = pt0 - mid;
+    QVector3D v2 = pt1 - mid;
 
     QVector3D cross = QVector3D::crossProduct(v1, v2);
     float dot = QVector3D::dotProduct(v1, v2);
 
     float angle = std::atan2(cross.length(), dot);
-    float degree = angle * 180.0f / M_PI;
+    float degree = angle * 180.0 / M_PI;
 
     return degree;
+}
+
+man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt0, QVector3D &mid, const QVector3D &pt1)
+{
+    Angle resAng;
+    // TODO: IMPLEMENT man::angle3Pts0_180Reverse
+    return resAng;
 }
 
 QVector3D man::getCenter(std::vector<QVector3D> &contour)
@@ -214,12 +221,12 @@ bool man::isLineCross(const QVector3D &ptA, const QVector3D &ptB, const QVector3
     if(crossDistance > precision) return false;
 
     cross = (pa + pb) / 2;
-    if((mua >= 0.0f && mua <= 1.0f) && (mub >= 0.0f && mub <= 1.0f)) return true;
+    if((mua >= 0.0 && mua <= 1.0) && (mub >= 0.0 && mub <= 1.0)) return true;
     else return false;
 }
 
 bool man::isCrossContour(const std::vector<QVector3D> &contour, const QVector3D &ptX, const QVector3D &ptY)
-{
+{ // TODO: IMPLEMENT man::isCrossContour
     /*bool res = false;
     for(size_t i = 0; i < contour.size(); i++){
         size_t nextInd = i + 1;
@@ -263,7 +270,7 @@ void man::calcSquare(StlObject &object, bool isFull)
 }
 
 void man::calcVolume(StlObject &object, bool isFull)
-{
+{ // TODO: IMPLEMENT man::calcVolume
     if(isFull){
 
     }

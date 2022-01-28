@@ -10,7 +10,7 @@
 
 namespace man{
 
-#define DEG_TO_RAD(deg) ((deg) * M_PI / 180.0f)
+#define DEG_TO_RAD(deg) ((deg) * M_PI / 180.0)
 
 struct Point3FStr : public QVector3D
 {
