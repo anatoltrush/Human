@@ -30,7 +30,7 @@ void MainWindow::setCyborg(man::AbstractHuman *cyborg)
 
 void MainWindow::updUi()
 {
-    /*ui->widgetGL->cyborg->skeleton->rotateBonesSingle(ui->widgetGL->cyborg->skeleton->bones["LeftHand"], man::Angle(-0.2f, 0.0f, 0.0f));
+    /*ui->widgetGL->cyborg->skeleton->rotateBonesSingle(ui->widgetGL->cyborg->skeleton->bones["RightHand"], man::Angle(-0.2f, 0.0f, 0.0f));
     bool isWarn = false;
     ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton, isWarn);
     ui->widgetGL->update();*/

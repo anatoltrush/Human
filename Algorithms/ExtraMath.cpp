@@ -1,6 +1,16 @@
 #include "ExtraMath.h"
 
-QVector3D man::rotatePoint3F(QVector3D point, const QVector3D &angleRad, QVector3D basePoint)
+QVector3D man::rotatePoint3FBack(const QVector3D &point, const QVector3D &angleRad, const QVector3D &basePoint)
+{
+    QVector3D resPt = point;
+    //resPt = rotatePoint3F(resPt, -angleRad, basePoint); // BUG: !wrong way
+    resPt = rotatePoint3F(resPt, Angle(0.0f, 0.0f, -angleRad.z()), basePoint);
+    resPt = rotatePoint3F(resPt, Angle(0.0f, -angleRad.y(), 0.0f), basePoint);
+    resPt = rotatePoint3F(resPt, Angle(-angleRad.x(), 0.0f, 0.0f), basePoint);
+    return resPt;
+}
+
+QVector3D man::rotatePoint3F(const QVector3D &point, const QVector3D &angleRad, const QVector3D &basePoint)
 {
     QVector3D diffPt = point - basePoint;
     QVector3D aftXrot = rotatePoint3FX(diffPt, angleRad.x());
@@ -156,6 +166,7 @@ man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt0, QVector3D &mid, cons
 QVector3D man::getCenter(std::vector<QVector3D> &contour)
 {
     QVector3D center;
+    if(contour.size() == 0) return center;
     for(size_t i = 0; i < contour.size(); i++)
         center += contour[i];
     center /= contour.size();

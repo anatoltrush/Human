@@ -2,9 +2,9 @@
 	"name": "LeftForearm",
 	"model3D": "LeftForearm.stl",
 	"rotation": {
-			"x": -15.0,
+			"x": 90.0,
 			"y": 0.0,
-			"z": 30.0
+			"z": 0.0
 	},
 	"parts":[
 		

@@ -19,9 +19,8 @@ man::Status man::ReArranger::reArrange(const man::AbstractHuman &native, man::Ab
                     AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
                     if(cyberChild){
                         offsetBone(nativeChild, cyberChild);
-                        scaleBone(nativeChild, cyberChild);
-                        stretchBone(nativeChild, cyberChild);
-                        rotateBone(nativeChild, cyberChild);
+                        stretchAndRotateBone(nativeChild, cyberChild);
+                        //scaleBone(nativeChild, cyberChild);
                     }
                 }
                 // ---
@@ -71,46 +70,44 @@ void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cy
     }
 }
 
-void man::ReArranger::stretchBone(man::AbstractBone *native, man::AbstractBone *cyber)
+void man::ReArranger::stretchAndRotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
-// TODO: IMPLEMENT 1 man::ReArranger::stretchBone
-}
-
-void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
-{
+    if(cyber->name != "LeftForearm") return;
     for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
-            QVector3D diff3D = native->rotationCurrent - cyber->rotationCurrent;            Angle diffAngle(diff3D.x(), diff3D.y(), diff3D.z());
+            QVector3D* chldPt = &cyber->childrenPoints[it.key()];
+            *chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
+            QVector3D falseNatChld = it.value();
+            falseNatChld = rotatePoint3FBack(falseNatChld, native->rotationCurrent, native->basePoint);
+            // --- calc koeffs ---
+            float distXCyb = chldPt->x() - cyber->basePoint.x();
+            float distYCyb = chldPt->y() - cyber->basePoint.y();
+            float distZCyb = chldPt->z() - cyber->basePoint.z();
+            float distXNat = falseNatChld.x() - native->basePoint.x();
+            float distYNat = falseNatChld.y() - native->basePoint.y();
+            float distZNat = falseNatChld.z() - native->basePoint.z();
+            QVector3D koeffs(distXNat / distXCyb, distYNat / distYCyb, distZNat / distZCyb);
+            // --- apply koeffs ---
+            //*chldPt = (*chldPt - cyber->basePoint) * koeffs + cyber->basePoint;
+            // ---
+            //*chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), cyber->basePoint);
+
             // --- stl ---
-            for(auto& tri : cyber->stlObject.triangles)
+            /*for(auto& tri : cyber->stlObject.triangles)
                 for(auto &vr : tri.vertex){
                     float zRad = DEG_TO_RAD(-cyber->rotationCurrent.z());
                     vr = rotatePoint3F(vr, Angle(0.0f, 0.0f, zRad), cyber->basePoint);
-
                     float yRad = DEG_TO_RAD(-cyber->rotationCurrent.y());
                     vr = rotatePoint3F(vr, Angle(0.0f, yRad, 0.0f), cyber->basePoint);
-
                     float xRad = DEG_TO_RAD(-cyber->rotationCurrent.x());
                     vr = rotatePoint3F(vr, Angle(xRad, 0.0f, 0.0f), cyber->basePoint);
-
+                    // --- apply koeffs ---
+                    // ---
                     vr = rotatePoint3F(vr, native->rotationCurrent.degToRad(), cyber->basePoint);
-                }
-            // --- chl pts ---
-            for(auto& chlPt : cyber->childrenPoints){
-                float zRad = DEG_TO_RAD(-cyber->rotationCurrent.z());
-                chlPt = rotatePoint3F(chlPt, Angle(0.0f, 0.0f, zRad), cyber->basePoint);
-
-                float yRad = DEG_TO_RAD(-cyber->rotationCurrent.y());
-                chlPt = rotatePoint3F(chlPt, Angle(0.0f, yRad, 0.0f), cyber->basePoint);
-
-                float xRad = DEG_TO_RAD(-cyber->rotationCurrent.x());
-                chlPt = rotatePoint3F(chlPt, Angle(xRad, 0.0f, 0.0f), cyber->basePoint);
-
-                chlPt = rotatePoint3F(chlPt, native->rotationCurrent.degToRad(), cyber->basePoint);
-            }
+                }*/
         }
         else{} // return?
 
-        cyber->rotationCurrent = native->rotationCurrent;
+        //cyber->rotationCurrent = native->rotationCurrent;
     }
 }

@@ -4,7 +4,8 @@
 #include "Entities/Primitives.h"
 
 namespace man{
-    QVector3D rotatePoint3F(QVector3D point, const QVector3D &angleRad, QVector3D basePoint);
+    QVector3D rotatePoint3FBack(const QVector3D &point, const QVector3D &angleRad, const QVector3D &basePoint);
+    QVector3D rotatePoint3F(const QVector3D &point, const QVector3D &angleRad, const QVector3D &basePoint);
 
     QVector3D rotatePoint3FX(QVector3D point, const float &angX);
     QVector3D rotatePoint3FY(QVector3D point, const float &angY);
