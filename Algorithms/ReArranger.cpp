@@ -76,7 +76,11 @@ void man::ReArranger::stretchAndRotateBone(man::AbstractBone *native, man::Abstr
     for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
             QVector3D* chldPt = &cyber->childrenPoints[it.key()];
-            *chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
+            //*chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
+            Angle aaa(0.0f, 30.0f, 0.0f);
+            Angle aab(90.0f, 0.0f, 0.0f);
+            *chldPt = rotatePoint3FBack(*chldPt, aab.degToRad(), cyber->basePoint);
+            *chldPt = rotatePoint3FBack(*chldPt, aaa.degToRad(), cyber->basePoint);
             QVector3D falseNatChld = it.value();
             falseNatChld = rotatePoint3FBack(falseNatChld, native->rotationCurrent, native->basePoint);
             // --- calc koeffs ---

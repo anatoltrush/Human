@@ -125,8 +125,13 @@ void man::AbstractBone::drawObjectGL()
     for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
         glLineWidth(2.0f);
         glBegin(GL_LINES);
-        glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
+
+        glColor3ub(colorCut.red(), colorCut.green(), colorCut.blue());
         glVertex3f(basePoint.x(), basePoint.y(), basePoint.z());
+        glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
+
+        glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
+        glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
         glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
         glEnd();
     }

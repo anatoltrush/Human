@@ -12,7 +12,7 @@
 	"parent":{
 			"name": "Spine",
 			"x": 5.0,
-			"y": 0.0,
+			"y": 10.0,
 			"z": -3.0
 	},
 	"children":[
