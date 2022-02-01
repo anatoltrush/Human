@@ -98,17 +98,6 @@ void man::AbstractBone::drawObjectGL()
         }
         glEnd();
     }
-    /*for(size_t i = 0; i < stlObject.triangles.size(); i++){
-        glBegin(GL_TRIANGLES);
-        if(stlObject.triangles[i].isGood)
-            glColor3ub(color.r, color.g, color.b);
-        else
-            glColor3ub(colorCut.r, colorCut.g, colorCut.b);
-        glVertex3f(stlObject.triangles[i].vertex[0].x, stlObject.triangles[i].vertex[0].y, stlObject.triangles[i].vertex[0].z);
-        glVertex3f(stlObject.triangles[i].vertex[1].x, stlObject.triangles[i].vertex[1].y, stlObject.triangles[i].vertex[1].z);
-        glVertex3f(stlObject.triangles[i].vertex[2].x, stlObject.triangles[i].vertex[2].y, stlObject.triangles[i].vertex[2].z);
-        glEnd();
-    }*/
     // ---
     for(size_t i = 0; i < stlObject.additional.size(); i++){
         glBegin(GL_TRIANGLES);
@@ -125,11 +114,11 @@ void man::AbstractBone::drawObjectGL()
     for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
         glLineWidth(2.0f);
         glBegin(GL_LINES);
-
+        // tendon
         glColor3ub(colorCut.red(), colorCut.green(), colorCut.blue());
         glVertex3f(basePoint.x(), basePoint.y(), basePoint.z());
         glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
-
+        // bone
         glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
         glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
         glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());

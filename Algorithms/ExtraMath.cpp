@@ -156,11 +156,24 @@ float man::angle3Pts0_180(const QVector3D &pt0, QVector3D &mid, const QVector3D 
     return degree;
 }
 
-man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt0, QVector3D &mid, const QVector3D &pt1)
+man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt, QVector3D &mid)
 {
-    Angle resAng;
-    // TODO: IMPLEMENT man::angle3Pts0_180Reverse
-    return resAng;
+    // find Z
+    QVector3D starX(mid.x(), mid.y() - 1, mid.z());
+    QVector3D ptZ(pt.x(), pt.y(), mid.z());
+    float angZ = angle3Pts0_180(starX, mid, ptZ);
+    if((pt.x() - mid.x()) < 0.0f)
+        angZ = 360.0f - angZ;
+
+    // find X
+    QVector3D starZ(mid.x(), mid.y(), mid.z() - 1);
+    Angle backZ(0.0f, 0.0f, angZ);
+    QVector3D rotatedPt = rotatePoint3FBack(pt, backZ.degToRad(), mid);
+    float angX = angle3Pts0_180(rotatedPt, mid, starZ);
+    if((rotatedPt.y() - mid.y()) < 0.0f)
+        angX = 360.0f - angX;
+
+    return Angle(angX, 0.0f, angZ);
 }
 
 QVector3D man::getCenter(std::vector<QVector3D> &contour)

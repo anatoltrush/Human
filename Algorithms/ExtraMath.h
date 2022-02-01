@@ -27,7 +27,7 @@ namespace man{
     QVector4D calcPlaneEquation(const QVector3D &pt0, QVector3D &pt1, const QVector3D &pt2);
 
     float angle3Pts0_180(const QVector3D &pt0, QVector3D &mid, const QVector3D &pt1);
-    Angle angle3Pts0_180Reverse(const QVector3D &pt0, QVector3D &mid, const QVector3D &pt1);
+    Angle angle3Pts0_180Reverse(const QVector3D &pt, QVector3D &mid);
     QVector3D getCenter(std::vector<QVector3D> &contour);
 
     // STL

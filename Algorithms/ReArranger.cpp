@@ -72,25 +72,25 @@ void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cy
 
 void man::ReArranger::stretchAndRotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
-    if(cyber->name != "LeftForearm") return;
+    //if(cyber->name != "LeftLeg") return;
     for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
             QVector3D* chldPt = &cyber->childrenPoints[it.key()];
             //*chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
-            Angle aaa(0.0f, 30.0f, 0.0f);
-            Angle aab(90.0f, 0.0f, 0.0f);
-            *chldPt = rotatePoint3FBack(*chldPt, aab.degToRad(), cyber->basePoint);
-            *chldPt = rotatePoint3FBack(*chldPt, aaa.degToRad(), cyber->basePoint);
-            QVector3D falseNatChld = it.value();
-            falseNatChld = rotatePoint3FBack(falseNatChld, native->rotationCurrent, native->basePoint);
+
+            //Angle frarm = angle3Pts0_180Reverse(*chldPt, cyber->basePoint);
+
+            //*chldPt = rotatePoint3FBack(*chldPt, frarm.degToRad(), cyber->basePoint);
+            //QVector3D falseNatChld = it.value();
+            //falseNatChld = rotatePoint3FBack(falseNatChld, native->rotationCurrent, native->basePoint);
             // --- calc koeffs ---
             float distXCyb = chldPt->x() - cyber->basePoint.x();
             float distYCyb = chldPt->y() - cyber->basePoint.y();
             float distZCyb = chldPt->z() - cyber->basePoint.z();
-            float distXNat = falseNatChld.x() - native->basePoint.x();
+            /*float distXNat = falseNatChld.x() - native->basePoint.x();
             float distYNat = falseNatChld.y() - native->basePoint.y();
-            float distZNat = falseNatChld.z() - native->basePoint.z();
-            QVector3D koeffs(distXNat / distXCyb, distYNat / distYCyb, distZNat / distZCyb);
+            float distZNat = falseNatChld.z() - native->basePoint.z();*/
+            //QVector3D koeffs(distXNat / distXCyb, distYNat / distYCyb, distZNat / distZCyb);
             // --- apply koeffs ---
             //*chldPt = (*chldPt - cyber->basePoint) * koeffs + cyber->basePoint;
             // ---
