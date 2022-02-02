@@ -72,46 +72,51 @@ void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cy
 
 void man::ReArranger::stretchAndRotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
-    //if(cyber->name != "LeftLeg") return;
+    //if(cyber->name != "LeftHand") return;
     for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
             QVector3D* chldPt = &cyber->childrenPoints[it.key()];
-            //*chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
+            *chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
+            QVector3D falseNatChld = it.value();
+            falseNatChld = rotatePoint3FBack(falseNatChld, native->rotationCurrent.degToRad(), native->basePoint);
 
-            //Angle frarm = angle3Pts0_180Reverse(*chldPt, cyber->basePoint);
-
-            //*chldPt = rotatePoint3FBack(*chldPt, frarm.degToRad(), cyber->basePoint);
-            //QVector3D falseNatChld = it.value();
-            //falseNatChld = rotatePoint3FBack(falseNatChld, native->rotationCurrent, native->basePoint);
             // --- calc koeffs ---
-            float distXCyb = chldPt->x() - cyber->basePoint.x();
-            float distYCyb = chldPt->y() - cyber->basePoint.y();
-            float distZCyb = chldPt->z() - cyber->basePoint.z();
-            /*float distXNat = falseNatChld.x() - native->basePoint.x();
+            QVector3D koeffs;
+            float prec = 0.0001f;
+
+            float distXNat = falseNatChld.x() - native->basePoint.x();
             float distYNat = falseNatChld.y() - native->basePoint.y();
-            float distZNat = falseNatChld.z() - native->basePoint.z();*/
-            //QVector3D koeffs(distXNat / distXCyb, distYNat / distYCyb, distZNat / distZCyb);
+            float distZNat = falseNatChld.z() - native->basePoint.z();
+
+            float distXCyb = chldPt->x() - cyber->basePoint.x();
+            if(abs(distXCyb) < prec) koeffs.setX(1.0f);
+            else koeffs.setX(distXNat / distXCyb);
+
+            float distYCyb = chldPt->y() - cyber->basePoint.y();
+            if(abs(distYCyb) < prec) koeffs.setY(1.0f);
+            else koeffs.setY(distYNat / distYCyb);
+
+            float distZCyb = chldPt->z() - cyber->basePoint.z();
+            if(abs(distZCyb) < prec) koeffs.setZ(1.0f);
+            else koeffs.setZ(distZNat / distZCyb);
+
             // --- apply koeffs ---
-            //*chldPt = (*chldPt - cyber->basePoint) * koeffs + cyber->basePoint;
+            *chldPt = (*chldPt - cyber->basePoint) * koeffs + cyber->basePoint;
             // ---
-            //*chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), cyber->basePoint);
+            *chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), cyber->basePoint);
 
             // --- stl ---
-            /*for(auto& tri : cyber->stlObject.triangles)
-                for(auto &vr : tri.vertex){
-                    float zRad = DEG_TO_RAD(-cyber->rotationCurrent.z());
-                    vr = rotatePoint3F(vr, Angle(0.0f, 0.0f, zRad), cyber->basePoint);
-                    float yRad = DEG_TO_RAD(-cyber->rotationCurrent.y());
-                    vr = rotatePoint3F(vr, Angle(0.0f, yRad, 0.0f), cyber->basePoint);
-                    float xRad = DEG_TO_RAD(-cyber->rotationCurrent.x());
-                    vr = rotatePoint3F(vr, Angle(xRad, 0.0f, 0.0f), cyber->basePoint);
+            for(auto& tri : cyber->stlObject.triangles)
+                for(auto &pnt : tri.vertex){
+                    pnt = rotatePoint3FBack(pnt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
                     // --- apply koeffs ---
-                    // ---
-                    vr = rotatePoint3F(vr, native->rotationCurrent.degToRad(), cyber->basePoint);
-                }*/
+                    pnt = (pnt - cyber->basePoint) * koeffs + cyber->basePoint;
+                    // --- rotate to native
+                    pnt = rotatePoint3F(pnt, native->rotationCurrent.degToRad(), cyber->basePoint);
+                }
         }
         else{} // return?
 
-        //cyber->rotationCurrent = native->rotationCurrent;
+        cyber->rotationCurrent = native->rotationCurrent;
     }
 }

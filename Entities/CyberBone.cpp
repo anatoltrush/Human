@@ -22,5 +22,5 @@ QMap<QString, QVariant> man::CyberBone::getPropertyList() const
 }
 
 void man::CyberBone::serialize(){
-    std::cout << "Serialize CybBone: " <<  name.toStdString() << std::endl; // NOTE: delete
+
 }

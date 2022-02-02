@@ -83,13 +83,16 @@ void MainWindow::on_pB_Srlzd_clicked()
 
 void MainWindow::on_pB_ReArr_clicked()
 {
-    man::Status resArrange =
-            reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
+    ui->widgetGL->human->skeleton->rotateBonesSingle(ui->widgetGL->human->skeleton->bones["LeftHand"], man::Angle(2.0f, 1.0f, 0.5f));
+
+    man::Status resArrange = reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
 
     if(resArrange == man::StatusOk)
         ui->pB_ReArr->setStyleSheet("background-color: green");
     else
         ui->pB_ReArr->setStyleSheet("background-color: yellow");
+
+    on_pB_Cut_clicked();
 
     ui->widgetGL->update();
 }

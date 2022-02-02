@@ -1,14 +1,8 @@
 #include "AbstractBone.h"
 
-man::AbstractBone::AbstractBone()
-{
+man::AbstractBone::AbstractBone(){}
 
-}
-
-man::AbstractBone::~AbstractBone()
-{
-    std::cout << "-Delete AbsBone-" <<  name.toStdString() << std::endl; // NOTE: delete
-}
+man::AbstractBone::~AbstractBone(){}
 
 void man::AbstractBone::fillProperties()
 {
@@ -51,7 +45,11 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
     basePoint = rotatePoint3F(basePoint, angles.degToRad(), centerPoint);
 
     // write angle
-    rotationCurrent += angles;
+    std::vector<QVector3D> tempVec;
+    for(const auto &chlPt : childrenPoints)
+        tempVec.push_back(chlPt);
+    QVector3D tempPoint = getCenter(tempVec);
+    rotationCurrent = angle3Pts0_180Reverse(tempPoint, basePoint);
 }
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)
@@ -114,14 +112,18 @@ void man::AbstractBone::drawObjectGL()
     for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
         glLineWidth(2.0f);
         glBegin(GL_LINES);
+        // just bones
+        glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
+        glVertex3f(basePoint.x(), basePoint.y(), basePoint.z());
+        glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
         // tendon
-        glColor3ub(colorCut.red(), colorCut.green(), colorCut.blue());
+        /*glColor3ub(colorCut.red(), colorCut.green(), colorCut.blue());
         glVertex3f(basePoint.x(), basePoint.y(), basePoint.z());
         glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
         // bone
         glColor3ub(colorHull.red(), colorHull.green(), colorHull.blue());
         glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
-        glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());
+        glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());*/
         glEnd();
     }
     for (auto inter = intersections.begin(); inter != intersections.end(); inter++){
@@ -149,7 +151,4 @@ QMap<QString, QVariant> man::AbstractBone::getPropertyList() const
 
 }
 
-void man::AbstractBone::serialize()
-{
-    //std::cout << "Serialize AbsBone: " <<  name.toStdString() << std::endl; // NOTE: delete
-}
+void man::AbstractBone::serialize(){}
