@@ -142,7 +142,7 @@ QVector4D man::calcPlaneEquation(const QVector3D &pt0, QVector3D &pt1, const QVe
     return N;
 }
 
-float man::angle3Pts0_180(const QVector3D &pt0, QVector3D &mid, const QVector3D &pt1)
+float man::angle3Pts0_180(const QVector3D &pt0, const QVector3D &mid, const QVector3D &pt1)
 {
     QVector3D v1 = pt0 - mid;
     QVector3D v2 = pt1 - mid;

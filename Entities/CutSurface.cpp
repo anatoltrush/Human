@@ -364,7 +364,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
             }
             outerContour.insert(outerContour.end(), part.begin(), part.end());
         }
-        //smoothContour(tris, outerContour, center);
+        smoothContour(tris, outerContour, center);
         // ---
         resVec.insert(resVec.end(), tris.begin(), tris.end());
     }
@@ -380,6 +380,32 @@ float man::CutSurface::applyEqual(const QVector3D &pt)
 void man::CutSurface::smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour, const QVector3D &center)
 {
     for(size_t i = 0; i < contour.size(); i++){
+        size_t next = i + 1;
+        if(next == contour.size()) next = 0;
+
+        size_t count = 0;
+        size_t nnext = next + 1;
+        if(nnext == contour.size()) nnext = 0;
+        float maxAng = 0.0f;
+        QVector3D farPoint;
+        size_t farInd = -1;
+        while (count < contour.size() / 2) {
+            // ---
+            float currAng = angle3Pts0_180(contour[i], contour[next], contour[nnext]);
+            if(currAng > maxAng){
+                maxAng = currAng;
+                farPoint = contour[nnext];
+                farInd = nnext;
+            }
+            // ---
+            count++;
+            nnext++;
+            if(nnext == contour.size()) nnext = 0;
+        }
+        int a = 5;
+    }
+    int a = 5;
+    /*for(size_t i = 0; i < contour.size(); i++){
         size_t indOne = i + 1;
         if(indOne == contour.size()) indOne = 0;
         size_t indTwo = indOne + 1;
@@ -402,5 +428,5 @@ void man::CutSurface::smoothContour(std::vector<Triangle> &triangles, std::vecto
                 i--;
             }
         }
-    }
+    }*/
 }
