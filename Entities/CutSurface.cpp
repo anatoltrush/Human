@@ -298,135 +298,109 @@ void man::CutSurface::cutSingleLower(AbstractBone *bone, bool isHuman)
 
 std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts)
 {
+    std::vector<Triangle> triangles;
+
+    // 0) ---
     float precision = 0.0001f;
-    std::vector<QVector3D> unique = makeUniquePts(pts, precision);
-
+    std::vector<QVector3D> cloud = makeUniquePts(pts, precision);
     // ---
-    std::vector<man::Triangle> resVec;
-    // ---
-    if(unique.size() < 3){}
-    else if(unique.size() == 3){
-        Triangle addTri = Triangle(unique[0], unique[1], unique[2], QVector3D(0.0f, 0.0f, 1.0f), true);
-        resVec.push_back(addTri);
+    if(cloud.size() < 3){
+        qWarning() << "WARNING! Only 2 points got (CutSurface::makePlug)";
+        return triangles;
     }
-    else{
-        QVector3D center = getCenter(unique);
-
-        // --- calc all dist to center ---
-        QMultiMap<float, QVector3D> pointsDist;
-        for(size_t i = 0; i < unique.size(); i++){
-            float distPt = center.distanceToPoint(unique[i]);
-            pointsDist.insert(distPt, unique[i]);
-        }
-
-        // --- fill and reverse vector ---
-        std::vector<QVector3D> sorted;
-        for(auto iter = pointsDist.begin(); iter != pointsDist.end(); iter++)
-            sorted.push_back(iter.value());
-        std::reverse(sorted.begin(), sorted.end());
-        Triangle startTri(sorted[0], sorted[1], sorted[2], QVector3D(0.0f, 0.0f, 1.0f), true);
-        center = getCenter(startTri.toVector());
-        std::vector<Triangle> tris;
-        std::vector<QVector3D> outerContour;
-
-        // --- check other points ---
-        for(size_t i = 0; i < startTri.toVector().size(); i++){
-            size_t nextInd = i + 1;
-            if(nextInd == startTri.toVector().size())
-                nextInd = 0;
-            // ---
-            QVector3D A = startTri.toVector()[i];
-            QVector3D B = startTri.toVector()[nextInd];
-            // ---
-            QMap<float, QVector3D> mapAngles;
-            std::vector<QVector3D> part;
-            for(size_t j = 0; j < unique.size(); j++){
-                QVector3D crossCoord;
-                bool isCross = isLineCross(A, B, center, unique[j], crossCoord);
-                if(isCross){
-                    float ang = angle3Pts0_180(A, center, unique[j]);
-                    mapAngles.insert(ang, unique[j]);
-                }
-            }
-            if(mapAngles.size() > 0){
-                std::vector<QVector3D> angsVec;
-                for(auto angIt = mapAngles.begin(); angIt != mapAngles.end(); angIt++)
-                    angsVec.push_back(angIt.value());
-                // ---
-                for(size_t k = 0; k < angsVec.size() - 1; k++){
-                    Triangle tri(center, angsVec[k], angsVec[k + 1], QVector3D(0.0f, 0.0f, 1.0f), true);
-                    tris.push_back(tri);
-                    part.push_back(angsVec[k]);
-                }
-                Triangle lastTri(center, angsVec.back(), B, QVector3D(0.0f, 0.0f, 1.0f), true);
-                tris.push_back(lastTri);
-                part.push_back(angsVec.back());
-            }
-            outerContour.insert(outerContour.end(), part.begin(), part.end());
-        }
-        smoothContour(tris, outerContour, center);
-        // ---
-        resVec.insert(resVec.end(), tris.begin(), tris.end());
+    if(cloud.size() == 3){
+        Triangle addTri = Triangle(cloud[0], cloud[1], cloud[2], QVector3D(0.0f, 0.0f, 1.0f), true);
+        triangles.push_back(addTri);
+        return triangles;
     }
-    return resVec;
+
+    // 1) --- find 1st pt ---
+    QVector3D firstPt(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+    QVector3D starDown;
+
+    float aveX = 0.0f;
+    for(const auto &pt : cloud)
+        aveX += pt.x();
+    aveX /= cloud.size();
+
+    float aveY = 0.0f;
+    for(const auto &pt : cloud)
+        aveY += pt.y();
+    aveY /= cloud.size();
+
+    float aveZ = 0.0f;
+    for(const auto &pt : cloud)
+        aveZ += pt.z();
+    aveZ /= cloud.size();
+
+    if(aveX > aveY && aveX > aveZ){ // X
+        for(size_t i = 0; i < cloud.size(); i++)
+            if(cloud[i].x() < firstPt.x()){
+                firstPt = cloud[i];
+                starDown = QVector3D(firstPt.x() - 1.0f, firstPt.y(), firstPt.z());
+            }
+    }
+    if(aveY > aveX && aveY > aveZ){ // Y
+        for(size_t i = 0; i < cloud.size(); i++)
+            if(cloud[i].y() < firstPt.y()){
+                firstPt = cloud[i];
+                starDown = QVector3D(firstPt.x(), firstPt.y() - 1.0f, firstPt.z());
+            }
+    }
+    if(aveZ > aveX && aveZ > aveY){ // Z
+        for(size_t i = 0; i < cloud.size(); i++)
+            if(cloud[i].z() < firstPt.z()){
+                firstPt = cloud[i];
+                starDown = QVector3D(firstPt.x(), firstPt.y(), firstPt.z() - 1.0f);
+            }
+    }
+
+    // 2) --- find 2nd pt ---
+    QVector3D secondPt;
+    float minAngSec = 180.0f;
+    for(size_t ind = 0; ind < cloud.size(); ind++){
+        if(cloud[ind] == firstPt) continue;
+        float currAng = angle3Pts0_180(starDown, firstPt, cloud[ind]);
+        if(currAng < minAngSec){
+            secondPt = cloud[ind];
+            minAngSec = currAng;
+        }
+    }
+
+    // 3) ---
+    std::vector<QVector3D> outer {firstPt, secondPt};
+    while (true) {
+        QVector3D last = outer[outer.size() - 1];
+        QVector3D prev = outer[outer.size() - 2];
+
+        float maxAng = 0.0f;
+        QVector3D nextPt;
+        for(size_t i = 0; i < cloud.size(); i++){
+            //if(std::find(outer.begin(), outer.end(), cloud[i]) != outer.end()) continue;
+            if(cloud[i] == prev || cloud[i] == last) continue;
+            float currAng = angle3Pts0_180(prev, last, cloud[i]);
+            if(currAng > maxAng){
+                nextPt = cloud[i];
+                maxAng = currAng;
+            }
+        }
+        if(nextPt == firstPt) break;
+        outer.push_back(nextPt);
+    }
+
+    // 4) --- make triangles ---
+    QVector3D center = getCenter(outer);
+    for(size_t j = 0; j < outer.size(); j++){
+        size_t jNext = j + 1;
+        if(jNext == outer.size()) jNext = 0;
+        Triangle tri(outer[j], center, outer[jNext], QVector3D(0.0f, 0.0f, 1.0f), true);
+        triangles.push_back(tri);
+    }
+    return triangles;
 }
 
 float man::CutSurface::applyEqual(const QVector3D &pt)
 {
     float res = planeEqual.x() * pt.x() + planeEqual.y() * pt.y() + planeEqual.z() * pt.z() + planeEqual.w();
     return res;
-}
-
-void man::CutSurface::smoothContour(std::vector<Triangle> &triangles, std::vector<QVector3D> &contour, const QVector3D &center)
-{
-    for(size_t i = 0; i < contour.size(); i++){
-        size_t next = i + 1;
-        if(next == contour.size()) next = 0;
-
-        size_t count = 0;
-        size_t nnext = next + 1;
-        if(nnext == contour.size()) nnext = 0;
-        float maxAng = 0.0f;
-        QVector3D farPoint;
-        size_t farInd = -1;
-        while (count < contour.size() / 2) {
-            // ---
-            float currAng = angle3Pts0_180(contour[i], contour[next], contour[nnext]);
-            if(currAng > maxAng){
-                maxAng = currAng;
-                farPoint = contour[nnext];
-                farInd = nnext;
-            }
-            // ---
-            count++;
-            nnext++;
-            if(nnext == contour.size()) nnext = 0;
-        }
-        int a = 5;
-    }
-    int a = 5;
-    /*for(size_t i = 0; i < contour.size(); i++){
-        size_t indOne = i + 1;
-        if(indOne == contour.size()) indOne = 0;
-        size_t indTwo = indOne + 1;
-        if(indTwo == contour.size()) indTwo = 0;
-        // ---
-        QVector3D A = contour[i];
-        QVector3D B = contour[indOne];
-        QVector3D C = contour[indTwo];
-        // ---
-        Triangle tempTri(A, center, C, QVector3D(0, 0, 0), false);
-        bool isPtIn = isInTriangle(tempTri.toVector(), B);
-        if(isPtIn){
-            float distAB = A.distanceToPoint(B);
-            float distBC = B.distanceToPoint(C);
-            float distAC = A.distanceToPoint(C);
-            if(((distAB + distBC) - distAC) > 0.001f){
-                Triangle newTri(A, B, C, QVector3D(0, 0, 1), true);
-                triangles.push_back(newTri);
-                contour.erase(contour.begin() + indOne);
-                i--;
-            }
-        }
-    }*/
 }
