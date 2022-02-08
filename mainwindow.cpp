@@ -11,6 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :
     timer->setInterval(100); // Задаем интервал таймера
     connect(timer, SIGNAL(timeout()), this, SLOT(updUi())); // Подключаем сигнал таймера к нашему слоту
     timer->start(); // Запускаем таймер
+
+    int colCount = 2;
+    ui->tabProp->setShowGrid(true);
+    ui->tabProp->setColumnCount(colCount);
+    ui->tabProp->setHorizontalHeaderLabels(QStringList() << "Property" << "Value");
+    ui->tabProp->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 MainWindow::~MainWindow()
@@ -95,4 +101,26 @@ void MainWindow::on_pB_ReArr_clicked()
     on_pB_Cut_clicked();
 
     ui->widgetGL->update();
+}
+
+void MainWindow::on_pB_Table_clicked()
+{
+    man::AbstractBone* obj = ui->widgetGL->cyborg->skeleton->bones["RightHand"];
+    QMap<QString, QVariant> properties = obj->getPropertyList();
+
+    ui->tabProp->clear();
+    ui->tabProp->setRowCount(properties.size());
+    int rawN = 0;
+    for(auto it = properties.begin(); it != properties.end(); it++){
+        QTableWidgetItem* itemK = new QTableWidgetItem();
+        itemK->setText(it.key());
+
+        QTableWidgetItem* itemV = new QTableWidgetItem();
+        itemV->setText(it.value().toString());
+
+        ui->tabProp->setItem(rawN, 0, itemK);
+        ui->tabProp->setItem(rawN, 1, itemV);
+
+        rawN++;
+    }
 }

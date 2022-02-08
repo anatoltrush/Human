@@ -1,12 +1,8 @@
 #ifndef STLHANDLER_H
 #define STLHANDLER_H
 
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <iomanip>
-
-#include "Algorithms/ExtraMath.h"
+#include "Aux/ExtraMath.h"
+#include "Aux/Additional.h"
 #include "Config/Defines.h"
 #include "Entities/Primitives.h"
 
@@ -32,8 +28,6 @@ private:
     void obtainFromBlocks(std::string &rawString, const std::string &keyWord, QVector3D &data);
 
     Status parseFromFileBinary(const QString &pathToFile, StlObject &object);
-
-    std::string flToSc(float value);
 };
 
 }

@@ -35,6 +35,7 @@ private slots:
     void on_pB_CutDown_clicked();
     void on_pB_Srlzd_clicked();
     void on_pB_ReArr_clicked();
+    void on_pB_Table_clicked();
 };
 
 #endif // MAINWINDOW_H

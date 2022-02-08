@@ -148,7 +148,15 @@ void man::AbstractBone::drawBasePoint() const
 
 QMap<QString, QVariant> man::AbstractBone::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props;
+    props["name"] = this->name;
+    props["material"] = this->material;
+    props["squareFull"] = QString::fromStdString(floatShort(this->stlObject.squareFull, 1));
+    props["squareCut"] = QString::fromStdString(floatShort(this->stlObject.squareCut, 1));
+    props["volumeFull"] = QString::fromStdString(floatShort(this->stlObject.volumeFull, 1));
+    props["volumeCut"] = QString::fromStdString(floatShort(this->stlObject.volumeCut, 1));
+    props["triangles"] = (int)this->stlObject.triangles.size();
+    return props;
 }
 
 void man::AbstractBone::serialize(){}

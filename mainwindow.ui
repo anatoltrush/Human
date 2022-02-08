@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>1280</width>
     <height>1024</height>
    </rect>
   </property>
@@ -14,78 +14,129 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="1">
-     <widget class="QPushButton" name="pB_Cut">
-      <property name="text">
-       <string>Cut</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QPushButton" name="pB_CutUp">
-      <property name="text">
-       <string>UP</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="l_triangles">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" colspan="7">
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="WidgetGL" name="widgetGL" native="true"/>
-      <widget class="QListView" name="listView">
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="1" column="4">
-     <widget class="QPushButton" name="pB_Srlzd">
-      <property name="text">
-       <string>Ser</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="pB_CutDown">
-      <property name="text">
-       <string>Down</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="5">
-     <widget class="QPushButton" name="pB_ReArr">
-      <property name="text">
-       <string>ReArrange</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <widget class="QPushButton" name="pB_Cut">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>964</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cut</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pB_CutUp">
+    <property name="geometry">
+     <rect>
+      <x>371</x>
+      <y>964</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>UP</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="l_triangles">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>961</y>
+      <width>120</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pB_Srlzd">
+    <property name="geometry">
+     <rect>
+      <x>734</x>
+      <y>964</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ser</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pB_CutDown">
+    <property name="geometry">
+     <rect>
+      <x>552</x>
+      <y>964</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Down</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pB_ReArr">
+    <property name="geometry">
+     <rect>
+      <x>915</x>
+      <y>964</y>
+      <width>81</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ReArrange</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pB_Table">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>530</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>UpdTable</string>
+    </property>
+   </widget>
+   <widget class="WidgetGL" name="widgetGL" native="true">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>946</width>
+      <height>946</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tabProp">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>10</y>
+      <width>311</width>
+      <height>501</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1280</width>
      <height>22</height>
     </rect>
    </property>

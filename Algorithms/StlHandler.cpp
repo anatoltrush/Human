@@ -34,12 +34,12 @@ man::Status man::StlHandler::saveToFile(const QString &pathToDir, man::StlObject
     data.push_back(keyWSolid + " " + object.objectName.toStdString() + "\n");
     for(const auto &tr : object.triangles){
         std::string nrData = "  " + keyWFacetNormal + " ";
-        nrData += flToSc(tr.normal.x()) + " " + flToSc(tr.normal.y()) + " " + flToSc(tr.normal.z()) + "\n";
+        nrData += floatToScience(tr.normal.x()) + " " + floatToScience(tr.normal.y()) + " " + floatToScience(tr.normal.z()) + "\n";
         data.push_back(nrData);
         data.push_back("    outer loop\n");
         for(const auto &vr : tr.vertex){
             std::string vrData = "      " + keyWVertex + " ";
-            vrData += flToSc(vr.x()) + " " + flToSc(vr.y()) + " " + flToSc(vr.z()) + "\n";
+            vrData += floatToScience(vr.x()) + " " + floatToScience(vr.y()) + " " + floatToScience(vr.z()) + "\n";
             data.push_back(vrData);
         }
         data.push_back("    endloop\n");
@@ -224,11 +224,4 @@ man::Status man::StlHandler::parseFromFileBinary(const QString &pathToFile, StlO
     }
 
     return StatusOk;
-}
-
-std::string man::StlHandler::flToSc(float value)
-{
-    std::stringstream stream;
-    stream << std::fixed << std::scientific << value;
-    return stream.str();
 }

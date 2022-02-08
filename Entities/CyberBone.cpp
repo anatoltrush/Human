@@ -18,7 +18,9 @@ man::CyberBone::CyberBone(const QString & name, const QString &pathRel):
 
 QMap<QString, QVariant> man::CyberBone::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props = AbstractBone::getPropertyList();
+    props["sep"] = "-";
+    return props;
 }
 
 void man::CyberBone::serialize(){
