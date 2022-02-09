@@ -9,7 +9,7 @@ using namespace std;
 #include "Entities/Cyborg.h"
 #include "Config/Defines.h"
 #include "Config/Config.h"
-#include "Aux/ExtraMath.h"
+#include "Auxiliary/ExtraMath.h"
 
 int main(int argc, char *argv[])
 {

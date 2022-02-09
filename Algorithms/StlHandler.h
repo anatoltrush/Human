@@ -1,8 +1,8 @@
 #ifndef STLHANDLER_H
 #define STLHANDLER_H
 
-#include "Aux/ExtraMath.h"
-#include "Aux/Additional.h"
+#include "Auxiliary/ExtraMath.h"
+#include "Auxiliary/Additional.h"
 #include "Config/Defines.h"
 #include "Entities/Primitives.h"
 

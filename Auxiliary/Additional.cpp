@@ -1,6 +1,5 @@
 #include "Additional.h"
 
-
 std::string man::floatToScience(float value)
 {
     std::stringstream stream;

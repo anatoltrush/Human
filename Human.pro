@@ -15,8 +15,8 @@ unix:{
 SOURCES += \
         Algorithms/ReArranger.cpp \
         Algorithms/StlHandler.cpp \
-        Aux/Additional.cpp \
-        Aux/ExtraMath.cpp \
+        Auxiliary/Additional.cpp \
+        Auxiliary/ExtraMath.cpp \
         Config/Config.cpp \
         Entities/AbstractBone.cpp \
         Entities/AbstractHuman.cpp \
@@ -36,8 +36,8 @@ SOURCES += \
 HEADERS += \
     Algorithms/ReArranger.h \
     Algorithms/StlHandler.h \
-    Aux/Additional.h \
-    Aux/ExtraMath.h \
+    Auxiliary/Additional.h \
+    Auxiliary/ExtraMath.h \
     Config/Config.h \
     Config/ConfigDefines.h \
     Config/Defines.h \

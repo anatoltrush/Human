@@ -6,8 +6,8 @@
 #include "Config/ConfigDefines.h"
 #include "Interfaces/IOpenGL.h"
 #include "Interfaces/IProperty.h"
-#include "Aux/ExtraMath.h"
-#include "Aux/Additional.h"
+#include "Auxiliary/ExtraMath.h"
+#include "Auxiliary/Additional.h"
 
 namespace man{
 
