@@ -18,6 +18,5 @@
 			"name": "HumanNerves",
 			"path": "Resources/Nerves/HumanNerves/HumanNerves.json"
 		}
-	],
-	"loadFrom": "file"
+	]
 }

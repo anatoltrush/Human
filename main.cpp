@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     MainWindow w;    
 
     man::Config config;
-    man::Status loadConf = config.loadConfigData();
+    man::Status loadConf = config.loadSettings();
 
     man::Human human;
     man::Status loadHumSkel = human.skeleton->loadFromJson(config);
