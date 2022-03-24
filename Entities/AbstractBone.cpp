@@ -32,19 +32,22 @@ void man::AbstractBone::fillProperties()
 
 void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &angles)
 {
-    // children points
+    // --- children points ---
     for(auto &chlPt : childrenPoints)
         chlPt = rotatePoint3F(chlPt, angles.degToRad(), centerPoint);
 
-    // stl
+    // --- stl ---
     for(auto &tr : stlObject.triangles)
         for(auto &vr : tr.vertex)
             vr = rotatePoint3F(vr, angles.degToRad(), centerPoint);
 
-    // base point
+    // --- base point ---
     basePoint = rotatePoint3F(basePoint, angles.degToRad(), centerPoint);
 
-    // write angle
+    // --- anchorPoint ---
+    anchorDown = rotatePoint3F(anchorDown, angles.degToRad(), centerPoint);
+
+    // --- write angle ---
     std::vector<QVector3D> tempVec;
     for(const auto &chlPt : childrenPoints)
         tempVec.push_back(chlPt);
@@ -54,6 +57,9 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)
 {
+    anchorDown = basePoint;
+    anchorDown += QVector3D(0.0f, -10.0f, -20.0f); // config: anchorDown
+    // -----
     for(auto &chP : childrenPoints)
         chP += offset;
     // -----
@@ -85,6 +91,7 @@ QVector3D man::AbstractBone::getLowestPoint()
 void man::AbstractBone::drawObjectGL()
 {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // --- STL main ---
     glLineWidth(1.0f);
     for(size_t i = 0; i < stlObject.triangles.size(); i++){
         glBegin(GL_TRIANGLES);
@@ -96,7 +103,7 @@ void man::AbstractBone::drawObjectGL()
         }
         glEnd();
     }
-    // ---
+    // --- STL add ---
     for(size_t i = 0; i < stlObject.additional.size(); i++){
         glBegin(GL_TRIANGLES);
         if(stlObject.additional[i].isGood)
@@ -108,7 +115,7 @@ void man::AbstractBone::drawObjectGL()
         glVertex3f(stlObject.additional[i].vertex[2].x(), stlObject.additional[i].vertex[2].y(), stlObject.additional[i].vertex[2].z());
         glEnd();
     }
-    // ---
+    // --- connections ---
     for(auto chlPt = childrenPoints.begin(); chlPt != childrenPoints.end(); chlPt++){
         glLineWidth(2.0f);
         glBegin(GL_LINES);
@@ -125,7 +132,7 @@ void man::AbstractBone::drawObjectGL()
         glVertex3f(basePoint.x() + parentOffset.x(), basePoint.y() + parentOffset.y(), basePoint.z() + parentOffset.z());
         glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());*/
         glEnd();
-    }
+    } // --- intersections ---
     for (auto inter = intersections.begin(); inter != intersections.end(); inter++){
         glPointSize(6.0f);
         glBegin(GL_POINTS);
@@ -143,6 +150,16 @@ void man::AbstractBone::drawBasePoint() const
     glVertex3f(basePoint.x() - 1, basePoint.y(), basePoint.z() + 1);
     glVertex3f(basePoint.x() + 1, basePoint.y(), basePoint.z() + 1);
     glVertex3f(basePoint.x(), basePoint.y(), basePoint.z() - 1);
+    glEnd();
+}
+
+void man::AbstractBone::drawExt() const
+{
+    QColor bp = Qt::darkCyan;
+    glPointSize(5.0f);
+    glBegin(GL_POINTS);
+    glColor3ub(bp.red(), bp.green(), bp.blue());
+    glVertex3f(anchorDown.x(), anchorDown.y(), anchorDown.z());
     glEnd();
 }
 

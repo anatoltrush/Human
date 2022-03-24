@@ -79,6 +79,7 @@ void WidgetGL::paintGL()
             if(!bone) continue;
             bone->drawObjectGL();
             bone->drawBasePoint();
+            //bone->drawExt();
         }
     }
     if(cyborg){
@@ -86,6 +87,7 @@ void WidgetGL::paintGL()
             if(!bone) continue;
             bone->drawObjectGL();
             bone->drawBasePoint();
+            bone->drawExt();
         }
     }
 }

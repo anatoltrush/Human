@@ -91,7 +91,7 @@ man::Status man::AbstractSkeleton::construct()
         }
     }
 
-    // --- BasePoints ---
+    // --- BasePoints offset ---
     AbstractBone* startBone = getStartBone();
     if(!startBone)
         return StatusBoneNotFound;

@@ -27,6 +27,7 @@ public:
     Angle rotationStart;
     Angle rotationCurrent;
     QVector3D basePoint;
+    QVector3D anchorDown;
 
     Point3FStr parentOffset;
     QMap<QString, QVector3D> childrenPoints;
@@ -48,6 +49,7 @@ public:
 
     virtual void drawObjectGL() override;
     void drawBasePoint() const;
+    void drawExt() const;
 
     QMap<QString, QVariant> getPropertyList() const override;
 
