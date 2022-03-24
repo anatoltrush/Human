@@ -5,7 +5,11 @@
 
 namespace man{
 
-const QString fileConfig            = "Config.json";
+const QString fileSettings          = "Settings.json";
+const QString fileEntities          = "EntitiesConfig.json";
+
+const QString jsonFieldLoadFrom     = "loadFrom";
+const QString jsonFieldEntities     = "entities";
 
 const QString jsonFieldSkeletons    = "skeletons";
 const QString jsonFieldName         = "name";
