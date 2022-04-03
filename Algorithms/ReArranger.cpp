@@ -19,7 +19,7 @@ man::Status man::ReArranger::reArrange(const man::AbstractHuman &native, man::Ab
                     AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
                     if(cyberChild){
                         offsetBone(nativeChild, cyberChild);
-                        stretchAndRotateBone(nativeChild, cyberChild);
+                        //stretchAndRotateBone(nativeChild, cyberChild);
                         //scaleBone(nativeChild, cyberChild);
                     }
                 }
@@ -42,6 +42,8 @@ void man::ReArranger::offsetBone(AbstractBone *native, AbstractBone *cyber)
     // --- chl pts ---
     for(auto& chlPt : cyber->childrenPoints)
         chlPt -= diffDist;
+    // --- anchor ---
+    cyber->anchorDown -= diffDist;
     // --- stl ---
     for(auto& tri : cyber->stlObject.triangles)
         for(auto &vr : tri.vertex)

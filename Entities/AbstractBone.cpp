@@ -49,7 +49,7 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
 
     // --- write angle ---
     std::vector<QVector3D> tempVec;
-    for(const auto &chlPt : childrenPoints)
+    for(const auto &chlPt : qAsConst(childrenPoints))
         tempVec.push_back(chlPt);
     QVector3D tempPoint = getCenter(tempVec);
     rotationCurrent = angle3Pts0_180Reverse(tempPoint, basePoint);

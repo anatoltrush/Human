@@ -156,7 +156,7 @@ float man::angle3Pts0_180(const QVector3D &pt0, const QVector3D &mid, const QVec
     return degree;
 }
 
-man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt, QVector3D &mid)
+man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt, const QVector3D &mid)
 {
     // find Z
     QVector3D starX(mid.x(), mid.y() - 1, mid.z());
