@@ -15,6 +15,7 @@ public:
 private:
     void offsetBone(AbstractBone *native, AbstractBone* cyber);
     void scaleBone(AbstractBone *native, AbstractBone* cyber);
+    void rotateBone(man::AbstractBone *native, man::AbstractBone *cyber);
     void stretchAndRotateBone(AbstractBone *native, AbstractBone* cyber);
 };
 

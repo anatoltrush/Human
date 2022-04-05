@@ -45,20 +45,22 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
     basePoint = rotatePoint3F(basePoint, angles.degToRad(), centerPoint);
 
     // --- anchorPoint ---
+    anchorDirect = rotatePoint3F(anchorDirect, angles.degToRad(), centerPoint);
     anchorDown = rotatePoint3F(anchorDown, angles.degToRad(), centerPoint);
 
     // --- write angle ---
-    std::vector<QVector3D> tempVec;
+    /*std::vector<QVector3D> tempVec;
     for(const auto &chlPt : qAsConst(childrenPoints))
         tempVec.push_back(chlPt);
-    QVector3D tempPoint = getCenter(tempVec);
-    rotationCurrent = angle3Pts0_180Reverse(tempPoint, basePoint);
+    QVector3D tempPoint = getCenter(tempVec);*/
+    rotationCurrent = angle3Pts0_180Reverse(anchorDown, basePoint);
 }
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)
 {
-    anchorDown = basePoint;
-    anchorDown += QVector3D(0.0f, -10.0f, -20.0f); // config: anchorDown
+    anchorDirect = anchorDown = basePoint;
+    anchorDirect += QVector3D(anchorOffset.x(), anchorOffset.y(), anchorOffset.z());
+    anchorDown += QVector3D(0.0f, 0.0f, anchorOffset.z());
     // -----
     for(auto &chP : childrenPoints)
         chP += offset;
@@ -157,6 +159,11 @@ void man::AbstractBone::drawExt() const
 {
     QColor bp = Qt::darkCyan;
     glPointSize(5.0f);
+    glBegin(GL_POINTS);
+    glColor3ub(bp.red(), bp.green(), bp.blue());
+    glVertex3f(anchorDirect.x(), anchorDirect.y(), anchorDirect.z());
+    glEnd();
+
     glBegin(GL_POINTS);
     glColor3ub(bp.red(), bp.green(), bp.blue());
     glVertex3f(anchorDown.x(), anchorDown.y(), anchorDown.z());

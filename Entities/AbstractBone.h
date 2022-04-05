@@ -15,7 +15,7 @@ class AbstractBone : public IOpenGL, public IProperty
 {
 public:
     AbstractBone();
-    virtual ~AbstractBone();
+    virtual ~AbstractBone() override;
 
     QString name;
     QString pathTo3DModelAbs;
@@ -27,6 +27,7 @@ public:
     Angle rotationStart;
     Angle rotationCurrent;
     QVector3D basePoint;
+    QVector3D anchorDirect;
     QVector3D anchorDown;
 
     Point3FStr parentOffset;
@@ -54,6 +55,9 @@ public:
     QMap<QString, QVariant> getPropertyList() const override;
 
     virtual void serialize();
+
+private:
+    QVector3D anchorOffset = QVector3D(0.0f, -10.0f, -20.0f); // config: anchorDown
 };
 
 }
