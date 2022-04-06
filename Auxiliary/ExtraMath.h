@@ -7,8 +7,11 @@ namespace man{
     QVector3D rotatePoint3FBack(const QVector3D &point, const QVector3D &angleRad, const QVector3D &basePoint);
     QVector3D rotatePoint3F(const QVector3D &point, const QVector3D &angleRad, const QVector3D &basePoint);
 
+    [[deprecated("internal function for rotatePoint3F()")]]
     QVector3D rotatePoint3FX(QVector3D point, const float &angX);
+    [[deprecated("internal function for rotatePoint3F()")]]
     QVector3D rotatePoint3FY(QVector3D point, const float &angY);
+    [[deprecated("internal function for rotatePoint3F()")]]
     QVector3D rotatePoint3FZ(QVector3D point, const float &angZ);
 
     float squareTriangle(const QVector3D &A, const QVector3D &B, const QVector3D &C);
