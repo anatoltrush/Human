@@ -19,9 +19,9 @@ man::Status man::ReArranger::reArrange(const man::AbstractHuman &native, man::Ab
                     AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
                     if(cyberChild){
                         offsetBone(nativeChild, cyberChild);
+                        scaleBone(nativeChild, cyberChild);
                         rotateBone(nativeChild, cyberChild);
-                        //stretchAndRotateBone(nativeChild, cyberChild);
-                        //scaleBone(nativeChild, cyberChild);
+                        //stretchAndRotateBone(nativeChild, cyberChild);                        
                     }
                 }
                 // ---
@@ -76,13 +76,32 @@ void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cy
 
 void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
-    //if(cyber->name != "LeftHand") return;
+    //if(cyber->name != "RightHand") return;
+    if(cyber->name != "LeftHand") return;
     //if(cyber->name != "LeftForearm") return;
     for(auto natChildPnt = native->childrenPoints.begin(); natChildPnt != native->childrenPoints.end(); natChildPnt++){
         if(cyber->childrenPoints.find(natChildPnt.key()) != cyber->childrenPoints.end()){
+            // --- --- --- XXX --- --- ---
+            QVector3D* chldPt = &cyber->childrenPoints[natChildPnt.key()];
+
+            QVector3D newNativeX(chldPt->x(), natChildPnt.value().y(), natChildPnt.value().z());
+            float angX = angle3Pts0_180(*chldPt, cyber->basePoint, newNativeX);
+            Angle aX(angX, 0.0f, 0.0f);
+            *chldPt = rotatePoint3FBack(*chldPt, aX.degToRad(), cyber->basePoint);
+
+            QVector3D newNativeY(natChildPnt.value().x(), chldPt->y(), natChildPnt.value().z());
+            float angY = angle3Pts0_180(*chldPt, cyber->basePoint, newNativeY);
+            Angle aY(0.0f, angY, 0.0f);
+            *chldPt = rotatePoint3FBack(*chldPt, aY.degToRad(), cyber->basePoint);
+
+            //float angZ = ;
+
+            /*QVector3D QVangDist = cyber->rotationCurrent - native->rotationCurrent;
+            Angle angDist(QVangDist.x(), QVangDist.y(), QVangDist.z());*/
+
             // --- --- --- 1) RESTORE --- --- ---
             // --- rotate child ---
-            QVector3D* chldPt = &cyber->childrenPoints[natChildPnt.key()];
+            /*QVector3D* chldPt = &cyber->childrenPoints[natChildPnt.key()];
             *chldPt = rotatePoint3FBack(*chldPt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
 
             // --- rotate anchors start ---
@@ -90,38 +109,36 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
             cyber->anchorDirect = rotatePoint3FBack(cyber->anchorDirect, cyber->rotationCurrent.degToRad(), cyber->basePoint);
 
             // --- calc additional angle ---
-            float dirDist = - cyber->anchorDown.distanceToPoint(cyber->anchorDirect);
-            QVector3D starDirect(cyber->anchorDown.x(), cyber->anchorDown.y() + dirDist, cyber->anchorDown.z());
-            float angleZ = angle3Pts0_180(starDirect, cyber->anchorDown, cyber->anchorDirect);
-            if((cyber->anchorDown.x() - starDirect.x()) < 0.0f)
+            QVector3D newAnchorDown(cyber->basePoint.x(), cyber->basePoint.y(), cyber->anchorDirect.z());
+            float dirDist = - newAnchorDown.distanceToPoint(cyber->anchorDirect);
+            QVector3D frontAnchor(newAnchorDown.x(), newAnchorDown.y() + dirDist, newAnchorDown.z());
+            float angleZ = angle3Pts0_180(frontAnchor, newAnchorDown, cyber->anchorDirect);
+            if((newAnchorDown.x() - frontAnchor.x()) < 0.0f)
                 angleZ = 360.0f - angleZ;
             Angle angleAdd(0.0f, 0.0f, angleZ);
 
             // --- rotate anchors additional ---
-            cyber->anchorDirect = rotatePoint3FBack(cyber->anchorDirect, angleAdd.degToRad(), cyber->basePoint);
+            cyber->anchorDirect = rotatePoint3FBack(cyber->anchorDirect, angleAdd.degToRad(), cyber->basePoint);*/
 
             // --- rotate stl ---
-            for(auto& tri : cyber->stlObject.triangles)
+            /*for(auto& tri : cyber->stlObject.triangles)
                 for(auto &pnt : tri.vertex){
                     pnt = rotatePoint3FBack(pnt, cyber->rotationCurrent.degToRad(), cyber->basePoint);
-                    pnt = rotatePoint3FBack(pnt, angleAdd.degToRad(), cyber->basePoint); // additional rotation
-                }
+                    //pnt = rotatePoint3FBack(pnt, angleAdd.degToRad(), cyber->basePoint); // additional rotation
+                }*/
 
-            // --- --- --- 2) STRETCH --- --- ---
-
-            // --- --- --- 3) TO NATIVE --- --- ---
-
+            // --- --- --- 2) TO NATIVE --- --- ---
             // --- rotate child ---
-            *chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), cyber->basePoint);
+            //*chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), cyber->basePoint);
 
             // --- rotate anchors ---
-            cyber->anchorDown = rotatePoint3F(cyber->anchorDown, native->rotationCurrent.degToRad(), cyber->basePoint);
-            cyber->anchorDirect = rotatePoint3F(cyber->anchorDirect, native->rotationCurrent.degToRad(), cyber->basePoint);
+            //cyber->anchorDown = rotatePoint3F(cyber->anchorDown, native->rotationCurrent.degToRad(), cyber->basePoint);
+            //cyber->anchorDirect = rotatePoint3F(cyber->anchorDirect, native->rotationCurrent.degToRad(), cyber->basePoint);
 
             // --- stl ---
-            for(auto& tri : cyber->stlObject.triangles)
+            /*for(auto& tri : cyber->stlObject.triangles)
                 for(auto &pnt : tri.vertex)
-                    pnt = rotatePoint3F(pnt, native->rotationCurrent.degToRad(), cyber->basePoint);
+                    pnt = rotatePoint3F(pnt, native->rotationCurrent.degToRad(), cyber->basePoint);*/
 
             // --- assign new angle ---
             cyber->rotationCurrent = native->rotationCurrent;
@@ -131,7 +148,7 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
 
 void man::ReArranger::stretchAndRotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
-    //if(cyber->name != "LeftHand") return;
+    if(cyber->name != "LeftHand") return;
     for(auto natChildPnt = native->childrenPoints.begin(); natChildPnt != native->childrenPoints.end(); natChildPnt++){
         if(cyber->childrenPoints.find(natChildPnt.key()) != cyber->childrenPoints.end()){
             QVector3D* chldPt = &cyber->childrenPoints[natChildPnt.key()];

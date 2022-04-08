@@ -49,11 +49,12 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
     anchorDown = rotatePoint3F(anchorDown, angles.degToRad(), centerPoint);
 
     // --- write angle ---
-    /*std::vector<QVector3D> tempVec;
+    std::vector<QVector3D> tempVec;
     for(const auto &chlPt : qAsConst(childrenPoints))
         tempVec.push_back(chlPt);
-    QVector3D tempPoint = getCenter(tempVec);*/
-    rotationCurrent = angle3Pts0_180Reverse(anchorDown, basePoint);
+    QVector3D tempPoint = getCenter(tempVec);
+    rotationCurrent = angle3Pts0_180Reverse(tempPoint, basePoint);
+    //rotationCurrent = angle3Pts0_180Reverse(anchorDown, basePoint);
 }
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)
