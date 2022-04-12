@@ -28,7 +28,6 @@ public:
     Angle rotationCurrent;
     QVector3D basePoint;
     QVector3D anchorDirect;
-    QVector3D anchorDown;
 
     Point3FStr parentOffset;
     QMap<QString, QVector3D> childrenPoints;
@@ -48,6 +47,8 @@ public:
     QVector3D getHighestPoint();
     QVector3D getLowestPoint();
 
+    QVector3D mainChildrenPoint();
+
     virtual void drawObjectGL() override;
     void drawBasePoint() const;
     void drawExt() const;
@@ -55,9 +56,6 @@ public:
     QMap<QString, QVariant> getPropertyList() const override;
 
     virtual void serialize();
-
-private:
-    QVector3D anchorOffset = QVector3D(0.0f, -10.0f, -20.0f); // config: anchorDown
 };
 
 }

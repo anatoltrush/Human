@@ -28,7 +28,7 @@ man::CutSurface::CutSurface()
 void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
 {
     if(!skeleton) return;
-    skeleton->resetBones();
+    skeleton->resetBonesExist();
     planeEqual = calcPlaneEquation(planeSurface.vertex[0], planeSurface.vertex[1], planeSurface.vertex[2]);
     planeEqual.normalize();
 

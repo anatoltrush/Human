@@ -73,14 +73,14 @@ man::Status man::AbstractSkeleton::loadFromJson(const Config &config)
 man::Status man::AbstractSkeleton::construct()
 {
     if(bones.isEmpty()) return StatusBonesListIsEmpty;
-    // -----
+    // --- Load STL ---
     for (auto i = bones.begin(); i != bones.end(); i++){
         i.value()->fillProperties();
         int res3DLoad = stlHandler.parseFromFile(i.value()->pathTo3DModelAbs, i.value()->stlObject);
         calcAddProperties(i.value()->stlObject, true);
     }
 
-    // --- ChildrenPointers ---
+    // --- Children Pointers ---
     for(auto bnI = bones.begin(); bnI != bones.end(); bnI++){
         for(auto chldI = bnI.value()->childrenPoints.begin(); chldI != bnI.value()->childrenPoints.end(); chldI++){
             QString childName = chldI.key();
@@ -118,11 +118,18 @@ man::Status man::AbstractSkeleton::construct()
     // --- Height ---
     calcHeight();
 
+    // --- Set direct anchors ---
+    QVector3D anchorOffset(0.0f, -10.0f, 0.0f); // NOTE: config (anchorDirect offset)
+    for (auto bn = bones.begin(); bn != bones.end(); bn++){
+        bn.value()->anchorDirect = (bn.value()->basePoint + bn.value()->mainChildrenPoint()) / 2;
+        bn.value()->anchorDirect += anchorOffset;
+    }
+
     // --- Apply rotation ---    
     rotateBonesAll(startBone);
 
     // --- Reset bones ---
-    resetBones();
+    resetBonesExist();
 
     isConstructDone = true;
     return StatusOk;
@@ -190,7 +197,7 @@ QMap<QString, QVariant> man::AbstractSkeleton::getPropertyList() const
 
 }
 
-void man::AbstractSkeleton::resetBones()
+void man::AbstractSkeleton::resetBonesExist()
 {
     for(const auto &bn : qAsConst(bones)){
         if(!bn) continue;

@@ -35,7 +35,7 @@ public:
 
     virtual QMap<QString, QVariant> getPropertyList() const override;
 
-    void resetBones();
+    void resetBonesExist();
 
     virtual Status serialize(const QString &pathDir);
 

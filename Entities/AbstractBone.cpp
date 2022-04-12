@@ -46,23 +46,13 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
 
     // --- anchorPoint ---
     anchorDirect = rotatePoint3F(anchorDirect, angles.degToRad(), centerPoint);
-    anchorDown = rotatePoint3F(anchorDown, angles.degToRad(), centerPoint);
 
     // --- write angle ---
-    std::vector<QVector3D> tempVec;
-    for(const auto &chlPt : qAsConst(childrenPoints))
-        tempVec.push_back(chlPt);
-    QVector3D tempPoint = getCenter(tempVec);
-    rotationCurrent = angle3Pts0_180Reverse(tempPoint, basePoint);
-    //rotationCurrent = angle3Pts0_180Reverse(anchorDown, basePoint);
+    rotationCurrent = angle3Pts0_180Reverse(mainChildrenPoint(), basePoint);
 }
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)
 {
-    anchorDirect = anchorDown = basePoint;
-    anchorDirect += QVector3D(anchorOffset.x(), anchorOffset.y(), anchorOffset.z());
-    anchorDown += QVector3D(0.0f, 0.0f, anchorOffset.z());
-    // -----
     for(auto &chP : childrenPoints)
         chP += offset;
     // -----
@@ -89,6 +79,14 @@ QVector3D man::AbstractBone::getLowestPoint()
             if(vr.z() < lowPt.z())
                 lowPt = vr;
     return lowPt;
+}
+
+QVector3D man::AbstractBone::mainChildrenPoint()
+{
+    std::vector<QVector3D> tempVec;
+    for(const auto &chlPt : qAsConst(childrenPoints))
+        tempVec.push_back(chlPt);
+    return getCenter(tempVec);
 }
 
 void man::AbstractBone::drawObjectGL()
@@ -158,16 +156,12 @@ void man::AbstractBone::drawBasePoint() const
 
 void man::AbstractBone::drawExt() const
 {
-    QColor bp = Qt::darkCyan;
+    //QColor bp = Qt::darkCyan;
     glPointSize(5.0f);
     glBegin(GL_POINTS);
-    glColor3ub(bp.red(), bp.green(), bp.blue());
+    //glColor3ub(bp.red(), bp.green(), bp.blue());
+    glColor3ub(color.red(), color.green(), color.blue());
     glVertex3f(anchorDirect.x(), anchorDirect.y(), anchorDirect.z());
-    glEnd();
-
-    glBegin(GL_POINTS);
-    glColor3ub(bp.red(), bp.green(), bp.blue());
-    glVertex3f(anchorDown.x(), anchorDown.y(), anchorDown.z());
     glEnd();
 }
 
