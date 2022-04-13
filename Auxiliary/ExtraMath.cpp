@@ -142,7 +142,7 @@ QVector4D man::calcPlaneEquation(const QVector3D &pt0, QVector3D &pt1, const QVe
     return N;
 }
 
-float man::angle3Pts0_180(const QVector3D &pt0, const QVector3D &mid, const QVector3D &pt1)
+float man::calcAngle_0_180(const QVector3D &pt0, const QVector3D &mid, const QVector3D &pt1)
 {
     QVector3D v1 = pt0 - mid;
     QVector3D v2 = pt1 - mid;
@@ -156,21 +156,21 @@ float man::angle3Pts0_180(const QVector3D &pt0, const QVector3D &mid, const QVec
     return degree;
 }
 
-man::Angle man::angle3Pts0_180Reverse(const QVector3D &pt, const QVector3D &mid)
+man::Angle man::calcAngle_0_180Reverse(const QVector3D &pt, const QVector3D &basePoint)
 {
     // find Z
-    QVector3D starX(mid.x(), mid.y() - 1, mid.z());
-    QVector3D ptZ(pt.x(), pt.y(), mid.z());
-    float angZ = angle3Pts0_180(starX, mid, ptZ);
-    if((pt.x() - mid.x()) < 0.0f)
+    QVector3D starX(basePoint.x(), basePoint.y() - 1, basePoint.z());
+    QVector3D ptZ(pt.x(), pt.y(), basePoint.z());
+    float angZ = calcAngle_0_180(starX, basePoint, ptZ);
+    if((pt.x() - basePoint.x()) < 0.0f)
         angZ = 360.0f - angZ;
 
     // find X
-    QVector3D starZ(mid.x(), mid.y(), mid.z() - 1);
+    QVector3D starZ(basePoint.x(), basePoint.y(), basePoint.z() - 1);
     Angle backZ(0.0f, 0.0f, angZ);
-    QVector3D rotatedPt = rotatePoint3FBack(pt, backZ.degToRad(), mid);
-    float angX = angle3Pts0_180(rotatedPt, mid, starZ);
-    if((rotatedPt.y() - mid.y()) < 0.0f)
+    QVector3D rotatedPt = rotatePoint3FBack(pt, backZ.degToRad(), basePoint);
+    float angX = calcAngle_0_180(rotatedPt, basePoint, starZ);
+    if((rotatedPt.y() - basePoint.y()) < 0.0f)
         angX = 360.0f - angX;
 
     return Angle(angX, 0.0f, angZ);

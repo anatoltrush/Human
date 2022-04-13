@@ -48,7 +48,7 @@ void man::AbstractBone::rotateBone(const QVector3D &centerPoint, const Angle &an
     anchorDirect = rotatePoint3F(anchorDirect, angles.degToRad(), centerPoint);
 
     // --- write angle ---
-    rotationCurrent = angle3Pts0_180Reverse(mainChildrenPoint(), basePoint);
+    rotationCurrent = calcAngle_0_180Reverse(mainChildrenPoint(), basePoint);
 }
 
 void man::AbstractBone::applyOffsets(const QVector3D &offset)

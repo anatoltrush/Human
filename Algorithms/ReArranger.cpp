@@ -87,9 +87,6 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
             Angle aY(0.0f, angY, 0.0f);
             *chldPt = rotatePoint3FBack(*chldPt, aY.degToRad(), cyber->basePoint);*/
 
-            /*QVector3D QVangDist = cyber->rotationCurrent - native->rotationCurrent;
-            Angle angDist(QVangDist.x(), QVangDist.y(), QVangDist.z());*/
-
             // --- --- --- 1) RESTORE --- --- ---
             // --- rotate child (C & N) ---
             /*C*/QVector3D* chldPt = &cyber->childrenPoints[natChildPnt.key()];
@@ -103,6 +100,23 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
             /*N*/native->anchorDirect = rotatePoint3FBack(native->anchorDirect, native->rotationCurrent.degToRad(), native->basePoint);
 
             // --- --- --- 2) CALC ALIGN ANGLE --- --- ---
+            // --- create points ---
+            QVector3D anchorCyb(cyber->anchorDirect.x(), cyber->anchorDirect.y(), native->anchorDirect.z());
+            QVector3D anchorNat(native->anchorDirect);
+            QVector3D center(native->basePoint.x(), native->basePoint.y(), native->anchorDirect.z());
+            float offset = 10.0f;
+            QVector3D starX(center.x() - offset, center.y(), center.z());
+            QVector3D starY(center.x(), center.y() - offset, center.z());
+
+            // --- calc angle 0...360 ---
+            float angleCyberX180 = calcAngle_0_180(starX, center, anchorCyb);
+            float angleCyberY180 = calcAngle_0_180(starY, center, anchorCyb);
+            float angleNatureX180 = calcAngle_0_180(starX, center, anchorNat);
+            float angleNatureY180 = calcAngle_0_180(starY, center, anchorNat);
+
+            float angleCyber360 = convert2angTo360Deg(angleCyberX180, angleCyberY180);
+            float angleNature360 = convert2angTo360Deg(angleNatureX180, angleNatureY180);
+
             /*QVector3D anchorDown(cyber->basePoint.x(), cyber->basePoint.y(), cyber->anchorDirect.z());
             float dirDist = anchorDown.distanceToPoint(cyber->anchorDirect);
             QVector3D frontAnchor(anchorDown.x(), anchorDown.y() - dirDist, anchorDown.z());
@@ -123,20 +137,20 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
 
             // --- --- --- 3) ROTATE TO NATIVE --- --- ---
             // --- rotate child ---
-            /*C*/*chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), native->basePoint);
-            /*N*/*natPt = rotatePoint3F(*natPt, native->rotationCurrent.degToRad(), native->basePoint);
+            //*C*/*chldPt = rotatePoint3F(*chldPt, native->rotationCurrent.degToRad(), native->basePoint);
+            //*N*/*natPt = rotatePoint3F(*natPt, native->rotationCurrent.degToRad(), native->basePoint);
 
             // --- rotate anchors ---
-            /*C*/cyber->anchorDirect = rotatePoint3F(cyber->anchorDirect, native->rotationCurrent.degToRad(), native->basePoint);
-            /*N*/native->anchorDirect = rotatePoint3F(native->anchorDirect, native->rotationCurrent.degToRad(), native->basePoint);
+            //*C*/cyber->anchorDirect = rotatePoint3F(cyber->anchorDirect, native->rotationCurrent.degToRad(), native->basePoint);
+            //*N*/native->anchorDirect = rotatePoint3F(native->anchorDirect, native->rotationCurrent.degToRad(), native->basePoint);
 
             // --- stl ---
-            /*for(auto& tri : cyber->stlObject.triangles)
+            for(auto& tri : cyber->stlObject.triangles)
                 for(auto &pnt : tri.vertex)
                     pnt = rotatePoint3F(pnt, native->rotationCurrent.degToRad(), native->basePoint);
 
             // --- assign new angle ---
-            cyber->rotationCurrent = native->rotationCurrent;*/
+            cyber->rotationCurrent = native->rotationCurrent;
         }
     }
 }
@@ -189,5 +203,22 @@ void man::ReArranger::stretchAndRotateBone(man::AbstractBone *native, man::Abstr
         else{} // return?
 
         cyber->rotationCurrent = native->rotationCurrent;
+    }
+}
+
+float man::ReArranger::convert2angTo360Deg(float angleX, float angleY)
+{
+    angleX = 110.0f;
+    angleY = 20.0f;
+
+    float resAngle = 0.0f;
+    float expectedY = 270.0f - angleX; // 270.0f is sector
+    float difference = abs(expectedY - angleY);
+
+    if(difference < 0.1f){ // good result
+        return resAngle;// TODO:!!!
+    }
+    else{ // corrected result
+        return resAngle;// TODO:!!!
     }
 }

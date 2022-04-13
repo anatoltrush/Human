@@ -360,7 +360,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
     float minAngSec = 180.0f;
     for(size_t ind = 0; ind < cloud.size(); ind++){
         if(cloud[ind] == firstPt) continue;
-        float currAng = angle3Pts0_180(starDown, firstPt, cloud[ind]);
+        float currAng = calcAngle_0_180(starDown, firstPt, cloud[ind]);
         if(currAng < minAngSec){
             secondPt = cloud[ind];
             minAngSec = currAng;
@@ -378,7 +378,7 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
         for(size_t i = 0; i < cloud.size(); i++){
             //if(std::find(outer.begin(), outer.end(), cloud[i]) != outer.end()) continue;
             if(cloud[i] == prev || cloud[i] == last) continue;
-            float currAng = angle3Pts0_180(prev, last, cloud[i]);
+            float currAng = calcAngle_0_180(prev, last, cloud[i]);
             if(currAng > maxAng){
                 nextPt = cloud[i];
                 maxAng = currAng;

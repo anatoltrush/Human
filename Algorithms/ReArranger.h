@@ -17,6 +17,8 @@ private:
     void scaleBone(AbstractBone *native, AbstractBone* cyber);
     void rotateBone(man::AbstractBone *native, man::AbstractBone *cyber);
     void stretchAndRotateBone(AbstractBone *native, AbstractBone* cyber);
+
+    float convert2angTo360Deg(float angleX, float angleY);
 };
 
 }
