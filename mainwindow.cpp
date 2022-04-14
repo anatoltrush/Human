@@ -89,7 +89,7 @@ void MainWindow::on_pB_Srlzd_clicked()
 
 void MainWindow::on_pB_ReArr_clicked()
 {
-    //ui->widgetGL->human->skeleton->rotateBonesSingle(ui->widgetGL->human->skeleton->bones["LeftHand"], man::Angle(2.0f, 1.0f, 0.5f));
+    ui->widgetGL->human->skeleton->rotateBonesSingle(ui->widgetGL->human->skeleton->bones["LeftHand"], man::Angle(2.0f, 1.0f, 0.5f));
 
     man::Status resArrange = reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
 

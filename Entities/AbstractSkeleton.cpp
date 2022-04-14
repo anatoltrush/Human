@@ -123,6 +123,10 @@ man::Status man::AbstractSkeleton::construct()
     for (auto bn = bones.begin(); bn != bones.end(); bn++){
         bn.value()->anchorDirect = (bn.value()->basePoint + bn.value()->mainChildrenPoint()) / 2;
         bn.value()->anchorDirect += anchorOffset;
+        // --- check ---
+        float hDiff = abs(bn.value()->basePoint.z() - bn.value()->anchorDirect.z());
+        if(hDiff < 0.1f) // 0.1 precision
+            qWarning() << "WARNING! Bad anchor point in bone: '" << bn.key() << "' (AbstractSkeleton::construct)";
     }
 
     // --- Apply rotation ---    

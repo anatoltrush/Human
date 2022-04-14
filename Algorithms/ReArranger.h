@@ -16,9 +16,8 @@ private:
     void offsetBone(AbstractBone *native, AbstractBone* cyber);
     void scaleBone(AbstractBone *native, AbstractBone* cyber);
     void rotateBone(man::AbstractBone *native, man::AbstractBone *cyber);
-    void stretchAndRotateBone(AbstractBone *native, AbstractBone* cyber);
 
-    float convert2angTo360Deg(float angleX, float angleY);
+    float calcAngleY360(const QVector3D &starX, const QVector3D &center, const QVector3D &starY, const QVector3D &pt);
 };
 
 }
