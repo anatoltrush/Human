@@ -53,29 +53,35 @@ void man::ReArranger::offsetBone(AbstractBone *native, AbstractBone *cyber)
 
 void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
+    float summScale = 0.0f;
+    float averScale = 0.0f;
+    int averCount = 0;
+    // ---
     for(auto it = native->childrenPoints.begin(); it != native->childrenPoints.end(); it++){
         if(cyber->childrenPoints.find(it.key()) != cyber->childrenPoints.end()){
             float distNative = native->basePoint.distanceToPoint(it.value());
             float distCyber = cyber->basePoint.distanceToPoint(cyber->childrenPoints[it.key()]);
             float koeff = distNative / distCyber;
+            // --- average scale ---
+            summScale += koeff;
+            averCount++;
+            averScale = summScale / averCount;
             // --- chl pts ---
-            for(auto& chlPt : cyber->childrenPoints)
-                chlPt = QVector3D((chlPt - cyber->basePoint) * koeff + cyber->basePoint);
-            // --- stl ---
-            for(auto& tri : cyber->stlObject.triangles)
-                for(auto &vr : tri.vertex)
-                    vr = QVector3D((vr - cyber->basePoint) * koeff + cyber->basePoint);
-            // --- anchor ---
-            cyber->anchorDirect = QVector3D((cyber->anchorDirect - cyber->basePoint) * koeff + cyber->basePoint);
+            QVector3D* chldPt = &cyber->childrenPoints[it.key()];
+            *chldPt = (*chldPt - cyber->basePoint) * koeff + cyber->basePoint;
         }
-        else{} // return?
     }
+    // --- stl --- // TODO: need more difficult
+    for(auto& tri : cyber->stlObject.triangles)
+        for(auto &vr : tri.vertex)
+            vr = QVector3D((vr - cyber->basePoint) * averScale + cyber->basePoint);
+    // --- anchor ---
+    cyber->anchorDirect = QVector3D((cyber->anchorDirect - cyber->basePoint) * averScale + cyber->basePoint);
 }
 
 void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
     //if(cyber->name != "LeftHand") return;
-    //if(cyber->name != "LeftForearm") return;
     for(auto natChildPnt = native->childrenPoints.begin(); natChildPnt != native->childrenPoints.end(); natChildPnt++){
         if(cyber->childrenPoints.find(natChildPnt.key()) != cyber->childrenPoints.end()){
             // --- --- --- 1) RESTORE --- --- ---

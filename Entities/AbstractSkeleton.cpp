@@ -126,7 +126,7 @@ man::Status man::AbstractSkeleton::construct()
         // --- check ---
         float hDiff = abs(bn.value()->basePoint.z() - bn.value()->anchorDirect.z());
         if(hDiff < 0.1f) // 0.1 precision
-            qWarning() << "WARNING! Bad anchor point in bone: '" << bn.key() << "' (AbstractSkeleton::construct)";
+            qWarning() << "WARNING! Bad anchor point in bone:" << bn.key() << "(AbstractSkeleton::construct)";
     }
 
     // --- Apply rotation ---    
