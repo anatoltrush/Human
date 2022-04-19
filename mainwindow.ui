@@ -30,7 +30,7 @@
    <widget class="QPushButton" name="pB_CutUp">
     <property name="geometry">
      <rect>
-      <x>371</x>
+      <x>320</x>
       <y>964</y>
       <width>80</width>
       <height>25</height>
@@ -61,7 +61,7 @@
    <widget class="QPushButton" name="pB_Srlzd">
     <property name="geometry">
      <rect>
-      <x>734</x>
+      <x>550</x>
       <y>964</y>
       <width>80</width>
       <height>25</height>
@@ -74,7 +74,7 @@
    <widget class="QPushButton" name="pB_CutDown">
     <property name="geometry">
      <rect>
-      <x>552</x>
+      <x>440</x>
       <y>964</y>
       <width>80</width>
       <height>25</height>
@@ -84,7 +84,7 @@
      <string>Down</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pB_ReArr">
+   <widget class="QPushButton" name="pB_CybReArr">
     <property name="geometry">
      <rect>
       <x>915</x>
@@ -94,7 +94,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>ReArrange</string>
+     <string>CybReArr</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pB_Table">
@@ -128,6 +128,19 @@
       <width>311</width>
       <height>501</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pB_MPReArr">
+    <property name="geometry">
+     <rect>
+      <x>790</x>
+      <y>964</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MPReArr</string>
     </property>
    </widget>
   </widget>

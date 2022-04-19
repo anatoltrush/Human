@@ -13,7 +13,9 @@ unix:{
 }
 
 SOURCES += \
-        Algorithms/ReArranger.cpp \
+        Algorithms/CyberReArranger.cpp \
+        Algorithms/MediaPipeReArranger.cpp \
+        Algorithms/OpenPoseReArranger.cpp \
         Algorithms/StlHandler.cpp \
         Auxiliary/Additional.cpp \
         Auxiliary/ExtraMath.cpp \
@@ -34,7 +36,10 @@ SOURCES += \
         mainwindow.cpp
 
 HEADERS += \
-    Algorithms/ReArranger.h \
+    Algorithms/AbstractReArranger.h \
+    Algorithms/CyberReArranger.h \
+    Algorithms/MediaPipeReArranger.h \
+    Algorithms/OpenPoseReArranger.h \
     Algorithms/StlHandler.h \
     Auxiliary/Additional.h \
     Auxiliary/ExtraMath.h \

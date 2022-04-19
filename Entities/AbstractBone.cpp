@@ -1,9 +1,5 @@
 #include "AbstractBone.h"
 
-man::AbstractBone::AbstractBone(){}
-
-man::AbstractBone::~AbstractBone(){}
-
 void man::AbstractBone::fillProperties()
 {
     // 3D

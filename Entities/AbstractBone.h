@@ -14,11 +14,12 @@ namespace man{
 class AbstractBone : public IOpenGL, public IProperty
 {
 public:
-    AbstractBone();
-    virtual ~AbstractBone() override;
+    AbstractBone() = default;
+    virtual ~AbstractBone() override = default;
 
     QString name;
     QString pathTo3DModelAbs;
+    QString aliasName = "na";
 
     bool isExist = true;
 
@@ -26,7 +27,7 @@ public:
 
     Angle rotationStart;
     Angle rotationCurrent;
-    QVector3D basePoint;
+    Point3FStr basePoint;
     QVector3D anchorDirect;
 
     Point3FStr parentOffset;

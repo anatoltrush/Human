@@ -21,6 +21,13 @@ public:
     QVector3D toPoint3F(){
         return QVector3D(this->x(), this->y(), this->z());
     }
+
+    inline Point3FStr& operator = (const QVector3D& other){
+        this->setX(other.x());
+        this->setY(other.y());
+        this->setZ(other.z());
+        return *this;
+    }
 };
 
 struct Angle : public QVector3D

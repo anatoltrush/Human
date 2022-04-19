@@ -1,8 +1,6 @@
-#include "ReArranger.h"
+#include "CyberReArranger.h"
 
-man::ReArranger::ReArranger(){}
-
-man::Status man::ReArranger::reArrange(const man::AbstractHuman &native, man::AbstractHuman &cyber)
+man::Status man::CyberReArranger::reArrange(const man::AbstractHuman &native, man::AbstractHuman &cyber)
 {
     AbstractBone* startBoneCyber = cyber.skeleton->getStartBone();
     AbstractBone* startBoneNative = native.skeleton->getStartBone();
@@ -32,7 +30,12 @@ man::Status man::ReArranger::reArrange(const man::AbstractHuman &native, man::Ab
     return StatusOk;
 }
 
-void man::ReArranger::offsetBone(AbstractBone *native, AbstractBone *cyber)
+man::Status man::CyberReArranger::reArrange(man::AbstractHuman &cyber)
+{
+    return StatusOk;
+}
+
+void man::CyberReArranger::offsetBone(AbstractBone *native, AbstractBone *cyber)
 {
     QVector3D diffDist = cyber->basePoint - native->basePoint;
     // --- base pt ---
@@ -51,7 +54,7 @@ void man::ReArranger::offsetBone(AbstractBone *native, AbstractBone *cyber)
             vr -= diffDist;
 }
 
-void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cyber)
+void man::CyberReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
     float summScale = 0.0f;
     float averScale = 0.0f;
@@ -79,7 +82,7 @@ void man::ReArranger::scaleBone(man::AbstractBone *native, man::AbstractBone *cy
     cyber->anchorDirect = QVector3D((cyber->anchorDirect - cyber->basePoint) * averScale + cyber->basePoint);
 }
 
-void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
+void man::CyberReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *cyber)
 {
     //if(cyber->name != "LeftHand") return;
     for(auto natChildPnt = native->childrenPoints.begin(); natChildPnt != native->childrenPoints.end(); natChildPnt++){
@@ -142,7 +145,7 @@ void man::ReArranger::rotateBone(man::AbstractBone *native, man::AbstractBone *c
     }
 }
 
-float man::ReArranger::calcAngleY360(const QVector3D &starX, const QVector3D &center, const QVector3D &starY, const QVector3D &pt)
+float man::CyberReArranger::calcAngleY360(const QVector3D &starX, const QVector3D &center, const QVector3D &starY, const QVector3D &pt)
 {
     float angleX180 = calcAngle_0_180(starX, center, pt);
     float angleY180 = calcAngle_0_180(starY, center, pt);
@@ -159,4 +162,24 @@ float man::ReArranger::calcAngleY360(const QVector3D &starX, const QVector3D &ce
         if(difference < 0.1f) return angleY180;
         else return 360.0f - angleY180;
     }
+}
+
+void man::CyberReArranger::adjustPoints()
+{
+
+}
+
+void man::CyberReArranger::offsetGroups()
+{
+
+}
+
+void man::CyberReArranger::scaleGroups()
+{
+
+}
+
+void man::CyberReArranger::rotateGroups()
+{
+
 }

@@ -87,16 +87,17 @@ void MainWindow::on_pB_Srlzd_clicked()
     ui->pB_Srlzd->setText("Ser = " + QString::number(serC) + " | " + QString::number(serH));
 }
 
-void MainWindow::on_pB_ReArr_clicked()
+void MainWindow::on_pB_CybReArr_clicked()
 {
     ui->widgetGL->human->skeleton->rotateBonesSingle(ui->widgetGL->human->skeleton->bones["LeftHand"], man::Angle(2.0f, 1.0f, 0.5f));
 
+    man::CyberReArranger reArranger;
     man::Status resArrange = reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
 
     if(resArrange == man::StatusOk)
-        ui->pB_ReArr->setStyleSheet("background-color: green");
+        ui->pB_CybReArr->setStyleSheet("background-color: green");
     else
-        ui->pB_ReArr->setStyleSheet("background-color: yellow");
+        ui->pB_CybReArr->setStyleSheet("background-color: yellow");
 
     on_pB_Cut_clicked();
 
@@ -123,4 +124,24 @@ void MainWindow::on_pB_Table_clicked()
 
         rawN++;
     }
+}
+
+void MainWindow::on_pB_MPReArr_clicked()
+{
+    man::anchorPoint lSh;
+    lSh.coords = QVector3D(-50.0f, -12.0f, 5.0f);
+    lSh.aliasName = "LeftShoulder";
+
+    man::MediaPipeReArranger mpReArranger;
+    mpReArranger.anchorPoints.push_back(lSh);
+    man::Status resArrange = mpReArranger.reArrange(*ui->widgetGL->human);
+
+    if(resArrange == man::StatusOk)
+        ui->pB_MPReArr->setStyleSheet("background-color: green");
+    else
+        ui->pB_MPReArr->setStyleSheet("background-color: yellow");
+
+    //on_pB_Cut_clicked();
+
+    ui->widgetGL->update();
 }
