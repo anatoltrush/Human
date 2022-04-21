@@ -16,6 +16,7 @@ const QString jsonFieldName         = "name";
 const QString jsonFieldPath         = "path";
 const QString jsonFieldPath3D       = "model3D";
 const QString jsonFieldParent       = "parent";
+const QString jsonFieldAlias        = "alias";
 const QString jsonFieldChildren     = "children";
 const QString jsonFieldRotate       = "rotation";
 const QString jsonFolderPathModels  = "modelsFolder";
@@ -24,7 +25,7 @@ const QString jsonFolderPathModels  = "modelsFolder";
 const QString cyberSkeleton         = "CyberSkeleton";
 const QString humanSkeleton         = "HumanSkeleton";
 
-const QString notAvlbl = "na";
+const QString notAvlbl              = "na";
 
 }
 

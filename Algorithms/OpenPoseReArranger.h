@@ -13,12 +13,14 @@ public:
 
     virtual Status reArrange(AbstractHuman &human) override;
 
-protected:
+private:
     virtual void adjustPoints() override;
 
     virtual void offsetGroups() override;
     virtual void scaleGroups() override;
     virtual void rotateGroups() override;
+
+    virtual void makeGroups(AbstractHuman &human) override;
 };
 
 }

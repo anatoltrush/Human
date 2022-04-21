@@ -128,12 +128,10 @@ void MainWindow::on_pB_Table_clicked()
 
 void MainWindow::on_pB_MPReArr_clicked()
 {
-    man::anchorPoint lSh;
-    lSh.coords = QVector3D(-50.0f, -12.0f, 5.0f);
-    lSh.aliasName = "LeftShoulder";
-
     man::MediaPipeReArranger mpReArranger;
-    mpReArranger.anchorPoints.push_back(lSh);
+    mpReArranger.anchorPoints.insert("LeftShoulder", QVector3D(-50.0f, -12.0f, 5.0f));
+    mpReArranger.anchorPoints.insert("RightKnee", QVector3D(40.0f, -5.0f, 70.0f));
+    mpReArranger.anchorPoints.insert("Abra", QVector3D(-501.0f, -121.0f, 51.0f));
     man::Status resArrange = mpReArranger.reArrange(*ui->widgetGL->human);
 
     if(resArrange == man::StatusOk)

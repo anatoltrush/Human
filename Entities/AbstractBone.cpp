@@ -13,12 +13,13 @@ void man::AbstractBone::fillProperties()
                 child.toObject()[QString("z")].toDouble());
         childrenPoints.insert(chldName, offsetPnt);
     }
-    // parent
-    QJsonObject parPoint = boneJsonObject[jsonFieldParent].toObject();
-    parentOffset.setX(parPoint["x"].toDouble());
-    parentOffset.setY(parPoint["y"].toDouble());
-    parentOffset.setZ(parPoint["z"].toDouble());
-    parentOffset.str = parPoint[jsonFieldName].toString();
+    // parent + alias
+    QJsonObject parentPoint = boneJsonObject[jsonFieldParent].toObject();
+    parentOffset.setX(parentPoint["x"].toDouble());
+    parentOffset.setY(parentPoint["y"].toDouble());
+    parentOffset.setZ(parentPoint["z"].toDouble());
+    parentOffset.str = parentPoint[jsonFieldName].toString();
+    basePoint.str = parentPoint[jsonFieldAlias].toString();
     // rotation
     QJsonObject rotate = boneJsonObject[jsonFieldRotate].toObject();
     rotationStart.setX(rotate["x"].toDouble());

@@ -19,7 +19,6 @@ public:
 
     QString name;
     QString pathTo3DModelAbs;
-    QString aliasName = "na";
 
     bool isExist = true;
 

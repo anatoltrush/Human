@@ -24,3 +24,8 @@ void man::OpenPoseReArranger::rotateGroups()
 {
 
 }
+
+void man::OpenPoseReArranger::makeGroups(AbstractHuman &human)
+{
+
+}

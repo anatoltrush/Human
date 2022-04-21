@@ -14,7 +14,7 @@ man::Status man::CyberReArranger::reArrange(const man::AbstractHuman &native, ma
                 AbstractBone* nativeChild = vecParents[i]->childrenPointers[j];
                 // --- make smthng ---
                 if(cyber.skeleton->bones.find(nativeChild->name) != cyber.skeleton->bones.end()){
-                    AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
+                    AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name]; // FIXME: error
                     if(cyberChild){
                         offsetBone(nativeChild, cyberChild);
                         scaleBone(nativeChild, cyberChild);
@@ -27,11 +27,6 @@ man::Status man::CyberReArranger::reArrange(const man::AbstractHuman &native, ma
         if(vecChildren.empty()) break;
         vecParents = vecChildren;
     }
-    return StatusOk;
-}
-
-man::Status man::CyberReArranger::reArrange(man::AbstractHuman &cyber)
-{
     return StatusOk;
 }
 
@@ -162,24 +157,4 @@ float man::CyberReArranger::calcAngleY360(const QVector3D &starX, const QVector3
         if(difference < 0.1f) return angleY180;
         else return 360.0f - angleY180;
     }
-}
-
-void man::CyberReArranger::adjustPoints()
-{
-
-}
-
-void man::CyberReArranger::offsetGroups()
-{
-
-}
-
-void man::CyberReArranger::scaleGroups()
-{
-
-}
-
-void man::CyberReArranger::rotateGroups()
-{
-
 }

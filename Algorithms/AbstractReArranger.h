@@ -5,28 +5,25 @@
 
 namespace man{
 
-struct anchorPoint
-{
-    QVector3D coords;
-    QString aliasName;
-};
-
 class AbstractReArranger
 {
 public:
     AbstractReArranger() = default;
     virtual ~AbstractReArranger() = default;
 
-    std::vector<anchorPoint> anchorPoints;
+    QMap<QString, QVector3D> anchorPoints;
+    QMap<QString, std::vector<AbstractBone*>> groups;
 
     virtual Status reArrange(AbstractHuman &cyber) = 0;
 
-protected:
+private:
     virtual void adjustPoints() = 0;
 
     virtual void offsetGroups() = 0;
     virtual void scaleGroups() = 0;
     virtual void rotateGroups() = 0;
+
+    virtual void makeGroups(AbstractHuman &human) = 0;
 };
 
 }
