@@ -18,7 +18,9 @@ man::HumanBone::HumanBone(const QString & name, const QString &pathRel):
 
 QMap<QString, QVariant> man::HumanBone::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props;
+    props["HumanBone"] = "<-HumanBone->";
+    return props;
 }
 
 void man::HumanBone::serialize(){

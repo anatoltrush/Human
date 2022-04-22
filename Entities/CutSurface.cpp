@@ -43,37 +43,38 @@ void man::CutSurface::execute(AbstractSkeleton *skeleton, bool &isWarning)
         for(size_t i = 0; i < vecParents.size(); i++)
             for(size_t j = 0; j < vecParents[i]->childrenPointers.size(); j++){
                 AbstractBone* thisChild = vecParents[i]->childrenPointers[j];
+                if(!thisChild) continue;
                 // --- intersect basePt <-> childPt
-                for(auto chPtI = thisChild->childrenPoints.begin(); chPtI != thisChild->childrenPoints.end(); chPtI++){
+                for(auto childrenPointI = thisChild->childrenPoints.begin(); childrenPointI != thisChild->childrenPoints.end(); childrenPointI++){
                     QVector3D ptBeg = thisChild->basePoint;
                     QVector3D ptInter;
-                    QVector3D ptEnd = chPtI.value();
-                    bool isInter = isIntersect(ptBeg, ptInter, ptEnd);
-                    if(isInter){ // IF INTERSECT
+                    QVector3D ptEnd = childrenPointI.value();
+                    bool isIntersected = isIntersect(ptBeg, ptInter, ptEnd);
+                    if(isIntersected){
                         // --- check parents have intersects ---
-                        bool isParInter = false;
-                        AbstractBone falseChild = *thisChild;
+                        bool isParentIntersected = false;
+                        AbstractBone childCopy = *thisChild;
                         while (true) {
-                            AbstractBone* thisParent = falseChild.parentPointer;
+                            AbstractBone* thisParent = childCopy.parentPointer;
                             if(!thisParent){
-                                isParInter = false;
+                                isParentIntersected = false;
                                 break;
                             }
                             // ---
-                            if(thisParent->intersections.find(falseChild.name) != thisParent->intersections.end()){
-                                isParInter = true;
+                            if(thisParent->intersections.find(childCopy.name) != thisParent->intersections.end()){
+                                isParentIntersected = true;
                                 isWarning = true; // --- WARNING --- bad surface angle
                                 break;
                             }
-                            falseChild = *thisParent;
+                            childCopy = *thisParent;
                         }
-                        if(isParInter) continue;
-                        // ---
+                        if(isParentIntersected) continue; // not cut off
 
-                        thisChild->intersections.insert(chPtI.key(), ptInter);
-                        if(!skeleton->isHuman) // --- one make real bone ---
-                            thisChild->isExist = true;
-                        cutAllLower(skeleton->bones[chPtI.key()], skeleton->isHuman);
+                        // --- cut off ---
+                        thisChild->intersections.insert(childrenPointI.key(), ptInter);
+                        thisChild->isExist = !skeleton->isHuman;
+                        if(childrenPointI.key() != notAvlbl)
+                            cutAllLower(skeleton->bones[childrenPointI.key()], skeleton->isHuman);
                         cutSingleLower(thisChild, skeleton->isHuman);
                     }
                 }
@@ -106,7 +107,9 @@ void man::CutSurface::drawObjectGL()
 
 QMap<QString, QVariant> man::CutSurface::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props;
+    props["CutSurface"] = "<-CutSurface->";
+    return props;
 }
 
 bool man::CutSurface::isIntersect(const QVector3D &ptBeg, QVector3D &ptInter, QVector3D &ptEnd)

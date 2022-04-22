@@ -14,7 +14,7 @@ man::Status man::CyberReArranger::reArrange(const man::AbstractHuman &native, ma
                 AbstractBone* nativeChild = vecParents[i]->childrenPointers[j];
                 // --- make smthng ---
                 if(cyber.skeleton->bones.find(nativeChild->name) != cyber.skeleton->bones.end()){
-                    AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name]; // FIXME: error
+                    AbstractBone* cyberChild = cyber.skeleton->bones[nativeChild->name];
                     if(cyberChild){
                         offsetBone(nativeChild, cyberChild);
                         scaleBone(nativeChild, cyberChild);

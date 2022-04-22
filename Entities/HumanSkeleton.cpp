@@ -8,5 +8,7 @@ man::HumanSkeleton::HumanSkeleton()
 
 QMap<QString, QVariant> man::HumanSkeleton::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props;
+    props["HumanSkeleton"] = "<-HumanSkeleton->";
+    return props;
 }

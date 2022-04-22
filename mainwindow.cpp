@@ -45,9 +45,13 @@ void MainWindow::updUi()
 
 void MainWindow::on_pB_Cut_clicked()
 {
+    //man::AbstractSkeleton* ccc1 = ui->widgetGL->cyborg->skeleton;
+    //man::AbstractSkeleton* hhh1 = ui->widgetGL->human->skeleton;
+
     bool isWarn = false;
     if(ui->widgetGL->cyborg)
         ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton, isWarn);
+    // ---
     if(ui->widgetGL->human)
         ui->widgetGL->cutSuface.execute(ui->widgetGL->human->skeleton, isWarn);
     ui->widgetGL->update();
@@ -57,7 +61,6 @@ void MainWindow::on_pB_Cut_clicked()
     else
         ui->pB_Cut->setStyleSheet("background-color: green");
 }
-
 
 void MainWindow::on_pB_CutUp_clicked()
 {
@@ -93,6 +96,9 @@ void MainWindow::on_pB_CybReArr_clicked()
 
     man::CyberReArranger reArranger;
     man::Status resArrange = reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
+
+    man::AbstractSkeleton* ccc = ui->widgetGL->cyborg->skeleton;
+    man::AbstractSkeleton* hhh = ui->widgetGL->human->skeleton;
 
     if(resArrange == man::StatusOk)
         ui->pB_CybReArr->setStyleSheet("background-color: green");

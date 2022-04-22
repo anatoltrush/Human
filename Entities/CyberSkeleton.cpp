@@ -8,6 +8,8 @@ man::CyberSkeleton::CyberSkeleton()
 
 QMap<QString, QVariant> man::CyberSkeleton::getPropertyList() const
 {
-
+    QMap<QString, QVariant> props;
+    props["CyberSkeleton"] = "<-CyberSkeleton->";
+    return props;
 }
 

@@ -18,7 +18,24 @@ void man::MediaPipeReArranger::offsetGroups()
 {
     for(auto group = groups.begin(); group != groups.end(); group++){
         QVector3D offsetDistance = group.value().front()->basePoint - anchorPoints[group.key()];
-        // --- TODO: continue... ---
+
+        std::vector<AbstractBone*> bones = group.value();
+        for(size_t i = 0; i < bones.size(); i++){
+            // --- base pt ---
+            bones[i]->basePoint -= offsetDistance;
+            // --- chl pts ---
+            for(auto& chlPt : bones[i]->childrenPoints)
+                chlPt -= offsetDistance;
+            // --- anchor ---
+            bones[i]->anchorDirect -= offsetDistance;
+            // --- stl ---
+            for(auto& tri : bones[i]->stlObject.triangles)
+                for(auto &vr : tri.vertex)
+                    vr -= offsetDistance;
+            for(auto& addTri : bones[i]->stlObject.additional)
+                for(auto &vr : addTri.vertex)
+                    vr -= offsetDistance;
+        }
     }
 }
 
@@ -45,13 +62,10 @@ void man::MediaPipeReArranger::makeGroups(AbstractHuman &human)
                 std::vector<AbstractBone*> vecParents = {bn.value()};
                 while (true) {
                     std::vector<AbstractBone*> vecChildren;
-                    for(size_t j = 0; j < vecParents.size(); j++){
-                        for(size_t k = 0; k < vecParents[j]->childrenPointers.size(); k++){
-                            if(vecParents[j]->childrenPointers[k] != nullptr && vecParents[j]->childrenPointers[k]->basePoint.str == notAvlbl){
+                    for(size_t j = 0; j < vecParents.size(); j++)
+                        for(size_t k = 0; k < vecParents[j]->childrenPointers.size(); k++)
+                            if(vecParents[j]->childrenPointers[k] != nullptr && vecParents[j]->childrenPointers[k]->basePoint.str == notAvlbl)
                                 vecChildren.push_back(vecParents[j]->childrenPointers[k]);
-                            }
-                        }
-                    }
                     // -----
                     if(vecChildren.empty()) break;
                     allSegments.insert(allSegments.end(), vecChildren.begin(), vecChildren.end());
