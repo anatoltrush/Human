@@ -72,8 +72,14 @@ void man::MediaPipeReArranger::makeGroups(AbstractHuman &human)
                     vecParents = vecChildren;
                 }
                 // --- --- ---
-                if(allSegments.size() > 0)
-                    groups.insert(anchor.key(), allSegments);
+                if(allSegments.size() > 0){
+                    if(groups.find(anchor.key()) != groups.end()){
+                        groups[anchor.key()].insert(groups[anchor.key()].end(), allSegments.begin(), allSegments.end());
+                    }
+                    else{
+                        groups.insert(anchor.key(), allSegments);
+                    }
+                }
             }
         }
     }

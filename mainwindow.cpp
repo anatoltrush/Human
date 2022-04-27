@@ -2,8 +2,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -17,10 +16,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabProp->setColumnCount(colCount);
     ui->tabProp->setHorizontalHeaderLabels(QStringList() << "Property" << "Value");
     ui->tabProp->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    thr_rcv = std::thread(&MainWindow::threadRcv, this);
+
+    socket = zmq::socket_t(cntx, ZMQ_SUB);
+    socket.connect(addr);
 }
 
 MainWindow::~MainWindow()
 {
+    isRcvRunning = false;
+    if(thr_rcv.joinable()) thr_rcv.join();
+
     delete ui;
 }
 
@@ -32,6 +39,11 @@ void MainWindow::setHuman(man::AbstractHuman *human)
 void MainWindow::setCyborg(man::AbstractHuman *cyborg)
 {
     ui->widgetGL->cyborg = cyborg;
+}
+
+void MainWindow::threadRcv()
+{
+
 }
 
 void MainWindow::updUi()

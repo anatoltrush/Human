@@ -4,6 +4,9 @@
 #include <QTimer>
 #include <QMainWindow>
 
+#include <thread>
+#include <zmq.hpp>
+
 #include "Entities/AbstractHuman.h"
 #include "Algorithms/CyberReArranger.h"
 #include "Algorithms/MediaPipeReArranger.h"
@@ -26,6 +29,18 @@ public:
 private:
     Ui::MainWindow *ui;
     QTimer *timer = nullptr;
+
+    // --- thread ---
+    uint_fast32_t delay_ms = 500;
+    bool isRcvRunning = true;
+    std::thread thr_rcv;
+    void threadRcv();
+
+    // --- zmq ---
+    zmq::context_t  cntx;
+    zmq::socket_t socket;
+    zmq::message_t  mssg;
+    std::string addr = "tcp://127.0.0.1:1100";
 
 private slots:
     void updUi();

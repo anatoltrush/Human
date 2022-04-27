@@ -9,7 +9,7 @@ LIBS    += -lglu32 -lopengl32
 }
 
 unix:{
-
+LIBS    += -lzmq
 }
 
 SOURCES += \
