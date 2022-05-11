@@ -5,7 +5,6 @@
 #include <QMainWindow>
 
 #include <thread>
-#include <zmq.hpp>
 
 #include "Entities/AbstractHuman.h"
 #include "Algorithms/CyberReArranger.h"
@@ -31,16 +30,14 @@ private:
     QTimer *timer = nullptr;
 
     // --- thread ---
-    uint_fast32_t delay_ms = 500;
+    uint32_t delay_ms = 500;
     bool isRcvRunning = true;
     std::thread thr_rcv;
     void threadRcv();
 
-    // --- zmq ---
-    zmq::context_t  cntx;
-    zmq::socket_t socket;
-    zmq::message_t  mssg;
+    // --- DATA ---
     std::string addr = "tcp://127.0.0.1:1100";
+    QVector3D data;
 
 private slots:
     void updUi();

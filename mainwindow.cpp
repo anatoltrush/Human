@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -18,9 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabProp->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     thr_rcv = std::thread(&MainWindow::threadRcv, this);
-
-    socket = zmq::socket_t(cntx, ZMQ_SUB);
-    socket.connect(addr);
 }
 
 MainWindow::~MainWindow()
@@ -43,7 +39,21 @@ void MainWindow::setCyborg(man::AbstractHuman *cyborg)
 
 void MainWindow::threadRcv()
 {
+    while (isRcvRunning) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
 
+//std::cout << " --- a --- "  << std::endl;
+        /*if(1){
+            int a = 5;
+        }
+        else{
+            int b = 3;
+        }*/
+
+        //bool deser_res = deserialize(mssg, data);
+//std::cout << " --- b --- " << recv_res.value() << std::endl;
+        ui->l_zmq->setText("zmq");
+    }
 }
 
 void MainWindow::updUi()
@@ -109,8 +119,8 @@ void MainWindow::on_pB_CybReArr_clicked()
     man::CyberReArranger reArranger;
     man::Status resArrange = reArranger.reArrange(*ui->widgetGL->human, *ui->widgetGL->cyborg);
 
-    man::AbstractSkeleton* ccc = ui->widgetGL->cyborg->skeleton;
-    man::AbstractSkeleton* hhh = ui->widgetGL->human->skeleton;
+    //man::AbstractSkeleton* ccc = ui->widgetGL->cyborg->skeleton;
+    //man::AbstractSkeleton* hhh = ui->widgetGL->human->skeleton;
 
     if(resArrange == man::StatusOk)
         ui->pB_CybReArr->setStyleSheet("background-color: green");
