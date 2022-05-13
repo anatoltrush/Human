@@ -378,16 +378,21 @@ std::vector<man::Triangle> man::CutSurface::makePlug(std::vector<QVector3D> &pts
 
         float maxAng = 0.0f;
         QVector3D nextPt;
+        int eventCount = 0;
         for(size_t i = 0; i < cloud.size(); i++){
-            //if(std::find(outer.begin(), outer.end(), cloud[i]) != outer.end()) continue;
+            if(std::find(outer.begin(), outer.end(), cloud[i]) != outer.end()) continue;
             if(cloud[i] == prev || cloud[i] == last) continue;
             float currAng = calcAngle_0_180(prev, last, cloud[i]);
             if(currAng > maxAng){
                 nextPt = cloud[i];
                 maxAng = currAng;
             }
+            eventCount++;
         }
-        if(nextPt == firstPt) break;
+        if(eventCount == 0){
+            outer.push_back(firstPt);
+            break;
+        }
         outer.push_back(nextPt);
     }
 
