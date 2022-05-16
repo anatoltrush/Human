@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     timer = new QTimer();
-    timer->setInterval(100); // Задаем интервал таймера
+    timer->setInterval(delay_ms); // Задаем интервал таймера
     connect(timer, SIGNAL(timeout()), this, SLOT(updUi())); // Подключаем сигнал таймера к нашему слоту
     timer->start(); // Запускаем таймер
 
@@ -17,6 +17,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tabProp->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     thr_rcv = std::thread(&MainWindow::threadRcv, this);
+
+    tcpSocket = new QTcpSocket;
+    connect(tcpSocket, &QTcpSocket::connected, this, &MainWindow::slotConnected);
+    connect(tcpSocket, &QTcpSocket::readyRead, this, &MainWindow::slotReadyRead);
+    connect(tcpSocket, &QTcpSocket::disconnected, this, &MainWindow::slotDisConnected);
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +47,12 @@ void MainWindow::threadRcv()
     while (isRcvRunning) {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
 
+        /*if(tcpSocket->isOpen()){
+            qint64 res = tcpSocket->write(serverMessage.toUtf8());
+            int a = 5;
+        }*/
+        //ui->pTE_serv->appendPlainText("Send: " + serverMessage + " | result: " + QString::number(res));
+
 //std::cout << " --- a --- "  << std::endl;
         /*if(1){
             int a = 5;
@@ -52,12 +63,54 @@ void MainWindow::threadRcv()
 
         //bool deser_res = deserialize(mssg, data);
 //std::cout << " --- b --- " << recv_res.value() << std::endl;
-        ui->l_zmq->setText("zmq");
+        //ui->l_zmq->setText("zmq");
     }
+}
+
+void MainWindow::slotConnected()
+{
+    ui->pTE_serv->appendPlainText("Connected: ip->" + tcpSocket->peerAddress().toString() +
+                                  " | port-> " + QString::number(tcpSocket->peerPort()));
+}
+
+void MainWindow::slotReadyRead()
+{
+    QTcpSocket *socket = qobject_cast<QTcpSocket*>(sender());
+    QByteArray dataArray = socket->readAll();
+
+    int dataSize = dataArray.size();
+    vecData3D.clear();
+
+    if(dataSize % sizeof(float) != 0){
+        ui->pTE_serv->appendPlainText("--- BAD DATA SIZE ---");
+        return;
+    }
+
+    int vecSize = dataSize / sizeof (float) / 3 /*QVector3D*/;
+    for (int i = 0; i < vecSize; i++) {
+        QVector3D point;
+        float dataX = 0.0f;
+        std::memcpy(&dataX, dataArray.data() + i, sizeof (float)); // FIXME: need to do
+        point.setX(dataX);
+        vecData3D.push_back(point);
+    }
+
+    //QString DataAsString = QTextCodec::codecForMib(1015)->toUnicode(dataArray);
+    //ui->pTE_serv->appendPlainText("GOT: " + DataAsString);
+    ui->pTE_serv->appendPlainText("GOT: " + QString::number(vecData3D[1].x()));
+}
+
+void MainWindow::slotDisConnected()
+{
+    ui->pTE_serv->appendPlainText("--- SERVER LOST ---");
+    ui->pB_zmq->setStyleSheet("background-color: red");
 }
 
 void MainWindow::updUi()
 {
+    if(tcpSocket->isOpen())
+        qint64 res = tcpSocket->write(serverMessage.toUtf8());
+
     /*ui->widgetGL->cyborg->skeleton->rotateBonesSingle(ui->widgetGL->cyborg->skeleton->bones["RightHand"], man::Angle(-0.2f, 0.0f, 0.0f));
     bool isWarn = false;
     ui->widgetGL->cutSuface.execute(ui->widgetGL->cyborg->skeleton, isWarn);
@@ -170,4 +223,13 @@ void MainWindow::on_pB_MPReArr_clicked()
     //on_pB_Cut_clicked();
 
     ui->widgetGL->update();
+}
+
+void MainWindow::on_pB_zmq_clicked()
+{
+    tcpSocket->connectToHost(ui->lE_ip->text(), ui->lE_port->text().toULongLong());
+    if(tcpSocket->isOpen())
+        ui->pB_zmq->setStyleSheet("background-color: green");
+    else
+        ui->pB_zmq->setStyleSheet("background-color: red");
 }

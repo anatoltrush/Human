@@ -1,7 +1,7 @@
 TARGET  = Human
 TEMPLATE = app
 CONFIG  +=  c++14
-QT      +=  core gui widgets
+QT      +=  core gui widgets network
 
 win32: {
 QT      += openglwidgets
