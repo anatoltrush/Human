@@ -2,11 +2,11 @@
 	"skeletons":[
 		{
 			"name": "CyberSkeleton",
-			"path": "Resources/Skeletons/DebugCyberSkeleton/CyberSkeleton.json"
+			"path": "Resources/Skeletons/CyberSkeleton/CyberSkeleton.json"
 		},
 		{
 			"name": "HumanSkeleton",
-			"path": "Resources/Skeletons/DebugHumanSkeleton/HumanSkeleton.json"
+			"path": "Resources/Skeletons/HumanSkeleton/HumanSkeleton.json"
 		}
 	],
 	"nerves":[

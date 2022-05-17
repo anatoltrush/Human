@@ -1,0 +1,27 @@
+{
+	"name": "LeftHand",
+	"model3D": "LeftHand.stl",
+	"rotation": {
+			"x": 0.0,
+			"y": 50.0,
+			"z": 0.0
+	},
+	"parts":[
+		
+	],
+	"parent":{
+			"name": "Spine",
+			"x": -3.0,
+			"y": 3.0,
+			"z": -3.0,
+			"alias": "na"
+	},
+	"children":[
+		{
+			"name": "LeftForearm",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -88.0
+		}
+	]
+}

@@ -1,0 +1,27 @@
+{
+	"name": "RightLeg",
+	"model3D": "RightLeg.stl",
+	"rotation": {
+			"x": 0.0,
+			"y": 0.0,
+			"z": 0.0
+	},
+	"parts":[
+		
+	],
+	"parent":{
+			"name": "Spine",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -5.0,
+			"alias": "na"
+	},
+	"children":[
+		{
+			"name": "RightShin",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -68.0
+		}
+	]
+}

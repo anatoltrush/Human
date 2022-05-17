@@ -1,0 +1,27 @@
+{
+	"name": "Skull",
+	"model3D": "Skull.stl",
+	"rotation": {
+			"x": 0.0,
+			"y": 0.0,
+			"z": 0.0
+	},
+	"parts":[
+		
+	],
+	"parent":{
+			"name": "na",
+			"x": 0.0,
+			"y": 0.0,
+			"z": 3.0,
+			"alias": "na"
+	},
+	"children":[
+			{
+			"name": "Spine",
+			"x": 0.0,
+			"y": 0.0,
+			"z": -5.0
+		}
+	]
+}
