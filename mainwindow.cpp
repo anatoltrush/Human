@@ -46,31 +46,17 @@ void MainWindow::threadRcv()
 {
     while (isRcvRunning) {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
-
-        /*if(tcpSocket->isOpen()){
-            qint64 res = tcpSocket->write(serverMessage.toUtf8());
-            int a = 5;
-        }*/
         //ui->pTE_serv->appendPlainText("Send: " + serverMessage + " | result: " + QString::number(res));
-
-//std::cout << " --- a --- "  << std::endl;
-        /*if(1){
-            int a = 5;
-        }
-        else{
-            int b = 3;
-        }*/
-
-        //bool deser_res = deserialize(mssg, data);
-//std::cout << " --- b --- " << recv_res.value() << std::endl;
+        //std::cout << " --- a --- "  << std::endl;
         //ui->l_zmq->setText("zmq");
     }
 }
 
 void MainWindow::slotConnected()
 {
-    ui->pTE_serv->appendPlainText("Connected: ip->" + tcpSocket->peerAddress().toString() +
-                                  " | port-> " + QString::number(tcpSocket->peerPort()));
+    ui->pTE_serv->appendPlainText("Connected: ip->"+tcpSocket->peerAddress().toString()+" | port-> "+QString::number(tcpSocket->peerPort()));
+    if(tcpSocket->isOpen()) ui->pB_zmq->setStyleSheet("background-color: green");
+    else ui->pB_zmq->setStyleSheet("background-color: red");
 }
 
 void MainWindow::slotReadyRead()
@@ -79,25 +65,30 @@ void MainWindow::slotReadyRead()
     QByteArray dataArray = socket->readAll();
 
     int dataSize = dataArray.size();
-    vecData3D.clear();
-
     if(dataSize % sizeof(float) != 0){
         ui->pTE_serv->appendPlainText("--- BAD DATA SIZE ---");
         return;
     }
 
-    int vecSize = dataSize / sizeof (float) / 3 /*QVector3D*/;
-    for (int i = 0; i < vecSize; i++) {
-        QVector3D point;
-        float dataX = 0.0f;
-        std::memcpy(&dataX, dataArray.data() + i, sizeof (float)); // FIXME: need to do
-        point.setX(dataX);
-        vecData3D.push_back(point);
+    vecData3D.clear();
+    int vecFloatSize = dataSize / sizeof (float);
+    std::vector<float> allFloatData;
+    for (int i = 0; i < vecFloatSize; i++) {
+        float floatValue = 0.0f;
+        std::memcpy(&floatValue, dataArray.data() + i * sizeof (float), sizeof (float));
+        allFloatData.push_back(floatValue);
+    }
+
+    vecData3D.clear(); // ---
+
+    for (size_t i = 0; i < allFloatData.size(); i+=3) {
+        QVector3D pnt(allFloatData[i], allFloatData[i + 1], allFloatData[i + 2]);
+        vecData3D.push_back(pnt);
     }
 
     //QString DataAsString = QTextCodec::codecForMib(1015)->toUnicode(dataArray);
     //ui->pTE_serv->appendPlainText("GOT: " + DataAsString);
-    ui->pTE_serv->appendPlainText("GOT: " + QString::number(vecData3D[1].x()));
+    ui->pTE_serv->appendPlainText("GOT: " + QString::number(vecData3D[1].y()));
 }
 
 void MainWindow::slotDisConnected()
@@ -228,8 +219,4 @@ void MainWindow::on_pB_MPReArr_clicked()
 void MainWindow::on_pB_zmq_clicked()
 {
     tcpSocket->connectToHost(ui->lE_ip->text(), ui->lE_port->text().toULongLong());
-    if(tcpSocket->isOpen())
-        ui->pB_zmq->setStyleSheet("background-color: green");
-    else
-        ui->pB_zmq->setStyleSheet("background-color: red");
 }
