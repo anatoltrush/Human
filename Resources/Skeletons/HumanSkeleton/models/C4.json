@@ -1,6 +1,6 @@
 {
-	"name": "na",
-	"model3D": "na.stl",
+	"name": "C4",
+	"model3D": "C4.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,18 +10,18 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "C3",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
 			{
-			"name": "Spine",
+			"name": "C5",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -3.0
 		}
 	]
 }
