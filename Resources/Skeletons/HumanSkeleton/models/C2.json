@@ -1,6 +1,6 @@
 {
-	"name": "Skull",
-	"model3D": "Skull.stl",
+	"name": "C2",
+	"model3D": "C2.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,24 +10,18 @@
 		
 	],
 	"parent":{
-			"name": "StartBone",
+			"name": "C1",
 			"x": 0.0,
 			"y": 0.0,
 			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
-		{
-			"name": "Jaw",
+			{
+			"name": "na",
 			"x": 0.0,
 			"y": 0.0,
 			"z": 0.0
-		},
-		{
-			"name": "C1",
-			"x": 0.0,
-			"y": -3.0,
-			"z": -13.0
 		}
 	]
 }
