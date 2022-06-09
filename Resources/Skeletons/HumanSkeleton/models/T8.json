@@ -1,8 +1,8 @@
 {
-	"name": "na",
-	"model3D": "-.stl",
+	"name": "T8",
+	"model3D": "T8.stl",
 	"rotation": {
-			"x": 0.0,
+			"x": 1.5,
 			"y": 0.0,
 			"z": 0.0
 	},
@@ -10,18 +10,18 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "T7",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
 			{
-			"name": "Spine",
+			"name": "T9",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -3.0
 		}
 	]
 }
