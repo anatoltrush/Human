@@ -1,6 +1,6 @@
 {
-	"name": "na",
-	"model3D": "-.stl",
+	"name": "BrachialBoneRight",
+	"model3D": "BrachialBoneRight.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,18 +10,24 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "ScapulaRight",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
-			{
-			"name": "Spine",
+		{
+			"name": "RadiusBoneRight",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -24.0
+		},
+		{
+			"name": "UlnaBoneRight",
+			"x": 0.0,
+			"y": -1.0,
+			"z": -25.0
 		}
 	]
 }

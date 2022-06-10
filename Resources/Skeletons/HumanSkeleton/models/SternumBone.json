@@ -2,7 +2,7 @@
 	"name": "SternumBone",
 	"model3D": "SternumBone.stl",
 	"rotation": {
-			"x": 5.0,
+			"x": 0.0,
 			"y": 0.0,
 			"z": 0.0
 	},
@@ -18,10 +18,16 @@
 	},
 	"children":[
 		{
-			"name": "na",
-			"x": 0.0,
+			"name": "CollarBoneLeft",
+			"x": 2.0,
 			"y": 0.0,
-			"z": -2.0
+			"z": 2.0
+		},
+		{
+			"name": "CollarBoneRight",
+			"x": -2.0,
+			"y": 0.0,
+			"z": 2.0
 		}
 	]
 }
