@@ -1,6 +1,6 @@
 {
-	"name": "na",
-	"model3D": "-.stl",
+	"name": "T2RibRight",
+	"model3D": "T2RibRight.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,18 +10,18 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "T2",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
 			{
-			"name": "Spine",
+			"name": "na",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -2.0
 		}
 	]
 }

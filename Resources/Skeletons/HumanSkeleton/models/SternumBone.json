@@ -2,7 +2,7 @@
 	"name": "SternumBone",
 	"model3D": "SternumBone.stl",
 	"rotation": {
-			"x": 0.0,
+			"x": 5.0,
 			"y": 0.0,
 			"z": 0.0
 	},
@@ -10,18 +10,18 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "T1",
 			"x": 0.0,
 			"y": 0.0,
 			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
-			{
+		{
 			"name": "na",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 0.0
+			"z": -2.0
 		}
 	]
 }
