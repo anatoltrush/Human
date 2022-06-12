@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "HumanSkeleton",
-			"path": "Resources/Skeletons/HumanSkeleton/HumanSkeleton.json"
+			"path": "Resources/Skeletons/DebugHumanSkeleton/HumanSkeleton.json"
 		}
 	],
 	"nerves":[

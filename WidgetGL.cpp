@@ -7,20 +7,20 @@ WidgetGL::WidgetGL(QWidget *parent):QOpenGLWidget(parent)
 
 void WidgetGL::drawAxis()
 {
-    float axisLegth = 1000.0f;
+    float axisLegth = 10.0f;
     glLineWidth(1.0f); // устанавливаем ширину линии
 
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
-    glVertex3f(-axisLegth, 0, 0);
+    glVertex3f(0, 0, 0);
     glVertex3f(axisLegth, 0, 0);
 
     glColor3f(1, 1, 0);
-    glVertex3f(0, -axisLegth, 0);
+    glVertex3f(0, 0, 0);
     glVertex3f(0, axisLegth, 0);
 
     glColor3f(0, 1, 1);
-    glVertex3f(0, 0, -axisLegth);
+    glVertex3f(0, 0, 0);
     glVertex3f(0, 0, axisLegth);
     glEnd();
 }
