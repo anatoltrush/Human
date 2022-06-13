@@ -131,10 +131,10 @@ void man::AbstractBone::drawObjectGL()
         glVertex3f(chlPt.value().x(), chlPt.value().y(), chlPt.value().z());*/
         glEnd();
     } // --- intersections ---
-    for (auto inter = intersections.begin(); inter != intersections.end(); inter++){
+    for (auto intersect = intersections.begin(); intersect != intersections.end(); intersect++){
         glPointSize(6.0f);
         glBegin(GL_POINTS);
-        glVertex3f(inter.value().x(), inter.value().y(), inter.value().z());
+        glVertex3f(intersect.value().x(), intersect.value().y(), intersect.value().z());
         glEnd();
     }
 }
@@ -157,7 +157,7 @@ void man::AbstractBone::drawExt() const
     glPointSize(5.0f);
     glBegin(GL_POINTS);
     //glColor3ub(bp.red(), bp.green(), bp.blue());
-    glColor3ub(color.red(), color.green(), color.blue());
+    glColor3ub(color.red() - 10, color.green() - 10, color.blue() - 10);
     glVertex3f(anchorDirect.x(), anchorDirect.y(), anchorDirect.z());
     glEnd();
 }

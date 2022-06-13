@@ -1,6 +1,6 @@
 {
-	"name": "na",
-	"model3D": "-.stl",
+	"name": "WristRight",
+	"model3D": "WristRight.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,18 +10,42 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "RadiusBoneRight",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
-			{
-			"name": "Spine",
+		{
+			"name": "FingerThumbRight",
+			"x": 0.0,
+			"y": 3.0,
+			"z": -5.0
+		},		
+		{
+			"name": "FingerIndexRight",
+			"x": 0.0,
+			"y": 2.0,
+			"z": -7.0
+		},		
+		{
+			"name": "FingerMiddleRight",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -7.5
+		},		
+		{
+			"name": "FingerRingRight",
+			"x": 0.0,
+			"y": -2.0,
+			"z": -7.0
+		},		
+		{
+			"name": "FingerPinkyRight",
+			"x": 0.0,
+			"y": -4.0,
+			"z": -6.0
 		}
 	]
 }

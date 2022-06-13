@@ -1,8 +1,8 @@
 {
-	"name": "na",
-	"model3D": "-.stl",
+	"name": "FemurBoneRight",
+	"model3D": "FemurBoneRight.stl",
 	"rotation": {
-			"x": 0.0,
+			"x": 12.0,
 			"y": 0.0,
 			"z": 0.0
 	},
@@ -10,18 +10,30 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "IliumBoneRight",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
-			{
-			"name": "Spine",
+		{
+			"name": "TibiaRight",
 			"x": 0.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -50.0
+		},
+		{
+			"name": "FibulaRight",
+			"x": -3.0,
+			"y": -2.0,
+			"z": -50.0
+		},
+		{
+			"name": "KneeCapRight",
+			"x": 0.0,
+			"y": 2.0,
+			"z": -48.0
 		}
 	]
 }

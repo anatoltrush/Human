@@ -1,6 +1,6 @@
 {
-	"name": "na",
-	"model3D": "-.stl",
+	"name": "IliumBoneRight",
+	"model3D": "IliumBoneRight.stl",
 	"rotation": {
 			"x": 0.0,
 			"y": 0.0,
@@ -10,18 +10,18 @@
 		
 	],
 	"parent":{
-			"name": "--",
+			"name": "S1",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
-			{
-			"name": "Spine",
-			"x": 0.0,
+		{
+			"name": "FemurBoneRight",
+			"x": -8.0,
 			"y": 0.0,
-			"z": -5.0
+			"z": -10.0
 		}
 	]
 }
