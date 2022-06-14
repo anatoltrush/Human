@@ -13,14 +13,38 @@
 			"name": "TibiaLeft",
 			"x": 0.0,
 			"y": 0.0,
-			"z": 3.0,
+			"z": 0.0,
 			"alias": "na"
 	},
 	"children":[
 		{
-			"name": "na",
+			"name": "ToeThumbLeft",
+			"x": -3.0,
+			"y": 20.0,
+			"z": -5.0
+		},
+		{
+			"name": "ToeIndexLeft",
+			"x": -1.5,
+			"y": 19.0,
+			"z": -5.0
+		},
+		{
+			"name": "ToeMiddleLeft",
 			"x": 0.0,
-			"y": 0.0,
+			"y": 18.0,
+			"z": -5.0
+		},
+		{
+			"name": "ToeRingLeft",
+			"x": 1.5,
+			"y": 17.0,
+			"z": -5.0
+		},
+		{
+			"name": "ToePinkyLeft",
+			"x": 3.0,
+			"y": 16.0,
 			"z": -5.0
 		}
 	]
