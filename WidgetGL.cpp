@@ -3,6 +3,8 @@
 WidgetGL::WidgetGL(QWidget *parent):QOpenGLWidget(parent)
 {
     scale = QVector3D(0.005f, 0.005f, 0.005f);
+    rotation.setX(-90.0f);
+    heightPos = 0.5f;
 }
 
 void WidgetGL::drawAxis()
@@ -67,6 +69,8 @@ void WidgetGL::paintGL()
     glRotatef(rotation.y(), 0.0, 1.0, 0.0);
     glRotatef(rotation.z(), 0.0, 0.0, 1.0);
 
+    glTranslatef(0.0f, 0.0f, heightPos);
+
     glScalef(scale.x(), scale.y(), scale.z());
 
     drawAxis();
@@ -108,21 +112,16 @@ void WidgetGL::mouseMoveEvent(QMouseEvent *pe)
 #endif
     mousePos = pe->pos();
 
-    float diffXY = constScale.y() - constScale.x();
-    float addScale = diffXY * abs(sin(rotation.degToRad().z()));
+    //float diffXY = constScale.y() - constScale.x();
+    //float addScale = diffXY * abs(sin(rotation.degToRad().z()));
 
     //scale.x = constScale.x + addScale;
     //scale.y = constScale.y - addScale;
     //std::cout << rotation.z << " | " << /*addScale*/ sin(rotation.degToRad().z) << std::endl;
-    //std::cout << "scale.x | " << scale.x << std::endl;
-    //std::cout << "scale.y | " << scale.y << std::endl;
     update();
 }
 
-void WidgetGL::mouseReleaseEvent(QMouseEvent *pe)
-{
-
-}
+void WidgetGL::mouseReleaseEvent(QMouseEvent *pe){}
 
 void WidgetGL::wheelEvent(QWheelEvent *pe)
 {
@@ -131,5 +130,13 @@ void WidgetGL::wheelEvent(QWheelEvent *pe)
         scale *= wheelScale;
     else scale /= wheelScale;
 
+    update();
+}
+
+void WidgetGL::keyPressEvent(QKeyEvent *event)
+{
+    float zDiff = 0.1f;
+    if( event->key() == Qt::Key_W) heightPos -= zDiff;
+    else if( event->key() == Qt::Key_S) heightPos += zDiff;
     update();
 }

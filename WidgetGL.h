@@ -12,7 +12,8 @@ class WidgetGL : public QOpenGLWidget
 public:
     WidgetGL(QWidget *parent = 0);
 
-    man::Angle rotation;
+    float heightPos = 0.0f;
+    QVector3D rotation;
     QVector3D scale;
     QVector3D constScale;
     QVector3D koeff;
@@ -35,6 +36,8 @@ protected:
     void mouseMoveEvent(QMouseEvent* pe) override;    // перемещение мыши
     void mouseReleaseEvent(QMouseEvent* pe) override; // отжатие клавиши мыши
     void wheelEvent(QWheelEvent *pe) override;
+
+    void keyPressEvent(QKeyEvent *event) override;
 };
 
 #endif // WIDGETGL_H
